@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ticket pattern for validation and extraction
+TICKET_PATTERN='\[([A-Za-z0-9-]+)\]'
+
 # Argument validation: Check if input file argument is provided
 if [ -z "$1" ]; then
     echo "please specify an input csv" >&2
@@ -43,30 +46,14 @@ validate_csv_format() {
         
         # Extract Description field (field 5) and check for ticket pattern
         local description=$(echo "$line" | awk -F';' '{print $5}')
-        if ! echo "$description" | grep -q '\[E[0-9]\+\]'; then
-            echo "Invalid CSV: Line $line_num missing ticket pattern [<ticketid>] in Description" >&2
+        if ! echo "$description" | grep -qE "$TICKET_PATTERN"; then
+            echo "Invalid CSV: Line $line_num has invalid ticket pattern in Description" >&2
             exit 1
         fi
     done < "$file"
 }
 
 validate_csv_format "$1"
-
-# Time conversion: H:MM to minutes
-time_to_minutes() {
-    local time="$1"
-    local hours=$(echo "$time" | cut -d':' -f1 | xargs)
-    local minutes=$(echo "$time" | cut -d':' -f2 | xargs)
-    echo $((hours * 60 + minutes))
-}
-
-# Time conversion: minutes to H:MM
-minutes_to_time() {
-    local total_minutes="$1"
-    local hours=$((total_minutes / 60))
-    local minutes=$((total_minutes % 60))
-    printf "%d:%02d" "$hours" "$minutes"
-}
 
 # Sum time by ticket ID using awk for aggregation
 sum_time_by_ticket() {
@@ -77,7 +64,7 @@ sum_time_by_ticket() {
     NR == 1 { next }  # Skip header
     {
         # Extract ticket ID from Description (field 5)
-        match($5, /\[E[0-9]+\]/)
+        match($5, /\[([A-Za-z0-9-]+)\]/)
         ticket_id = substr($5, RSTART, RLENGTH)
         
         # Extract and trim time value (field 6)
