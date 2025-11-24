@@ -52,5 +52,62 @@ validate_csv_format() {
 
 validate_csv_format "$1"
 
-# Main logic will go here
-echo "Processing file: $1"
+# Time conversion: H:MM to minutes
+time_to_minutes() {
+    local time="$1"
+    local hours=$(echo "$time" | cut -d':' -f1 | xargs)
+    local minutes=$(echo "$time" | cut -d':' -f2 | xargs)
+    echo $((hours * 60 + minutes))
+}
+
+# Time conversion: minutes to H:MM
+minutes_to_time() {
+    local total_minutes="$1"
+    local hours=$((total_minutes / 60))
+    local minutes=$((total_minutes % 60))
+    printf "%d:%02d" "$hours" "$minutes"
+}
+
+# Sum time by ticket ID using awk for aggregation
+sum_time_by_ticket() {
+    local file="$1"
+    
+    # Use awk to process and aggregate
+    awk -F';' '
+    NR == 1 { next }  # Skip header
+    {
+        # Extract ticket ID from Description (field 5)
+        match($5, /\[E[0-9]+\]/)
+        ticket_id = substr($5, RSTART, RLENGTH)
+        
+        # Extract and trim time value (field 6)
+        gsub(/^[ \t]+|[ \t]+$/, "", $6)
+        time_value = $6
+        
+        # Convert H:MM to minutes
+        split(time_value, t, ":")
+        hours = t[1]
+        mins = t[2]
+        total_mins = hours * 60 + mins
+        
+        # Accumulate
+        ticket_minutes[ticket_id] += total_mins
+        ticket_counts[ticket_id] += 1
+    }
+    END {
+        # Print header
+        printf "%-12s | %-12s | %-8s\n", "Ticket ID", "Total Time", "Entries"
+        printf "%-12s-+-%-12s-+-%-8s\n", "------------", "------------", "--------"
+        
+        # Print results
+        for (ticket_id in ticket_minutes) {
+            total_mins = ticket_minutes[ticket_id]
+            hours = int(total_mins / 60)
+            mins = total_mins % 60
+            printf "%-12s | %d:%02d       | %-8d\n", ticket_id, hours, mins, ticket_counts[ticket_id]
+        }
+    }
+    ' "$file"
+}
+
+sum_time_by_ticket "$1"

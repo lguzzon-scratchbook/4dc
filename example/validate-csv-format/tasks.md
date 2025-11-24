@@ -38,6 +38,6 @@
   - [x] Test with missing ticket pattern on line 5 (aborts at line 5)
   - [x] Verify all acceptance criteria from use case pass
 
-- [ ] **Deploy**
-  - [ ] Commit changes: "Add CSV format validation"
-  - [ ] Merge to main: `git checkout main && git merge feature/validate-csv-format`
+- [x] **Deploy**
+  - [x] Commit changes: "Add CSV format validation"
+  - [x] Merge to main: `git checkout main && git merge feature/validate-csv-format`
