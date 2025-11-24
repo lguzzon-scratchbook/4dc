@@ -46,8 +46,11 @@ Before generating tasks, verify that all prerequisite files exist:
 ## Process
 
 1.  **Verify Prerequisites:** Check for `CONSTITUTION.md`, `[feature-name]/feature.md`, and `[feature-name]/adr.md`
-2.  **Read Context:** Understand constitution principles, feature acceptance criteria, and ADR technical decisions
-3.  **Generate Tasks:** Create minimal, incremental tasks that implement the feature
+2.  **Read Context:**
+    - **Read `CONSTITUTION.md`** to understand testing philosophy, deployment approach, and technical constraints
+    - **Read `[feature-name]/feature.md`** to understand acceptance criteria (Given/When/Then scenarios)
+    - **Read `[feature-name]/adr.md`** to understand component boundaries, data flow, and technical decisions
+3.  **Generate Tasks:** Create minimal, incremental tasks that implement the ADR's technical decisions to satisfy the feature's acceptance criteria
 4.  **Save Task List:** Save as `[feature-name]/tasks.md`
 
 **Note:** Tasks are generated in one pass—no two-phase approval needed. Keep them minimal and focused.
