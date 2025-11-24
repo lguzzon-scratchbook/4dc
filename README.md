@@ -89,7 +89,7 @@ Each document type has a template to guide AI generation:
 - `create-constitution.md` - Guide for creating project constitutions
 - `create-usecase.md` - Guide for generating use cases
 - `create-adr.md` - Guide for generating architecture decision records
-- `generate-tasks.md` - Guide for generating task lists
+- `create-tasks.md` - Guide for generating task lists
 
 ## Example
 
