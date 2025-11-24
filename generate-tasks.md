@@ -1,70 +1,176 @@
-# Rule: Generating a Task List from User Requirements
+# Rule: Generating a Task List
 
 ## Goal
 
-To guide an AI assistant in creating a detailed, step-by-step task list in Markdown format based on user requirements, feature requests, or existing documentation. The task list should guide a developer through implementation.
+To guide an AI assistant in creating a **lean, incremental task list** in Markdown format that breaks down a small feature into actionable implementation steps. Tasks should be minimal, testable, and deliver value incrementally.
+
+## Prerequisites
+
+Before generating tasks, verify that all prerequisite files exist:
+
+**Required:**
+1. **`CONSTITUTION.md`** - Defines technical decisions, frameworks, and development principles
+2. **`[feature-name]/usecase.md`** - Defines WHAT to build and acceptance criteria
+3. **`[feature-name]/adr.md`** - Defines HOW to build it (technical decisions)
+
+**If any file does not exist:**
+- Inform the user which prerequisite is missing
+- Do not proceed until all three files exist
+
+**If all files exist:**
+- Read the constitution to understand testing philosophy, deployment approach, and technical constraints
+- Read the use case to understand acceptance criteria (Given/When/Then)
+- Read the ADR to understand component boundaries, data flow, and technical decisions
+- Generate tasks that implement the ADR's decisions to satisfy the use case's acceptance criteria
+
+## Task Structure Guidelines
+
+**Keep tasks minimal and incremental:**
+- Each task should be completable in **15-30 minutes**
+- Each task should deliver **testable progress**
+- Tasks should map to **acceptance criteria** from the use case
+- Tasks should implement **technical decisions** from the ADR
+- Focus on **behavior** (what works), not files (what changes)
+
+**Task organization:**
+- Start with setup (branch, dependencies)
+- Build incrementally (component → integration → verification)
+- Each step should be verifiable
+- End with deployment readiness
+
+**Definition of Done for each task:**
+- Code written
+- Locally verified (manual or automated test)
+- Meets acceptance criteria from use case
+
+## Process
+
+1.  **Verify Prerequisites:** Check for `CONSTITUTION.md`, `[feature-name]/usecase.md`, and `[feature-name]/adr.md`
+2.  **Read Context:** Understand constitution principles, use case acceptance criteria, and ADR technical decisions
+3.  **Generate Tasks:** Create minimal, incremental tasks that implement the feature
+4.  **Save Task List:** Save as `[feature-name]/tasks.md`
+
+**Note:** Tasks are generated in one pass—no two-phase approval needed. Keep them minimal and focused.
+
+## Output Format
+
+The generated task list should follow this structure:
+
+```markdown
+# Tasks: [Feature Name]
+
+## Relevant Files
+
+List files that will be created or modified for this feature. This scopes the work and prevents unintended changes.
+
+- `path/to/component.tsx` - Brief description (e.g., Upload form component)
+- `path/to/component.test.tsx` - Unit tests for component
+- `api/profile/picture.ts` - Brief description (e.g., Upload endpoint)
+- `api/profile/picture.test.ts` - Unit tests for endpoint
+- `lib/utils/validation.ts` - Brief description (e.g., File validation helpers)
+
+**Note:** Only list files directly related to this increment. Don't include framework files or unrelated code.
+
+## Progress Tracking
+
+**As you complete each task, check it off by changing `- [ ]` to `- [x]`.**
+
+Update after completing each task to track progress.
+
+## Implementation Tasks
+
+- [ ] **Setup**
+  - [ ] Create feature branch: `git checkout -b feature/[feature-name]`
+  - [ ] [Any dependencies or configuration needed]
+
+- [ ] **[Behavior/Capability 1]** (maps to acceptance criteria)
+  - [ ] [Specific implementation step]
+  - [ ] [Verification step]
+
+- [ ] **[Behavior/Capability 2]** (maps to acceptance criteria)
+  - [ ] [Specific implementation step]
+  - [ ] [Verification step]
+
+- [ ] **Integration & Verification**
+  - [ ] [Integration step if needed]
+  - [ ] Verify all acceptance criteria pass
+  - [ ] [Manual testing step if per constitution]
+
+- [ ] **Deploy**
+  - [ ] Commit changes with clear message
+  - [ ] [Push/merge per constitution deployment strategy]
+```
+
+## Example Output
+
+```markdown
+# Tasks: Upload Profile Picture
+
+## Relevant Files
+
+- `components/profile/UploadPhoto.tsx` - Upload form component with file input and preview
+- `components/profile/UploadPhoto.test.tsx` - Unit tests for upload component
+- `pages/api/profile/picture.ts` - POST endpoint for image upload
+- `pages/api/profile/picture.test.ts` - Unit tests for upload endpoint
+- `lib/storage/s3.ts` - S3 upload helper functions
+- `components/profile/ProfileImage.tsx` - Component to display profile image
+
+## Progress Tracking
+
+**As you complete each task, check it off by changing `- [ ]` to `- [x]`.**
+
+## Implementation Tasks
+
+- [ ] **Setup**
+  - [ ] Create feature branch: `git checkout -b feature/upload-profile-picture`
+  - [ ] Install S3 client library if needed (check ADR)
+
+- [ ] **File upload component**
+  - [ ] Create upload form with file input (JPG/PNG only)
+  - [ ] Add client-side validation: file type and size < 5MB
+  - [ ] Display selected file preview
+  - [ ] Verify: Can select file, see preview, validation errors show
+
+- [ ] **Upload API endpoint**
+  - [ ] Create POST /api/profile/picture endpoint
+  - [ ] Validate file type and size server-side
+  - [ ] Upload to S3 with user ID as key
+  - [ ] Return public image URL
+  - [ ] Verify: curl upload works, returns URL, rejects invalid files
+
+- [ ] **Display uploaded image**
+  - [ ] Update profile UI to show image from URL
+  - [ ] Handle missing image state (placeholder)
+  - [ ] Verify: Image displays after upload, persists on refresh
+
+- [ ] **Error handling**
+  - [ ] Show error message on upload failure
+  - [ ] Allow retry on error
+  - [ ] Verify: Error scenarios display correctly
+
+- [ ] **Integration & Verification**
+  - [ ] Test complete flow: select → upload → display
+  - [ ] Verify acceptance criteria: under 5MB works, over 5MB fails, image persists
+  - [ ] Manual test: Upload actual image via UI
+
+- [ ] **Deploy**
+  - [ ] Commit: "Add profile picture upload feature"
+  - [ ] Push to branch, create PR (per constitution CI/CD)
+```
 
 ## Output
 
 - **Format:** Markdown (`.md`)
-- **Location:** `/tasks/`
-- **Filename:** `tasks-[feature-name].md` (e.g., `tasks-user-profile-editing.md`)
+- **Location:** `[feature-name]/` directory
+- **Filename:** `tasks.md`
 
-## Process
+## Final Instructions
 
-1.  **Receive Requirements:** The user provides a feature request, task description, or points to existing documentation
-2.  **Analyze Requirements:** The AI analyzes the functional requirements, user needs, and implementation scope from the provided information
-3.  **Phase 1: Generate Parent Tasks:** Based on the requirements analysis, create the file and generate the main, high-level tasks required to implement the feature. **IMPORTANT: Always include task 0.0 "Create feature branch" as the first task, unless the user specifically requests not to create a branch.** Use your judgement on how many additional high-level tasks to use. It's likely to be about 5. Present these tasks to the user in the specified format (without sub-tasks yet). Inform the user: "I have generated the high-level tasks based on your requirements. Ready to generate the sub-tasks? Respond with 'Go' to proceed."
-4.  **Wait for Confirmation:** Pause and wait for the user to respond with "Go".
-5.  **Phase 2: Generate Sub-Tasks:** Once the user confirms, break down each parent task into smaller, actionable sub-tasks necessary to complete the parent task. Ensure sub-tasks logically follow from the parent task and cover the implementation details implied by the requirements.
-6.  **Identify Relevant Files:** Based on the tasks and requirements, identify potential files that will need to be created or modified. List these under the `Relevant Files` section, including corresponding test files if applicable.
-7.  **Generate Final Output:** Combine the parent tasks, sub-tasks, relevant files, and notes into the final Markdown structure.
-8.  **Save Task List:** Save the generated document in the `/tasks/` directory with the filename `tasks-[feature-name].md`, where `[feature-name]` describes the main feature or task being implemented (e.g., if the request was about user profile editing, the output is `tasks-user-profile-editing.md`).
-
-## Output Format
-
-The generated task list _must_ follow this structure:
-
-```markdown
-## Relevant Files
-
-- `path/to/potential/file1.ts` - Brief description of why this file is relevant (e.g., Contains the main component for this feature).
-- `path/to/file1.test.ts` - Unit tests for `file1.ts`.
-- `path/to/another/file.tsx` - Brief description (e.g., API route handler for data submission).
-- `path/to/another/file.test.tsx` - Unit tests for `another/file.tsx`.
-- `lib/utils/helpers.ts` - Brief description (e.g., Utility functions needed for calculations).
-- `lib/utils/helpers.test.ts` - Unit tests for `helpers.ts`.
-
-### Notes
-
-- Unit tests should typically be placed alongside the code files they are testing (e.g., `MyComponent.tsx` and `MyComponent.test.tsx` in the same directory).
-- Use `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
-
-## Instructions for Completing Tasks
-
-**IMPORTANT:** As you complete each task, you must check it off in this markdown file by changing `- [ ]` to `- [x]`. This helps track progress and ensures you don't skip any steps.
-
-Example:
-- `- [ ] 1.1 Read file` → `- [x] 1.1 Read file` (after completing)
-
-Update the file after completing each sub-task, not just after completing an entire parent task.
-
-## Tasks
-
-- [ ] 0.0 Create feature branch
-  - [ ] 0.1 Create and checkout a new branch for this feature (e.g., `git checkout -b feature/[feature-name]`)
-- [ ] 1.0 Parent Task Title
-  - [ ] 1.1 [Sub-task description 1.1]
-  - [ ] 1.2 [Sub-task description 1.2]
-- [ ] 2.0 Parent Task Title
-  - [ ] 2.1 [Sub-task description 2.1]
-- [ ] 3.0 Parent Task Title (may not require sub-tasks if purely structural or configuration)
-```
-
-## Interaction Model
-
-The process explicitly requires a pause after generating parent tasks to get user confirmation ("Go") before proceeding to generate the detailed sub-tasks. This ensures the high-level plan aligns with user expectations before diving into details.
-
-## Target Audience
-
-Assume the primary reader of the task list is a **junior developer** who will implement the feature.
+1. **Verify all prerequisites exist** (`CONSTITUTION.md`, `usecase.md`, `adr.md`)
+2. **Read all three documents** to understand principles, requirements, and technical decisions
+3. **Generate behavior-focused tasks** that map to acceptance criteria
+4. **Keep tasks small** (15-30 min each, testable progress)
+5. **Include verification steps** for each capability
+6. **Follow constitutional principles** for testing and deployment
+7. **No explicit references** to constitution/usecase/adr in the generated tasks—just implement them
+8. **Focus on what works**, not what files change

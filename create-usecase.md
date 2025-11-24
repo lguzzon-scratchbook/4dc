@@ -2,7 +2,7 @@
 
 ## Goal
 
-To guide an AI assistant in creating a lightweight, focused use case specification in Markdown format. Each use case describes all the ways of using a system to achieve a particular goal for a particular user, with emphasis on validating or falsifying a core assumption through a minimal increment.
+To guide an AI assistant in creating a lightweight, focused use case specification in Markdown format. Each use case is a **small, testable increment** (subfunction) that validates a specific assumption through Gherkin-style acceptance criteria.
 
 ## Prerequisites
 
@@ -21,114 +21,157 @@ Before generating a use case, verify that a `CONSTITUTION.md` file exists in the
 ## Process
 
 1.  **Verify Prerequisites:** Check for `CONSTITUTION.md` and read it if present.
-2.  **Receive Initial Prompt:** The user provides a brief description or request for a new feature or functionality.
-3.  **Ask Clarifying Questions:** Before writing the use case, the AI *must* ask only the most essential clarifying questions needed to write a clear specification. Limit questions to 3-5 critical gaps in understanding. Focus on understanding the user goal, the assumption being tested, and what success/failure looks like. Make sure to provide options in letter/number lists so I can respond easily with my selections.
-4.  **Generate Use Case:** Based on the initial prompt, the user's answers to clarifying questions, and the project constitution, generate a use case specification using the structure outlined below.
-5.  **Save Use Case:** Save the generated document as `usecase-[feature-name].md` inside the `/tasks` directory.
+2.  **Receive Initial Prompt:** The user provides a brief description of a feature or capability.
+3.  **Ask Clarifying Questions:** Ask only 2-3 essential questions. Provide options in letter/number lists for easy selection.
+4.  **Generate Use Case:** Create a small, testable increment with Gherkin-style acceptance criteria.
+5.  **Save Use Case:** Save as `[feature-name]/usecase.md`.
 
 ## Clarifying Questions (Guidelines)
 
-Ask only the most critical questions needed to write a clear use case specification. Focus on areas where the initial prompt is ambiguous or missing essential context. Common areas that may need clarification:
+Ask only 2-3 critical questions to write a clear, testable use case.
 
-*   **User Goal:** If unclear - "What specific goal is the user trying to achieve?"
-*   **Core Assumption:** If unstated - "What assumption are we testing with this increment?"
-*   **Success/Failure Criteria:** If vague - "How will we know if this assumption is validated or falsified?"
-*   **User Context:** If missing - "What is the user's situation or context when they need this?"
-*   **Scope Boundaries:** If broad - "What is the single, minimal increment that can test this assumption?"
-
-**Important:** Only ask questions when the answer isn't reasonably inferable from the initial prompt. Prioritize questions that would significantly impact the use case's clarity or testability.
+### Focus Areas:
+- What specific capability/action?
+- What assumption are we testing?
+- What does success look like?
 
 ### Formatting Requirements
 
 - **Number all questions** (1, 2, 3, etc.)
-- **List options for each question as A, B, C, D, etc.** for easy reference
-- Make it simple for the user to respond with selections like "1A, 2C, 3B"
+- **List options as A, B, C, D, etc.**
+- **Always include option X: "Skip this question / I don't know yet"**
+- Keep it simple for responses like "1A, 2C, 3X"
 
-### Example Format
+### Example Questions
 
 ```
-1. What specific goal is the user trying to achieve?
-   A. Find information quickly
-   B. Complete a transaction
-   C. Share content with others
-   D. Configure settings
+1. What specific capability are we building?
+   A. Upload/select something
+   B. Display/show something
+   C. Process/transform something
+   D. Save/persist something
+   X. Skip this question / I don't know yet
 
-2. What assumption are we testing with this increment?
+2. What assumption are we testing?
    A. Users want this capability
    B. This approach is technically feasible
    C. This will improve a specific metric
-   D. Users will understand how to use this
+   X. Skip this question / I don't know yet
 
 3. What does success look like?
-   A. Users complete the task in X seconds
-   B. X% of users successfully use the feature
-   C. Specific metric improves by X%
-   D. Users provide positive feedback
-
-4. What is the user's context when they need this?
-   A. During onboarding
-   B. During regular workflow
-   C. When encountering an error
-   D. When trying to accomplish task X
+   A. User completes the action successfully
+   B. Specific metric improves
+   C. Feature works within time/size constraints
+   X. Skip this question / I don't know yet
 ```
 
 ## Use Case Structure
 
-The generated use case specification should include the following sections:
+Use this structure for all use cases—small, testable increments with Gherkin-style acceptance criteria.
 
-1.  **Use Case Title:** A clear, concise name describing the user goal (e.g., "User uploads a profile picture").
-2.  **User Goal:** What the user wants to accomplish and why it matters to them.
-3.  **Assumption Being Tested:** The core assumption this increment will validate or falsify.
-4.  **User Context:** When/where/why the user needs this capability. What's their situation?
-5.  **Main Success Scenario:** Step-by-step description of the happy path - how the user accomplishes their goal.
-6.  **Alternative Paths (if any):** Other valid ways the user might accomplish the same goal.
-7.  **Acceptance Criteria:** Specific, testable conditions that must be true for this use case to be considered complete.
-8.  **Success Metrics:** How we'll measure if our assumption was validated (e.g., "80% of users complete the flow", "Task completion time < 30 seconds").
-9.  **Failure Signals:** What would indicate our assumption was falsified (e.g., "< 20% adoption", "Users abandon after step 2").
-10. **Out of Scope:** What this increment explicitly does NOT include to maintain focus.
-11. **Open Questions:** Any remaining uncertainties that need resolution.
+```markdown
+# [Feature Title]
+
+## Job Story
+When [situation]  
+I want to [action]  
+So I can [outcome]
+
+**Assumption Being Tested:** [Specific hypothesis for this increment]
+
+## Acceptance Criteria
+
+- **Given** [precondition]  
+  **When** [action]  
+  **Then** [observable outcome]
+
+- **Given** [precondition]  
+  **When** [action]  
+  **Then** [observable outcome]
+
+- **Given** [error condition]  
+  **When** [action]  
+  **Then** [error handling outcome]
+
+## Success Signal
+[How we know this increment works - metric or observation]
+
+## Out of Scope
+- [What this increment does NOT include]
+```
+
+---
+
+## Template Example
+
+```markdown
+# Upload Profile Picture
+
+## Job Story
+When I'm setting up my profile for the first time  
+I want to upload a recognizable photo  
+So I can build trust with other users before my first consultation
+
+**Assumption Being Tested:** Users will complete profile setup if photo upload takes less than 30 seconds.
+
+## Acceptance Criteria
+
+- **Given** I am on my profile page  
+  **When** I click "Upload Photo" and select a valid JPG/PNG file under 5MB  
+  **Then** I see my new profile picture displayed immediately
+
+- **Given** I am on my profile page  
+  **When** I select a file over 5MB  
+  **Then** I see an error message "File too large. Maximum 5MB." and can try again
+
+- **Given** I have uploaded a photo  
+  **When** I refresh the page  
+  **Then** my profile picture persists (saved to my account)
+
+## Success Signal
+- 90% of users who start upload complete it successfully
+- Average upload time < 15 seconds
+
+## Out of Scope
+- Photo editing/cropping (users edit before upload)
+- Multiple photo uploads (one profile picture only)
+- Camera integration (file selection only)
+```
 
 ## Important: Separation of Concerns
 
 **Use cases capture the WHAT, not the HOW:**
-- **Use Cases** define what the user wants to accomplish and what success looks like
-- **Technical Design Documents** (separate files) capture how to implement the solution
-- **Architecture Decision Records (ADRs)** capture why specific technical choices were made
+- **Use Cases** define small, testable increments with Gherkin-style acceptance criteria
+- **Architecture Decision Records (ADRs)** capture technical implementation decisions
+- **Tasks** break down implementation into actionable steps
 
-Keep use cases focused on user goals, behavior, and outcomes. Technical implementation details belong in separate technical design documents that reference the use case.
+Keep use cases focused on user behavior and observable outcomes. Technical implementation details belong in ADRs and tasks.
 
 **Example structure:**
 ```
-/tasks/
-  usecase-record-and-transcribe.md    # WHAT: User goal and acceptance criteria
-  design-recording-system.md           # HOW: Technical implementation approach
-/docs/adr/
-  001-web-speech-api.md                # WHY: Decision to use Web Speech API
+/upload-profile-picture/
+  usecase.md           # WHAT: User capability (Gherkin)
+  adr.md               # HOW: Technical decisions
+  tasks.md             # HOW: Implementation steps
 ```
 
 ## Target Audience
 
-Assume the primary reader of the use case specification is a **product owner, designer, or developer** who needs to understand what the user wants to accomplish and how to verify success. Use cases should be understandable by both technical and non-technical stakeholders.
-
-**Keep use cases user-focused:**
-- Describe user actions and system responses
-- Define clear acceptance criteria and success metrics
-- Avoid implementation details (those go in technical design documents)
-- Focus on observable behavior and outcomes
+Use cases are read by developers and testers who need clear, testable acceptance criteria for incremental work. They should be understandable without technical jargon, focusing on observable user behavior and outcomes.
 
 ## Output
 
 *   **Format:** Markdown (`.md`)
-*   **Location:** `/tasks/`
-*   **Filename:** `usecase-[feature-name].md`
+*   **Location:** `/tasks/[feature-name]/` or appropriate project directory
+*   **Filename:** `usecase.md`
 
-## Final instructions
+## Final Instructions
 
-1. **Verify `CONSTITUTION.md` exists** before proceeding - if not, stop and ask user to create one first
-2. **Read the constitution** to understand project values and constraints (informs what's in/out of scope)
-3. **Do NOT include technical implementation details** - use cases capture WHAT, not HOW
-4. **Keep use cases user-focused** - describe user goals, actions, and observable outcomes
-5. Make sure to ask the user clarifying questions before writing
-6. Take the user's answers to the clarifying questions and improve the use case specification
-7. Keep the focus tight - one user goal, one assumption to test, one minimal increment
-8. **Suggest creating a separate technical design document** if implementation details are needed (reference the constitution for technical decisions)
+1. **Verify `CONSTITUTION.md` exists** before proceeding
+2. **Read the constitution** to understand project values and constraints
+3. **Ask 2-3 clarifying questions** only when essential
+4. **Use Gherkin-style acceptance criteria** (Given/When/Then)
+5. **Keep it minimal** - one screen max, small testable increment
+6. **Focus on observable behavior** - no technical implementation details
+7. **Make it testable** - clear success criteria that can be verified
+8. **One increment, one assumption** - tight focus on single capability

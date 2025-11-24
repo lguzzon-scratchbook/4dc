@@ -30,15 +30,41 @@ Before generating the constitution, the AI should analyze:
 *   **Existing Patterns:** Coding conventions, testing approaches, documentation practices
 *   **Team Size/Maturity:** Solo project vs. team project (inferred from contributors, docs complexity)
 
-## Suggesting Principles
+## Suggesting Principles - The 6 Pillars
 
-Based on the analysis, suggest 3-5 principles that address:
+A strong constitution covers the **6 core pillars** of modern software engineering. These guide AI decision-making across architecture, implementation, and trade-offs. **Suggest 3-5 principles total**, covering at least 3 different pillars.
 
-1.  **Code Quality Standard** - What level of quality is non-negotiable?
-2.  **Testing Philosophy** - When and how we test
-3.  **Development Speed vs. Quality** - Where we strike the balance
-4.  **Simplicity vs. Flexibility** - Our architectural bias
-5.  **Documentation Expectations** - What must be documented
+### The 6 Pillars
+
+**1. Delivery Velocity**
+How fast to ship vs. how polished? Iteration philosophy, MVP definition, acceptable quality thresholds.
+- Examples: "Ship fast and iterate" vs. "Plan thoroughly before building"
+- Guides: Feature scope, when to refactor, release cadence
+
+**2. Test Strategy**
+What to test, when to test, how much coverage is enough?
+- Examples: "Critical paths only" vs. "Comprehensive coverage" vs. "TDD always"
+- Guides: Test writing, refactoring confidence, deployment decisions
+
+**3. Design Integrity**
+How to structure code? Dependency rules, SOLID principles, architectural boundaries.
+- Examples: "Dependencies point inward" vs. "Pragmatic coupling OK" vs. "Strict layering"
+- Guides: Where to put logic, when to create abstractions, module boundaries
+
+**4. Simplicity First**
+When to add abstraction? YAGNI application, refactoring triggers, complexity tolerance.
+- Examples: "Build only what's needed" vs. "Design for future" vs. "Three strikes then refactor"
+- Guides: Premature optimization, abstraction timing, code evolution
+
+**5. Technical Debt Boundaries**
+When are shortcuts acceptable? How to track and pay down debt?
+- Examples: "Quick hacks in prototypes OK" vs. "Never compromise quality" vs. "Debt must be labeled"
+- Guides: Shortcut decisions, refactoring priority, quality bar
+
+**6. Dependency Discipline**
+When to add libraries? How to isolate third-party code? Framework philosophy.
+- Examples: "Minimize dependencies ruthlessly" vs. "Use best tools" vs. "Wrap all external APIs"
+- Guides: Library selection, vendor coupling, upgrade strategy
 
 ### Principle Selection Guidelines
 
@@ -50,19 +76,19 @@ Based on the analysis, suggest 3-5 principles that address:
 *   **Justifiable:** Has a clear "why"
 
 **Examples of strong principles:**
-*   ✅ "We write tests before fixing bugs" (specific, testable)
-*   ✅ "We choose boring technology over cutting-edge" (guides decisions)
-*   ✅ "All features must work without JavaScript" (limiting, testable)
+*   ✅ "We write tests before fixing bugs" (specific, testable, **Test Strategy**)
+*   ✅ "Dependencies point inward—business logic never imports from frameworks" (limiting, **Design Integrity**)
+*   ✅ "No abstraction until third occurrence" (guides timing, **Simplicity First**)
 
 **Examples of weak principles:**
-*   ❌ "We value quality" (too vague)
+*   ❌ "We value quality" (too vague, no pillar)
 *   ❌ "We try to write good code" (not limiting)
 *   ❌ "We might add tests later" (not declarative)
 
 
 ### Technology Questions
 
-When asking about technology, be specific about the stack:
+When asking about technology, be specific about the stack. **Always include option X for each question to allow skipping.**
 
 ```
 1. What is your primary programming language?
@@ -72,6 +98,7 @@ When asking about technology, be specific about the stack:
    D. Go
    E. Rust
    F. Other: ___________
+   X. Skip this question / I don't know yet
 
 2. What frontend framework are you using?
    A. React
@@ -81,6 +108,7 @@ When asking about technology, be specific about the stack:
    E. Next.js
    F. None (vanilla JS/HTML)
    G. Other: ___________
+   X. Skip this question / I don't know yet
 
 3. What backend framework are you using?
    A. Express
@@ -90,6 +118,7 @@ When asking about technology, be specific about the stack:
    E. Spring Boot
    F. None (serverless/static)
    G. Other: ___________
+   X. Skip this question / I don't know yet
 
 4. What database(s) are you using?
    A. PostgreSQL
@@ -98,8 +127,6 @@ When asking about technology, be specific about the stack:
    D. SQLite
    E. Redis
    F. None yet
-   G. Other: ___________
-
 5. What testing framework are you using?
    A. Jest
    B. Vitest
@@ -108,6 +135,7 @@ When asking about technology, be specific about the stack:
    E. Playwright/Cypress
    F. None yet
    G. Other: ___________
+   X. Skip this question / I don't know yet
 ```
 
 ### Principle & Philosophy Questions
@@ -116,29 +144,52 @@ When asking about technology, be specific about the stack:
 
 - **Number all questions** (1, 2, 3, etc.)
 - **List options for each question as A, B, C, D, etc.** for easy reference
+- **Always include option X: "Skip this question / I don't know yet"** for questions the user cannot answer
 - Keep questions focused on missing critical context only
-- allow the user to select multiple answers, AB for A and B for example.
+- Allow the user to select multiple answers, AB for A and B for example
 
 ### Example Questions
 
+Ask questions that map to the **6 pillars**, focusing on what's not obvious from the codebase:
+
 ```
-1. What is your primary quality constraint?
-   A. Speed of delivery (move fast, fix later)
-   B. Reliability (no broken features in production)
-   C. Performance (must be fast and efficient)
-   D. Maintainability (easy to understand and change)
+1. What is your delivery velocity philosophy? (Pillar: Delivery Velocity)
+   A. Ship fast and iterate (MVP → feedback → improve)
+   B. Plan thoroughly, then build (get it right first time)
+   C. Balanced (fast for experiments, careful for core)
+   X. Skip this question / I don't know yet
 
-2. What's your testing philosophy?
-   A. Test everything (TDD, high coverage)
-   B. Test critical paths only
-   C. Test when it makes sense
-   D. Minimal testing (move fast)
+2. What's your testing philosophy? (Pillar: Test Strategy)
+   A. TDD always (write tests first)
+   B. Test critical paths only (pragmatic coverage)
+   C. Comprehensive coverage (high confidence)
+   D. Minimal testing (move fast, fix when broken)
+   X. Skip this question / I don't know yet
 
-3. What's your approach to new technology?
-   A. Conservative (proven tech only)
-   B. Balanced (new tech for clear benefits)
-   C. Progressive (early adopter)
-   D. Experimental (try everything)
+3. What are your dependency rules? (Pillar: Design Integrity)
+   A. Strict layering (dependencies point inward)
+   B. Pragmatic coupling (optimize for simplicity)
+   C. Not defined yet
+   X. Skip this question / I don't know yet
+
+4. When do you add abstraction? (Pillar: Simplicity First)
+   A. Three strikes rule (third occurrence)
+   B. Plan ahead (design for future needs)
+   C. Never abstract (duplication is fine)
+   D. When it hurts (refactor reactively)
+   X. Skip this question / I don't know yet
+
+5. How do you handle technical debt? (Pillar: Technical Debt Boundaries)
+   A. Quick hacks allowed, label and schedule cleanup
+   B. Never take shortcuts (quality always)
+   C. Fix when it blocks progress
+   X. Skip this question / I don't know yet
+
+6. What's your dependency philosophy? (Pillar: Dependency Discipline)
+   A. Minimize ruthlessly (prefer standard library)
+   B. Use best tools available (pragmatic)
+   C. Wrap third-party code (isolation)
+   X. Skip this question / I don't know yet
 ```
 
 ## Constitution Structure
@@ -149,6 +200,14 @@ The generated constitution should include the following sections:
 Brief statement of what the project is and who it serves.
 
 ### 2. Core Principles (3-5 principles)
+
+**Cover at least 3 of the 6 pillars** based on what matters most for this project:
+- **Delivery Velocity** - Speed vs. quality trade-offs
+- **Test Strategy** - What and how to test
+- **Design Integrity** - SOLID, dependency rules, boundaries
+- **Simplicity First** - YAGNI, abstraction timing, refactoring
+- **Technical Debt Boundaries** - Acceptable shortcuts, paydown strategy
+- **Dependency Discipline** - Library philosophy, isolation
 
 Each principle should include:
 *   **Principle Name:** Short, memorable title
@@ -167,6 +226,7 @@ Each principle should include:
 **In Practice:**
 - [Concrete example or implication 1]
 - [Concrete example or implication 2]
+- [Concrete example or implication 3]
 ```
 
 
