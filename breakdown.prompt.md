@@ -1,12 +1,7 @@
 ---
-title: "Create implementation tasks from a feature or ADR"
-description: "Turn a feature description, ADR, or spec into an actionable task list with estimates and labels."
-author: "co0p"
-language: "markdown"
-tags:
-  - tasks
-  - planning
-  - backlog
+name: breakdown
+description: Break down feature implementation into actionable tasks
+argument-hint: feature name
 ---
 
 # Rule: Generating a Task List
@@ -26,7 +21,7 @@ Before generating tasks, verify that all prerequisite files exist:
 **Required:**
 1. **`CONSTITUTION.md`** - Defines technical decisions, frameworks, and development principles
 2. **`[feature-name]/feature.md`** - Defines WHAT to build and acceptance criteria
-3. **`[feature-name]/adr.md`** - Defines HOW to build it (technical decisions)
+3. **`[feature-name]/design.md`** - Suggests initial approach (technical starting point)
 
 **If any file does not exist:**
 - Inform the user which prerequisite is missing
@@ -35,8 +30,8 @@ Before generating tasks, verify that all prerequisite files exist:
 **If all files exist:**
 - Read `CONSTITUTION.md` to understand the broad technical foundation, testing philosophy, and deployment constraints
 - Read `[feature-name]/feature.md` to understand what to build (acceptance criteria)
-- Read `[feature-name]/adr.md` to understand how to build it (technical decisions that comply with constitution)
-- Generate tasks that implement the feature following the ADR within all given constraints
+- Read `[feature-name]/design.md` to understand initial approach (starting point that complies with constitution)
+- Generate tasks that implement the feature following the design's initial approach, staying flexible to adjust as needed
 
 ## Task Structure Guidelines
 
@@ -44,8 +39,9 @@ Before generating tasks, verify that all prerequisite files exist:
 - Each task should be completable in **15-30 minutes**
 - Each task should deliver **testable progress**
 - Tasks should map to **acceptance criteria** from the feature
-- Tasks should implement **technical decisions** from the ADR
+- Tasks should follow **initial approach** from the design (but stay flexible)
 - Focus on **behavior** (what works), not files (what changes)
+- Prioritize "make it work" over "make it perfect"
 
 **Task organization:**
 - Start with setup (branch, dependencies)
@@ -60,13 +56,25 @@ Before generating tasks, verify that all prerequisite files exist:
 
 ## Process
 
-1.  **Verify Prerequisites:** Check for `CONSTITUTION.md`, `[feature-name]/feature.md`, and `[feature-name]/adr.md`
+1.  **Verify Prerequisites:** Check for `CONSTITUTION.md`, `[feature-name]/feature.md`, and `[feature-name]/design.md`
 2.  **Read Context:**
     - **Read `CONSTITUTION.md`** to understand testing philosophy, deployment approach, and technical constraints
     - **Read `[feature-name]/feature.md`** to understand acceptance criteria (Given/When/Then scenarios)
-    - **Read `[feature-name]/adr.md`** to understand component boundaries, data flow, and technical decisions
-3.  **Generate Tasks:** Create minimal, incremental tasks that implement the ADR's technical decisions to satisfy the feature's acceptance criteria
-4.  **Save Task List:** Save as `[feature-name]/tasks.md`
+    - **Read `[feature-name]/design.md`** to understand initial approach, component boundaries, and data flow
+3.  **Generate Tasks:** Create minimal, incremental tasks that follow the design's initial approach to satisfy the feature's acceptance criteria ("make it work" first)
+4.  **Save Task List:** Save as `[feature-name]/breakdown.md`
+
+## Before Generating Tasks - Self Check
+
+Ask yourself:
+- [ ] Did I verify all three prerequisite files exist?
+- [ ] Did I read CONSTITUTION.md for principles and constraints?
+- [ ] Did I read feature.md for acceptance criteria?
+- [ ] Did I read design.md for technical approach?
+
+If any checkbox is unchecked, STOP and complete that step first.
+
+Note: This prompt typically doesn't require clarifying questions since all context should be in the three documents. Generate tasks directly after verification.
 
 **Note:** Tasks are generated in one pass—no two-phase approval needed. Keep them minimal and focused.
 
@@ -114,11 +122,10 @@ Update after completing each task to track progress.
   - [ ] Verify all acceptance criteria pass
   - [ ] [Manual testing step if per constitution]
 
-- [ ] **Verify ADR Compliance**
-  - [ ] Review implementation against ADR technical decisions
-  - [ ] Confirm data structures match ADR choices
-  - [ ] Verify architectural patterns align with ADR
-  - [ ] Remove any dead code or unused components not specified in ADR
+- [ ] **Quick Review**
+  - [ ] Verify all acceptance criteria pass
+  - [ ] Check alignment with design approach
+  - [ ] Remove any dead code or debug statements
 
 - [ ] **Deploy**
   - [ ] Commit changes with clear message
@@ -142,6 +149,16 @@ Update after completing each task to track progress.
 ## Progress Tracking
 
 **As you complete each task, check it off by changing `- [ ]` to `- [x]`.**
+
+🛑 **STOP - BEFORE GENERATING TASK LIST**
+
+Self-check before proceeding:
+- [ ] I will generate ALL tasks as UNCHECKED `- [ ]` 
+- [ ] I will NOT check tasks off until I actually complete them
+- [ ] I understand this file tracks future work, not completed work
+- [ ] Tasks follow the structure: Setup → Implementation → Integration → Review → Deploy
+
+If any checkbox is unchecked, DO NOT PROCEED. These tasks represent work to be done, not work already completed.
 
 ## Implementation Tasks
 
@@ -177,11 +194,10 @@ Update after completing each task to track progress.
   - [ ] Verify acceptance criteria: under 5MB works, over 5MB fails, image persists
   - [ ] Manual test: Upload actual image via UI
 
-- [ ] **Verify ADR Compliance**
-  - [ ] Review implementation against ADR technical decisions
-  - [ ] Confirm data structures match ADR choices (e.g., S3 storage, not database)
-  - [ ] Verify architectural patterns align with ADR (e.g., backend validation pattern)
-  - [ ] Remove any dead code or unused components not specified in ADR
+- [ ] **Quick Review**
+  - [ ] Verify all acceptance criteria pass
+  - [ ] Check alignment with design approach
+  - [ ] Remove any dead code or debug statements
 
 - [ ] **Deploy**
   - [ ] Commit: "Add profile picture upload feature"
@@ -192,15 +208,16 @@ Update after completing each task to track progress.
 
 - **Format:** Markdown (`.md`)
 - **Location:** `[feature-name]/` directory
-- **Filename:** `tasks.md`
+- **Filename:** `breakdown.md`
 
 ## Final Instructions
 
-1. **Verify all prerequisites exist** (`CONSTITUTION.md`, `feature.md`, `adr.md`)
-2. **Read all three documents** to understand principles, requirements, and technical decisions
+1. **Verify all prerequisites exist** (`CONSTITUTION.md`, `feature.md`, `design.md`)
+2. **Read all three documents** to understand principles, requirements, and initial approach
 3. **Generate behavior-focused tasks** that map to acceptance criteria
 4. **Keep tasks small** (15-30 min each, testable progress)
 5. **Include verification steps** for each capability
 6. **Follow constitutional principles** for testing and deployment
-7. **No explicit references** to constitution/feature/adr in the generated tasks—just implement them
-8. **Focus on what works**, not what files change
+7. **Prioritize "make it work"** - get acceptance criteria passing first
+8. **No explicit references** to constitution/feature/design in the generated tasks—just implement them
+9. **Focus on what works**, not what files change

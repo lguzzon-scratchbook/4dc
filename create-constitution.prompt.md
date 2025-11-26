@@ -1,12 +1,7 @@
 ---
-title: "Create a repository constitution"
-description: "Draft a project constitution / contributing philosophy to guide decision-making and processes."
-author: "co0p"
-language: "markdown"
-tags:
-  - constitution
-  - governance
-  - contributing
+name: create-constitution
+description: Generate a project constitution defining core development principles
+argument-hint: optional project type or tech stack
 ---
 
 # Rule: Generating a Project Constitution
@@ -24,9 +19,24 @@ To guide an AI assistant in creating a lightweight project constitution that def
 1.  **Receive Initial Prompt:** The user requests to create or update the project constitution.
 2.  **Analyze Project Context:** Review existing project files (especially `README.md` and existing `CONSTITUTION.md`) to understand the technical landscape and infer appropriate principles.
 3.  **Suggest Principles:** Based on the project context, propose 3-5 core principles with rationale.
-4.  **Gather User Input:** Ask clarifying questions only if critical information is missing or if the suggested principles need refinement.
-5.  **Generate Constitution:** Create the constitution document using the structure outlined below.
+4.  **STOP - Ask Clarifying Questions:**
+    
+    **DO NOT GENERATE THE CONSTITUTION YET.**
+    
+    Ask clarifying questions only if critical information is missing or if the suggested principles need refinement. Wait for user answers.
+    
+5.  **Generate Constitution:** (Only after receiving answers or user confirmation to proceed)
 6.  **Save Constitution:** Save the document as `CONSTITUTION.md` in the project root.
+
+## Before Generating Constitution - Self Check
+
+Ask yourself:
+- [ ] Did I analyze project context (README.md, existing files)?
+- [ ] Did I suggest principles with rationale?
+- [ ] Did I ask clarifying questions if needed?
+- [ ] Did I receive user's answers or confirmation to proceed?
+
+If any checkbox is unchecked, STOP and complete that step first.
 
 ## Context Analysis
 
@@ -294,7 +304,7 @@ Each principle should include:
 
 [4-5 if needed...]
 
-## Technical Decisions
+## Technical Decicions
 
 ### Languages
 - [Declarative statement]: [Why we chose this]

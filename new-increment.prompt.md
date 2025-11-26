@@ -1,12 +1,7 @@
 ---
-title: "Create a feature specification"
-description: "Generate a feature spec: goal, background, design, acceptance criteria, and tasks."
-author: "co0p"
-language: "markdown"
-tags:
-  - feature
-  - specification
-  - design
+name: new-increment
+description: Create a feature specification with Gherkin acceptance criteria
+argument-hint: feature name or user capability
 ---
 
 # Rule: Generating a Feature Specification
@@ -25,7 +20,7 @@ Before generating a feature, verify that a `CONSTITUTION.md` file exists in the 
 
 **If `CONSTITUTION.md` does not exist:**
 - Inform the user that a constitution is required first
-- Suggest using `create-constitution.md` to generate one
+- Suggest using `/create-constitution` to generate one
 - Do not proceed with feature generation until the constitution exists
 
 **If `CONSTITUTION.md` exists:**
@@ -37,9 +32,24 @@ Before generating a feature, verify that a `CONSTITUTION.md` file exists in the 
 
 1.  **Verify Prerequisites:** Check for `CONSTITUTION.md` and read it if present.
 2.  **Receive Initial Prompt:** The user provides a brief description of a feature or capability.
-3.  **Ask Clarifying Questions:** Ask only 2-3 essential questions. Provide options in letter/number lists for easy selection.
-4.  **Generate Feature:** Create a small, testable increment with Gherkin-style acceptance criteria.
+3.  **STOP - Ask Clarifying Questions:**
+    
+    **DO NOT GENERATE THE FEATURE YET.**
+    
+    Ask only 2-3 essential questions. Provide options in letter/number lists for easy selection. Wait for user answers.
+    
+4.  **Generate Feature:** (Only after receiving user's answers) Create a small, testable increment with Gherkin-style acceptance criteria.
 5.  **Save Feature:** Save as `[feature-name]/feature.md`.
+
+## Before Generating Feature - Self Check
+
+Ask yourself:
+- [ ] Did I verify CONSTITUTION.md exists and read it?
+- [ ] Did I receive the user's feature description?
+- [ ] Did I ask 2-3 clarifying questions?
+- [ ] Did I receive user's answers (e.g., "1A, 2C, 3X")?
+
+If any checkbox is unchecked, STOP and complete that step first.
 
 ## Clarifying Questions (Guidelines)
 
@@ -166,8 +176,9 @@ Keep features focused on user behavior and observable outcomes. Technical implem
 ```
 /upload-profile-picture/
   feature.md           # WHAT: User capability (Gherkin)
-  adr.md               # HOW: Technical decisions
-  tasks.md             # HOW: Implementation steps
+  design.md            # HOW (Initial): Starting approach
+  breakdown.md         # HOW (Detailed): Implementation steps
+  improve.md           # Make it good: Clean up after it works
 ```
 
 ## Target Audience

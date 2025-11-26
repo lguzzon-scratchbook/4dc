@@ -1,8 +1,14 @@
-# Rule: Generating an Architecture Decision Record (ADR)
+---
+name: design
+description: Sketch an initial design approach for a feature increment
+argument-hint: feature name or brief description
+---
+
+# Rule: Generating an Initial Design Document
 
 ## Persona: Senior Developer View
 
-This document represents the **HOW** - documenting architectural decisions, trade-offs, and technical approach without prescribing exact implementation code.
+This document represents the **HOW (Initial)** - sketching initial design ideas, potential approaches, and technical considerations before implementation.
 
 ## Goal
 
@@ -18,23 +24,38 @@ Before generating an ADR, verify that both prerequisite files exist:
 
 **If either file does not exist:**
 - Inform the user which prerequisite is missing
-- Suggest creating the constitution first (using `create-constitution.md`)
-- Then creating the feature (using `create-feature.md`)
+- Suggest creating the constitution first (using `/create-constitution`)
+- Then creating the feature (using `/create-feature`)
 - Do not proceed until both files exist
 
 **If both files exist:**
 - Read the constitution to understand the broad technical foundation and constraints
 - Read the feature to understand what needs to be built (user goals and acceptance criteria)
-- Make technical decisions that comply with the constitution while implementing the feature
+- Sketch initial design ideas that comply with the constitution while implementing the feature
 
 ## Process
 
 1.  **Verify Prerequisites:** Check for `CONSTITUTION.md` and the relevant `feature.md`.
-2.  **Receive Initial Prompt:** The user requests an ADR for a specific feature increment.
+2.  **Receive Initial Prompt:** The user requests a design for a specific feature increment.
 3.  **Analyze Context:** Review constitution and feature to understand constraints and requirements.
-4.  **Ask Clarifying Questions:** Ask only 2-3 essential technical questions not answered by constitution or feature.
-5.  **Generate ADR:** Create a focused decision record for this small increment.
-6.  **Save ADR:** Save as `[feature-name]/adr.md`.
+4.  **STOP - Ask Clarifying Questions:**
+    
+    **DO NOT GENERATE THE DESIGN YET.**
+    
+    Ask only 2-3 essential technical questions not answered by constitution or feature. Wait for user answers.
+    
+5.  **Generate Design:** (Only after receiving answers) Create a lightweight design sketch for this small increment.
+6.  **Save Design:** Save as `[feature-name]/design.md`.
+
+## Before Generating Design - Self Check
+
+Ask yourself:
+- [ ] Did I verify CONSTITUTION.md and feature.md exist?
+- [ ] Did I read both documents to understand constraints and requirements?
+- [ ] Did I ask 2-3 technical clarifying questions?
+- [ ] Did I receive user's answers?
+
+If any checkbox is unchecked, STOP and complete that step first.
 
 ## Clarifying Questions (Guidelines)
 
@@ -78,34 +99,34 @@ Ask only 2-3 technical questions not already answered by the constitution or use
    X. Skip this question / I don't know yet
 ```
 
-## ADR Structure
+## Design Document Structure
 
-Keep ADRs focused on **technical decisions for small increments**. Aim for one screen or less.
+Keep designs focused on **initial approach for small increments**. Aim for one screen or less. This is a sketch, not final decisions.
 
 ```markdown
-# ADR: [Feature Name]
+# Design: [Feature Name]
 
 **Date:** [YYYY-MM-DD]  
-**Status:** Draft | Accepted | Superseded
+**Status:** Initial Sketch
 
-## Decision Summary
-[2-3 sentences: What we're building and the core technical approach]
+## Design Summary
+[2-3 sentences: What we're building and the initial technical approach to try]
 
-## Technical Decisions
+## Initial Approach
 
-### [Decision Name]
-**Choice:** [What was decided]  
-**Rationale:** [Why - technical reasoning tied to this increment]  
-**Trade-offs:** [What was gained vs. what was sacrificed]  
-**Alternatives Rejected:** [What we didn't choose and why]
+### [Design Consideration]
+**Approach:** [What we'll try first]  
+**Rationale:** [Why this seems reasonable - technical reasoning]  
+**Trade-offs:** [What we're accepting vs. what we're gaining]  
+**Alternatives to Consider:** [Other approaches we might pivot to]
 
-### [Decision Name]
-**Choice:** [What was decided]  
+### [Design Consideration]
+**Approach:** [What we'll try]  
 **Rationale:** [Why]  
 **Trade-offs:** [Gains vs. costs]  
-**Alternatives Rejected:** [What wasn't chosen]
+**Alternatives to Consider:** [Other options]
 
-[Repeat for 2-5 key decisions only]
+[Repeat for 2-5 key considerations only]
 
 ## Architecture Overview
 
@@ -136,33 +157,33 @@ Keep ADRs focused on **technical decisions for small increments**. Aim for one s
 ## Template Example
 
 ```markdown
-# ADR: Upload Profile Picture
+# Design: Upload Profile Picture
 
 **Date:** 2025-11-24  
-**Status:** Accepted
+**Status:** Initial Sketch
 
-## Decision Summary
-Client-side image upload with backend validation and storage in cloud object storage. Prioritizes simple implementation over advanced features like cropping or compression.
+## Design Summary
+We'll try client-side image upload with backend validation and storage in cloud object storage. Prioritizes simple implementation over advanced features like cropping or compression.
 
-## Technical Decisions
+## Initial Approach
 
 ### Image Upload Pattern
-**Choice:** Client uploads directly to backend API, backend stores in S3-compatible storage  
+**Approach:** Client uploads directly to backend API, backend stores in S3-compatible storage  
 **Rationale:** Simple request/response pattern fits constitutional "speed over complexity". No presigned URLs or direct-to-S3 needed for MVP.  
 **Trade-offs:** Backend handles file upload (bandwidth cost) but simpler to implement and secure. Accept slower uploads for cleaner architecture.  
-**Alternatives Rejected:** Direct client→S3 upload (presigned URLs) - rejected as over-engineering for small user base.
+**Alternatives to Consider:** Direct client→S3 upload (presigned URLs) - might revisit if upload speed becomes an issue.
 
 ### Image Validation
-**Choice:** Backend validates file type and size before storage  
+**Approach:** Backend validates file type and size before storage  
 **Rationale:** Server-side validation is trustworthy; client-side can be bypassed. Prevents malicious uploads.  
 **Trade-offs:** Upload completes then fails validation (wasted bandwidth) but more secure. Accept this for MVP.  
-**Alternatives Rejected:** Client-only validation - rejected due to security; dual validation - rejected as unnecessary complexity.
+**Alternatives to Consider:** Client-only validation - skip due to security; dual validation - unnecessary complexity for now.
 
 ### Storage Location
-**Choice:** Cloud object storage (S3/compatible), not database  
+**Approach:** Cloud object storage (S3/compatible), not database  
 **Rationale:** Images are large binary data; database storage would bloat backup size and slow queries. Object storage is designed for this.  
 **Trade-offs:** External dependency on S3 but appropriate tool for the job. Cost is negligible at current scale.  
-**Alternatives Rejected:** Database blob storage - rejected due to performance; filesystem storage - rejected due to scaling/backup complexity.
+**Alternatives to Consider:** Database blob storage - avoid due to performance; filesystem storage - avoid due to scaling/backup complexity.
 
 ## Architecture Overview
 
@@ -195,34 +216,35 @@ User selects file → Client validates size/type → POST /api/profile/picture �
 
 ## Target Audience
 
-ADRs are read by **developers implementing the feature** who need to understand:
-- Which technical approach to take
-- Why this approach was chosen over alternatives
-- What constraints to respect during implementation
+Design documents are read by **developers implementing the feature** who need:
+- An initial technical direction to start with
+- Understanding of trade-offs and alternatives
+- Constraints to respect during implementation
 
-Keep ADRs **technical and tactical**—focused on this specific increment's architecture, not general principles (those are in the constitution).
+Keep designs **lightweight and flexible**—focused on getting started, not final decisions. Expect to learn and adjust during implementation.
 
-## No Code in ADRs
+## No Code in Design Documents
 
-**Important:** ADRs document decisions and trade-offs, not implementations.
+**Important:** Design documents sketch approaches, not implementations.
 - Actual code belongs in the project repository
-- ADRs guide developers on what to build and why, not exact syntax
-- Focus on architectural choices, component boundaries, and data flow
-- Leave implementation details to the tasks and code itself
+- Design documents suggest starting points, not prescribe final solutions
+- Focus on initial architectural ideas, component boundaries, and data flow
+- Expect to evolve these ideas during implementation
 
 ## Output
 
 *   **Format:** Markdown (`.md`)
 *   **Location:** `[feature-name]/` directory
-*   **Filename:** `adr.md`
+*   **Filename:** `design.md`
 
 ## Final Instructions
 
 1. **Verify `CONSTITUTION.md` and `feature.md` exist** before proceeding
 2. **Read both documents** to understand principles and requirements
-3. **Focus on this increment's technical decisions** - not the entire system
-4. **Ask 2-3 clarifying questions** only about architectural gaps
-5. **Document 2-5 key decisions** - component boundaries, data flow, integration, storage
-6. **Make trade-offs explicit** - what was gained vs. sacrificed
-7. **Keep it concise** - aim for one screen, small increment focus
-8. **No implementation code** - only architectural decisions and rationale
+3. **Focus on initial approach for this increment** - not the entire system
+4. **Ask 2-3 clarifying questions** only about architectural uncertainties
+5. **Sketch 2-5 key considerations** - component boundaries, data flow, integration, storage
+6. **Make trade-offs explicit** - what we're accepting vs. what we're gaining
+7. **Keep it concise** - aim for one screen, lightweight starting point
+8. **No implementation code** - only initial architectural ideas and rationale
+9. **Stay flexible** - this is a starting point, not final decisions
