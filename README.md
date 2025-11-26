@@ -73,3 +73,20 @@ Complete workflow in `example/`:
 - `example/sum-time-by-ticket/feature.md`
 - `example/sum-time-by-ticket/adr.md`
 - `example/sum-time-by-ticket/tasks.md`
+
+## Copilot Prompt Files
+
+The `prompts/` directory contains [VS Code Copilot prompt files](https://code.visualstudio.com/docs/copilot/customization/prompt-files) that package the 4DC templates as reusable AI prompts. These files include YAML front-matter metadata and can be used directly in VS Code's Copilot Chat to generate constitutions, features, ADRs, and task lists.
+
+**For repository-level use, we recommend moving these prompts to `.github/prompts/` for better discoverability and alignment with GitHub conventions:**
+
+```bash
+mkdir -p .github/prompts
+cp prompts/*.md .github/prompts/
+```
+
+Once moved, reference them in Copilot Chat as `#file:.github/prompts/create-feature.md` instead of `#file:prompts/create-feature.md`.
+
+**Learn more:**
+- [prompts/README.md](prompts/README.md) - Detailed usage guide, reuse strategies, and best practices
+- [VS Code Copilot Prompt Files Documentation](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
