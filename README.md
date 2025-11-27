@@ -26,6 +26,52 @@ Define foundational principles and technical constraints once (`CONSTITUTION.md`
 
 ---
 
+## The Constitution: Enforcing Architectural Discipline
+
+At the heart of 4DC lies the constitution—a set of foundational principles that govern how increments evolve into working systems. The constitution acts as the **architectural DNA** of your project, ensuring every implementation maintains consistency, simplicity, and quality.
+
+### The 6 Pillars of Development
+
+A strong constitution addresses **6 core pillars** that guide all technical decisions:
+
+**1. Delivery Velocity**  
+How fast to ship vs. how polished? Iteration philosophy, MVP definition, acceptable quality thresholds.
+- Guides: Feature scope, when to refactor, release cadence
+
+**2. Test Strategy**  
+What to test, when to test, how much coverage is enough?
+- Guides: Test writing, refactoring confidence, deployment decisions
+
+**3. Design Integrity**  
+How to structure code? Dependency rules, SOLID principles, architectural boundaries.
+- Guides: Where to put logic, when to create abstractions, module boundaries
+
+**4. Simplicity First**  
+When to add abstraction? YAGNI application, refactoring triggers, complexity tolerance.
+- Guides: Premature optimization, abstraction timing, code evolution
+
+**5. Technical Debt Boundaries**  
+When are shortcuts acceptable? How to track and pay down debt?
+- Guides: Shortcut decisions, refactoring priority, quality bar
+
+**6. Dependency Discipline**  
+When to add libraries? How to isolate third-party code? Framework philosophy.
+- Guides: Library selection, vendor coupling, upgrade strategy
+
+### The Power of Immutable Principles
+
+The constitution's power lies in its **stability**. While implementation details evolve through ADRs, core principles remain constant:
+
+- **Consistency Across Time:** Code written today follows the same principles as code written next year
+- **Consistency Across Contributors:** Different developers (or AI agents) produce architecturally compatible code
+- **Architectural Integrity:** Every increment reinforces rather than undermines system design
+- **Decision Velocity:** Eliminates repeated debates ("Should we use TypeScript?") by establishing constraints upfront
+
+**Purpose:**  
+The constitution isn't a rulebook—it's a development philosophy that enables rapid experimentation within declared constraints. It defines the **WHY** (principles and tech stack) so you can focus on the **WHAT** (user value) and discover the **HOW** (patterns) through implementation.
+
+---
+
 ## Architectural Wisdom: ADRs
 
 As you refactor and improve, record recurring patterns and tradeoffs as **Architecture Decision Records** (ADRs):

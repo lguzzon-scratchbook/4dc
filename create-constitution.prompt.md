@@ -33,6 +33,9 @@ Ask yourself:
 - [ ] Did I suggest principles with rationale?
 - [ ] Did I ask clarifying questions if needed?
 - [ ] Did I receive user's answers or confirmation to proceed?
+- [ ] Will the constitution cover at least 3 different pillars?
+- [ ] Does each principle map to a specific pillar?
+- [ ] Are principles declarative, testable, and specific?
 
 If any checkbox is unchecked, STOP and complete that step first.
 
@@ -282,7 +285,7 @@ Each principle should include:
 
 ## Core Principles
 
-### 1. [Principle Name]
+### 1. [Principle Name] _(Pillar: [Pillar Name])_
 
 **Statement:** [Declarative statement]
 
@@ -292,15 +295,23 @@ Each principle should include:
 - [Implication 1]
 - [Implication 2]
 
-### 2. [Principle Name]
+### 2. [Principle Name] _(Pillar: [Pillar Name])_
 
 [Same structure...]
 
-### 3. [Principle Name]
+### 3. [Principle Name] _(Pillar: [Pillar Name])_
 
 [Same structure...]
 
 [4-5 if needed...]
+
+### Pillar Coverage
+
+_This constitution addresses the following pillars:_
+- ✓ [Pillar Name] (Principle #)
+- ✓ [Pillar Name] (Principle #)
+- ✓ [Pillar Name] (Principle #)
+- [Additional pillars if covered]
 
 ## Technical Decicions
 
@@ -331,6 +342,7 @@ See `/examples/constitution-example.md` for a complete sample constitution.
 ## Target Audience
 
 The constitution is read by:
+*   **AI Agents** making technical decisions during increment implementation
 *   **Developers** making daily coding decisions
 *   **Code reviewers** evaluating if PRs align with project values
 *   **New contributors** understanding project philosophy
@@ -344,5 +356,20 @@ Keep language clear and avoid jargon. Principles should be memorable and easy to
 2. **Suggest, don't assume:** Propose principles based on analysis, but allow user to refine
 3. **Keep it lightweight:** 3-5 principles maximum, each principle fits on screen
 4. **Make it actionable:** Every principle should guide real decisions
-5. **Save as `CONSTITUTION.md`** in project root
-6. **Do NOT implement changes** based on the constitution - only create the document
+5. **Validate pillar coverage:** Ensure at least 3 different pillars are addressed
+6. **Label each principle:** Explicitly indicate which pillar each principle addresses
+7. **Include pillar coverage summary:** Add checklist showing which pillars are covered
+8. **Save as `CONSTITUTION.md`** in project root
+9. **Do NOT implement changes** based on the constitution - only create the document
+
+🛑 **STOP - BEFORE SAVING CONSTITUTION**
+
+Final validation:
+- [ ] Constitution includes 3-5 principles
+- [ ] At least 3 different pillars are covered
+- [ ] Each principle clearly labeled with its pillar
+- [ ] Pillar coverage summary included
+- [ ] All principles are declarative, testable, and specific
+- [ ] Technical decisions section includes tech stack choices
+
+If any checkbox is unchecked, DO NOT SAVE. Fix the issues first.
