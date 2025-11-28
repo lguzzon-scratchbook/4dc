@@ -4,11 +4,11 @@
   const user = item.user ? item.user : "N/A";
 </script>
 
-<div class="catalog-item p-4 flex items-center border-b">
-  <img src={item.image} alt={item.name} class="w-16 h-16 rounded mr-4" />
-  <div>
-    <div class="font-bold">{item.name}</div>
-    <div class="text-sm text-gray-600">Last used: {lastUsed}</div>
-    <div class="text-sm text-gray-600">By: {user}</div>
+<div class="catalog-item flex items-center gap-4 p-4 bg-gray-50 rounded-lg shadow-sm">
+  <img src={item.image} alt={item.name} class="w-16 h-16 rounded-lg object-cover border border-gray-200" />
+  <div class="flex flex-col justify-center">
+    <div class="font-semibold text-lg text-gray-800">{item.name}</div>
+    <div class="text-xs text-gray-500 mt-1">Last used: <span class="font-medium">{lastUsed}</span></div>
+    <div class="text-xs text-gray-500">By: <span class="font-medium">{user}</span></div>
   </div>
 </div>
