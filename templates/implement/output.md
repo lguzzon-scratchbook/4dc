@@ -1,7 +1,6 @@
 
 # Implementation Output Format
 
-
 The implementation output must:
 * After each high-level task is completed (and before switching to the next), make an incremental commit to the feature branch. This must be done explicitly to ensure progress is tracked and changes can be reverted easily.
 - Present a list of high-level tasks to the user first. These are derived directly from the increment definition and design.
@@ -13,20 +12,18 @@ The implementation output must:
 ## 1. Relevant Files
 - List files that will be created or modified for this feature, with brief descriptions.
 
-## 2. Progress Tracking
-- Use Markdown checkboxes (`- [ ]`) for each main task and subtask. Update to `- [x]` when completed.
-
-## 3. Implementation Tasks & Subtasks
-- For each main implementation step, break it down into 2-5 specific subtasks:
-	- Each subtask should describe exactly what will be done, how it will be verified, and what the expected result is.
-	- Example: Instead of "Implement catalog list component," use:
-		- [ ] Create Svelte component file (verify file created)
-		- [ ] Define props and initial state (verify props/state in code)
-		- [ ] Render static list from sample data (verify output in browser)
-		- [ ] Add image rendering logic (verify images display)
-		- [ ] Write unit test for rendering (run test, verify pass)
-- Each subtask must include a verification method (manual check, unit test, code review, etc.).
-- Start with setup, proceed through implementation, integration, review, and deploy.
+## 2. Implementation Tasks & Subtasks
+Use Markdown checkboxes (`- [ ]`) for each main task and subtask. Update to `- [x]` when completed.
+For each main implementation step, break it down into 2-5 specific subtasks:
+  - Each subtask should describe exactly what will be done, how it will be verified, and what the expected result is.
+  - Example: Instead of "Implement catalog list component," use:
+    - [ ] Create Svelte component file (verify file created)
+    - [ ] Define props and initial state (verify props/state in code)
+    - [ ] Render static list from sample data (verify output in browser)
+    - [ ] Add image rendering logic (verify images display)
+    - [ ] Write unit test for rendering (run test, verify pass)
+Each subtask must include a verification method (manual check, unit test, code review, etc.).
+Start with setup, proceed through implementation, integration, review, and deploy.
 
 ## 4. Code Implementation
 - Provide code for each subtask/module, with comments explaining logic and decisions.
@@ -50,24 +47,6 @@ The implementation output must:
 ## Relevant Files
 - `src/component.svelte` - Catalog list component
 - `src/component.test.js` - Unit tests for catalog list
-
-## Progress Tracking
-- [ ] Setup
-	- [ ] Create feature branch: `git checkout -b feature/[increment-name]` (verify branch exists)
-	- [ ] Install dependencies (verify install success)
-- [ ] Implement catalog list component
-	- [ ] Create Svelte component file (verify file created)
-	- [ ] Define props and initial state (verify props/state in code)
-	- [ ] Render static list from sample data (verify output in browser)
-	- [ ] Add image rendering logic (verify images display)
-	- [ ] Write unit test for rendering (run test, verify pass)
-- [ ] Integration & manual test
-	- [ ] Integrate component into app (verify integration)
-	- [ ] Manual test in browser (verify all features work)
-- [ ] Quick review & deploy
-	- [ ] Code review (verify standards)
-	- [ ] Remove dead code/debug (verify cleanup)
-	- [ ] Commit changes (verify commit)
 
 ## Implementation Tasks & Subtasks
 - [ ] **Setup**

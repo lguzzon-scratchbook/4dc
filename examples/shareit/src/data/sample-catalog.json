@@ -4,13 +4,13 @@
     "name": "Tent",
     "image": "https://source.unsplash.com/100x100/?tent",
     "lastUsed": "2025-11-20",
-    "user": "Alice"
+    "lastUser": "Alice"
   },
   {
     "id": 2,
     "name": "Cooler",
     "image": "https://source.unsplash.com/100x100/?cooler",
     "lastUsed": null,
-    "user": null
+    "lastUser": null
   }
 ]
