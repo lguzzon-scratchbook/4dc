@@ -5,7 +5,7 @@ argument-hint: none
 
 # Prompt: Generate Self-Contained create-constitution.prompt.md
 
-You are tasked with generating a fully self-contained `create-constitution.prompt.md` file for the 4DC project. Use the contents of all files in the `/templates/constitution` folder (including persona.md, process.md, pillars.md, output.md) as source material. 
+You are tasked with generating a fully self-contained `create-constitution.prompt.md` file for the 4DC project. Use the contents of all files in the `/templates/constitution` folder (including persona.md, process.md, pillars.md, output.md, interaction.md) as source material. 
 
 - Merge all relevant details from these files into a single prompt file.
 - Do not reference or link to any external files or folders in the output.
