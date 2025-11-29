@@ -65,7 +65,3 @@ Each example directory shows the real flow: from constitution, through increment
 - Robert C. Martin (Clean Architecture, separation of concerns)
 - Michael Feathers, Rebecca Wirfs-Brock, Eric Evans, Sandi Metz, Dave Thomas & Andy Hunt
 - Gherkin-style acceptance criteria, BDD
-
----
-
-Let me know if you want further tweaks, or if you'd like me to create a pull request with these revisions!
