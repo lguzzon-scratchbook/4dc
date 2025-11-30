@@ -20,7 +20,7 @@ ADRs should only be extracted when it makes sense to align diverging implementat
 # Improvement Process (Codebase-Wide)
 
 ## 1. Receive Initial Improvement Request
-Inform the user: "You have requested a refactoring and codebase improvement."
+Inform the user: "You have requested a refactoring and codebase improvement analysis."
 
 ## 2. Analyze Project Context and Assess Implementation
 Inform the user: "I will now review your project files (especially README.md, CONSTITUTION.md, and recent increments/designs) as well as ADRs to understand the technical landscape and assess the implementation."
@@ -36,7 +36,7 @@ Inform the user: "I will now review your project files (especially README.md, CO
 After context analysis and assessment, provide a brief summary to the user outlining the project's purpose, tech stack, and key assessment findings.
 
 ## 3. Analyse Codebase Through Lenses
-After analyzing the project context, proactively suggest and implement specific refactorings by examining the codebase through the context-based lenses described in the lenses section:
+After analyzing the project context, identify improvement opportunities by examining the codebase through the context-based lenses described in the lenses section:
    - Naming & Clarity
    - Modularity & Separation
    - Architecture & Patterns
@@ -44,10 +44,10 @@ After analyzing the project context, proactively suggest and implement specific 
    - Duplication & Simplicity
    - Documentation & Communication
 
-- Identify and list actionable refactorings relevant to the codebase, grouped by these lens contexts.
+- Identify and list actionable improvement suggestions relevant to the codebase, grouped by these lens contexts.
 - For each suggestion, reference the relevant lens group and provide a clear rationale inspired by industry best practices.
 Use these context-based lenses as the organizing principle for improvement suggestions, guiding the analysis and recommendations.
-Do not ask the user what to look for; instead, use your analysis and the lenses to recommend actionable refactorings.
+Do not ask the user what to look for; instead, use your analysis and the lenses to recommend actionable improvements.
 
 ### Document Lessons Learned
 During the lens analysis, identify and document:
@@ -66,8 +66,6 @@ If the user agrees, create the ADR file separately using the ADR Output Template
 
 ADRs should only be created for broadly relevant patterns or architectural decisions, not for trivial or stylistic changes.
 
-Proceed to implement the selected refactorings, grouped and labeled by lens context.
-
 ## 4. Present Lenses-Based Findings
 
 Inform the user: "Based on my analysis through the lenses, here are the factual findings and recommended improvements."
@@ -82,28 +80,8 @@ Do not ask the user what to look for or what to improve. Let the lenses and code
 ### Summary of Findings
 Provide a concise summary listing all findings, their mapped lens contexts, and the recommended actions.
 
-## 5. Implement Improvements (Detailed Steps)
-All improvement work must be performed on a dedicated feature branch (e.g., `improve/codebase`).
-
-**Implementation Steps:**
-1. Explicitly create and switch to a new feature branch before making any improvement changes. Example:
-   - Run: `git checkout -b improve/codebase`
-   - All improvement work and commits must happen on this feature branch.
-   - Do not proceed with any code changes until you are on the feature branch.
-2. For each selected refactoring, break it down into actionable tasks and subtasks, each completable in 15-30 minutes and delivering testable progress. Group and label each task by lens context.
-3. Implement code improvements in small, testable increments, mapping tasks to the relevant lens context and rationale.
-4. After each task or subtask is completed, immediately check off the corresponding checkbox in the improvement plan to ensure accurate progress tracking.
-5. After each high-level improvement task is completed (and before switching to the next), make an incremental commit to the feature branch. This must be done explicitly to ensure progress is tracked and changes can be reverted easily.
-6. After refactorings are completed, review the codebase for recurring patterns or architectural decisions. If any emerge, create new ADRs and document them in the design folder, but only for big impactful changes that align or unify the codebase.
-7. Validate improvements against assessment, lessons, and constitution.
-8. If the user chose to continue or switch branch, add a final step to commit all changes to the branch for easy reversion.
-9. Document key decisions, trade-offs, and open questions.
-
-## 6. Ask Clarifying Questions
-Inform the user: "If any critical information is missing for the suggested improvements, I will ask targeted follow-up questions."
-
-## 7. Generate Improvement Plan
-Inform the user: "I will generate the improvement document strictly following the improve output format."
+## 5. Generate Improvement Plan
+Inform the user: "I will generate the improvement document strictly following the improve output format. This document serves as a reference for the next increment cycle."
 
 For the improve output, use the concise format described in the output section:
    - **Assessment:** Brief evaluation of Constitution/Design alignment, quality, and risks
@@ -117,11 +95,13 @@ Each improvement section must include:
    - Explicit file paths to change
    - Specific change description
 
-This format ensures the output is parsable by the /increment prompt for follow-up implementation.
+This format ensures the output is parsable by the /increment prompt for follow-up implementation in a new increment cycle.
 
 Note: ADRs are created as separate, independent artifacts when the user agrees. They are not part of the improve.md output.
 
-## 8. Save Improvement Plan
+Note: The improve phase does NOT implement the suggested improvements. The user decides whether to implement the suggestions by starting a new increment, design, implement cycle.
+
+## 6. Save Improvement Plan
 Inform the user: "I will save the generated improvement plan as improve.md in the project root."
 
 **Action:** Write the improvement plan as `improve.md` in the project root directory. The file must contain:
@@ -132,7 +112,7 @@ Inform the user: "I will save the generated improvement plan as improve.md in th
 ### Summary of Findings
 Provide a brief summary confirming the plan was saved.
 
-## 9. Final Validation
+## 7. Final Validation
 Inform the user: "Before saving, I will validate that all requirements are met."
 
 **Verification Checklist:**
