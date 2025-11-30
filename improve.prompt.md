@@ -56,29 +56,31 @@ During the lens analysis, identify and document:
 - **Unexpected Challenges:** Issues that arose during implementation and how they were addressed.
 - **Emerging Patterns:** Recurring solutions or approaches that could be standardized.
 
-### Surface ADR Candidates and Create ADRs
-When divergent implementations or emerging patterns appear (e.g., different approaches to user validation, error handling, or component structure), surface these as ADR candidates:
+### Surface ADR Candidates
+When divergent implementations or emerging patterns appear (e.g., different approaches to user validation, error handling, or component structure), surface these as potential ADR candidates:
 - Describe the observation (divergent approaches or emerging pattern).
 - Recommend whether an ADR should be created.
 - Provide rationale for the recommendation.
 
-Once the user agrees to create an ADR:
-1. Create the ADR file immediately using the ADR Output Template section below
-2. Save it to the design folder as `design/adr-[number]-[name].md`
-3. List the created ADR in the improve.md output under "ADRs Created"
+If the user agrees, create the ADR file separately using the ADR Output Template. ADRs are independent artifacts and should not be listed in the improve.md output.
 
 ADRs should only be created for broadly relevant patterns or architectural decisions, not for trivial or stylistic changes.
 
-Proceed to implement the selected refactorings first, grouped and labeled by lens context.
+Proceed to implement the selected refactorings, grouped and labeled by lens context.
 
-## 4. Suggest Lenses-Based Refactoring Plan & User Selection
+## 4. Present Lenses-Based Findings
 
-Inform the user: "Based on the findings and suggested improvements, I will propose a refactoring plan, mapping each suggestion to a lens context, with clear rationale. All suggestions are based on factual problems observed in the codebase."
+Inform the user: "Based on my analysis through the lenses, here are the factual findings and recommended improvements."
 
-When asking the user which improvement actions to tackle or skip, clearly state that each suggestion is a factual problem, and show examples for clarity. Use the interaction style described in the interaction section (numbered questions, lettered options, X to skip, _ for custom text answers). Present each finding as a numbered question, offer lettered options, and mention briefly the relevance of each finding using your analysis and examples.
+Present each finding as a factual observation from the codebase:
+- State the observation clearly with evidence (file references, code patterns).
+- Map the finding to a specific lens context.
+- Provide a clear recommendation based on industry best practices.
+
+Do not ask the user what to look for or what to improve. Let the lenses and codebase analysis guide all recommendations.
 
 ### Summary of Findings
-After user selection, provide a concise summary listing the chosen refactorings, their mapped lens contexts, and the rationale for each.
+Provide a concise summary listing all findings, their mapped lens contexts, and the recommended actions.
 
 ## 5. Implement Improvements (Detailed Steps)
 All improvement work must be performed on a dedicated feature branch (e.g., `improve/codebase`).
@@ -98,15 +100,14 @@ All improvement work must be performed on a dedicated feature branch (e.g., `imp
 9. Document key decisions, trade-offs, and open questions.
 
 ## 6. Ask Clarifying Questions
-Inform the user: "If any critical information is missing or the suggested refactorings need refinement, I will ask targeted follow-up questions."
+Inform the user: "If any critical information is missing for the suggested improvements, I will ask targeted follow-up questions."
 
 ## 7. Generate Improvement Plan
-Inform the user: "Once you confirm or provide additional answers, I will generate the improvement document strictly following the improve output format."
+Inform the user: "I will generate the improvement document strictly following the improve output format."
 
 For the improve output, use the concise format described in the output section:
    - **Assessment:** Brief evaluation of Constitution/Design alignment, quality, and risks
    - **Lessons:** What worked well, what to improve, emerging patterns
-   - **ADRs Created:** List of ADR files created during this improve phase (not candidates - files are already generated)
    - **Improvements:** Each improvement as a separate section with explicit file references, lens, priority, and effort
 
 Each improvement section must include:
@@ -118,13 +119,7 @@ Each improvement section must include:
 
 This format ensures the output is parsable by the /increment prompt for follow-up implementation.
 
-For any architectural decisions (ADRs) required during the improve phase, use the ADR Output Template section below:
-   - Context: Briefly describe the situation or problem that led to the decision
-   - Decision: State the architectural choice made
-   - Rationale: Explain why this decision was made, including trade-offs
-   - Consequences: List the expected outcomes, both positive and negative
-   - Alternatives: Mention other options considered and why they were not chosen
-Ensure ADRs are clearly separated from refactoring tasks and only created for impactful architectural changes that unify or significantly alter the codebase.
+Note: ADRs are created as separate, independent artifacts when the user agrees. They are not part of the improve.md output.
 
 ## 8. Save Improvement Plan
 Inform the user: "I will save the generated improvement plan as improve.md in the project root."
@@ -132,7 +127,6 @@ Inform the user: "I will save the generated improvement plan as improve.md in th
 **Action:** Write the improvement plan as `improve.md` in the project root directory. The file must contain:
 - **Assessment:** Brief evaluation against Constitution/Design goals
 - **Lessons:** Key learnings from the implementation
-- **ADRs Created:** List of ADR files created (files already generated, not pending)
 - **Improvements:** Each improvement as a separate section with file references
 
 ### Summary of Findings
@@ -144,42 +138,34 @@ Inform the user: "Before saving, I will validate that all requirements are met."
 **Verification Checklist:**
 - Assessment section contains Constitution/Design alignment and risks
 - Lessons section documents learnings and emerging patterns
-- ADRs Created section lists generated ADR files (not candidates)
 - Each improvement is a separate section with explicit file references
 - Improvements include lens, priority, effort, and change description
 
 If anything is missing, STOP and ask for clarification or fixes.
 
-# LLM-Human Interaction: Improve Step Questioning Style Reference
+# LLM-Human Interaction: Improve Step Findings Style Reference
 
-When initializing the improve step, ask the following numbered questions about patterns, trade-offs, and decisions. Answers should use letters, with X to skip and _ to enter a custom text answer. Mention briefly the relevance about each question using findings in the codebase.
+The improve step should be findings-driven, not question-driven. Present factual observations from the codebase, organized by lenses.
 
-## Example Question Format
+## Findings Format
 
-1. What pattern has emerged in the code?
-   A. Repeated logic
-   B. New abstraction
-   C. Consistent integration
-   X. Skip this question
-   _. Enter your own answer
+Present each finding as a factual observation with evidence from the codebase:
 
-2. What trade-off was made during implementation?
-   A. Performance vs. readability
-   B. Simplicity vs. flexibility
-   C. Speed vs. maintainability
-   X. Skip this question
-   _. Enter your own answer
+### Finding 1: [Title]
+- **Lens:** [Naming/Modularity/Architecture/Testing/Duplication/Documentation]
+- **Observation:** [Factual description of what was found]
+- **Evidence:** [Specific file/line references from the codebase]
+- **Recommendation:** [Suggested action based on industry best practices]
 
-3. What decision should be codified for future increments?
-   A. Module boundaries
-   B. Data flow
-   C. Integration approach
-   X. Skip this question
-   _. Enter your own answer
+### Finding 2: [Title]
+- **Lens:** [...]
+- **Observation:** [...]
+- **Evidence:** [...]
+- **Recommendation:** [...]
 
 ---
 
-Always number questions, use letters for answers, include X to skip, and _ for custom text answers.
+Always present findings with facts and evidence. Do not ask the user what to look for; let the lenses and codebase analysis guide recommendations.
 
 # Lenses for Refactoring and Codebase Improvement
 
@@ -262,11 +248,7 @@ The improve output must be concise and parsable by the /increment prompt.
 - **To Improve:** [List]
 - **Emerging Patterns:** [List]
 
-### 3. ADRs Created
-When the user approves an ADR candidate during the improve process, create the ADR file immediately using the ADR template. List only the created ADR files here:
-- `design/adr-[number]-[name].md` - [Brief description]
-
-### 4. Improvements
+### 3. Improvements
 Each improvement is a separate section with explicit file references. Format for parsability by /increment:
 
 #### Improvement 1: [Title]
@@ -301,10 +283,7 @@ Each improvement is a separate section with explicit file references. Format for
 - **To Improve:** Validation logic scattered across components
 - **Emerging Patterns:** Read-Modify-Save-Render cycle for state
 
-## 3. ADRs Created
-- `design/adr-001-state-mutation-pattern.md` - Standardizes state mutation cycle
-
-## 4. Improvements
+## 3. Improvements
 
 #### Improvement 1: Extract validation helper
 - **Lens:** Modularity & Separation
@@ -320,6 +299,8 @@ Each improvement is a separate section with explicit file references. Format for
 - **Files:** `src/storage.js`
 - **Change:** Wrap localStorage calls in try-catch with fallback
 ```
+
+Note: ADRs are created as separate, independent artifacts when the user agrees. They are not part of the improve.md output.
 
 # ADR Output Template
 

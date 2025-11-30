@@ -15,11 +15,7 @@ The improve output must be concise and parsable by the /increment prompt.
 - **To Improve:** [List]
 - **Emerging Patterns:** [List]
 
-### 3. ADRs Created
-When the user approves an ADR candidate during the improve process, create the ADR file immediately using the ADR Output Template. List only the created ADR files here:
-- `design/adr-[number]-[name].md` - [Brief description]
-
-### 4. Improvements
+### 3. Improvements
 Each improvement is a separate section with explicit file references. Format for parsability by /increment:
 
 #### Improvement 1: [Title]
@@ -54,10 +50,7 @@ Each improvement is a separate section with explicit file references. Format for
 - **To Improve:** Validation logic scattered across components
 - **Emerging Patterns:** Read-Modify-Save-Render cycle for state
 
-## 3. ADRs Created
-- `design/adr-001-state-mutation-pattern.md` - Standardizes state mutation cycle
-
-## 4. Improvements
+## 3. Improvements
 
 #### Improvement 1: Extract validation helper
 - **Lens:** Modularity & Separation
@@ -73,3 +66,5 @@ Each improvement is a separate section with explicit file references. Format for
 - **Files:** `src/storage.js`
 - **Change:** Wrap localStorage calls in try-catch with fallback
 ```
+
+Note: ADRs are created as separate, independent artifacts when the user agrees. They are not part of the improve.md output.
