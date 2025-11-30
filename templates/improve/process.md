@@ -4,11 +4,18 @@
 ## 1. Receive Initial Improvement Request
 Inform the user: "You have requested a refactoring and codebase improvement."
 
-## 2. Analyze Project Context
-Inform the user: "I will now review your project files (especially README.md, CONSTITUTION.md, and recent increments/designs) as well as ADRs to understand the technical landscape and identify refactoring opportunities."
+## 2. Analyze Project Context and Assess Implementation
+Inform the user: "I will now review your project files (especially README.md, CONSTITUTION.md, and recent increments/designs) as well as ADRs to understand the technical landscape and assess the implementation."
+
+### Assessment Tasks
+- **Evaluate vs. Constitution:** Assess how well the implementation adheres to the project's core principles and constraints.
+- **Evaluate vs. Design Goals:** Assess whether the implementation meets the intended design approach, component boundaries, and data flow.
+- **Quality Evaluation:** Assess code quality, readability, maintainability, and testability.
+- **Identify Risks:** List technical debt, potential bugs, performance concerns, or security issues.
+- **Identify Architectural Opportunities:** Note opportunities for improved structure, patterns, or abstractions.
 
 ### Summary of Findings
-After context analysis, provide a brief summary to the user outlining the project's purpose and tech stack.
+After context analysis and assessment, provide a brief summary to the user outlining the project's purpose, tech stack, and key assessment findings.
 
 ## 3. Analyse Codebase Through Lenses
 After analyzing the project context, proactively suggest and implement specific refactorings by examining the codebase through the context-based lenses described in lenses.md:
@@ -23,6 +30,22 @@ After analyzing the project context, proactively suggest and implement specific 
 - For each suggestion, reference the relevant lens group and provide a clear rationale inspired by industry best practices.
 Use these context-based lenses as the organizing principle for improvement suggestions, guiding the analysis and recommendations.
 Do not ask the user what to look for; instead, use your analysis and the lenses to recommend actionable refactorings.
+
+### Document Lessons Learned
+During the lens analysis, identify and document:
+- **What Worked Well:** Patterns, approaches, or decisions that proved effective.
+- **What Could Be Improved:** Areas where the implementation fell short or could be enhanced.
+- **Unexpected Challenges:** Issues that arose during implementation and how they were addressed.
+- **Emerging Patterns:** Recurring solutions or approaches that could be standardized.
+
+### Surface ADR Candidates
+When divergent implementations or emerging patterns appear (e.g., different approaches to user validation, error handling, or component structure), explicitly surface these as ADR candidates:
+- Describe the observation (divergent approaches or emerging pattern).
+- Recommend whether an ADR should be created.
+- Provide rationale for the recommendation.
+- Leave the final ADR creation decision to the user.
+
+ADRs should only be suggested for broadly relevant patterns or architectural decisions, not for trivial or stylistic changes.
 
 Proceed to implement the selected refactorings first, grouped and labeled by lens context. Only after refactorings are completed and patterns or architectural decisions emerge, suggest and document ADRs as needed.
 
@@ -58,9 +81,15 @@ All improvement work must be performed on a dedicated feature branch (e.g., `imp
 Inform the user: "If any critical information is missing or the suggested refactorings need refinement, I will ask targeted follow-up questions."
 
 ## 6. Generate Improvement Plan
-Inform the user: "Once you confirm or provide additional answers, I will generate the improvement document strictly following the shared implementation output format. The plan will always include a section specifying which lenses were applied."
+Inform the user: "Once you confirm or provide additional answers, I will generate the improvement document strictly following the improve output format. The plan will always include sections for Assessment, Lessons, ADR Candidates, and Improvements."
 
-For all actionable improvement tasks and subtasks, use the output format described in the output section of ../implement/output.md:
+For the improve output, use the format described in output.md with the following sections:
+   - **Assessment:** Evaluation of implementation vs. Constitution/Design goals, quality, risks, and architectural opportunities
+   - **Lessons:** What worked well, what could be improved, unexpected challenges, emerging patterns
+   - **ADR Candidates:** Surfaced candidates for review with explicit recommendations (final ADR creation is at user's discretion)
+   - **Improvements:** Actionable refinements grouped by lens context with priority and effort estimates
+
+For all actionable improvement tasks and subtasks:
    - Progress tracking using checkboxes for each task and subtask
    - Clear labeling and mapping to the relevant lens context
    - Code snippets for each change or refactoring
@@ -68,7 +97,7 @@ For all actionable improvement tasks and subtasks, use the output format describ
    - Documentation of decisions and rationale
 This format ensures clarity, traceability, and actionable progress for each improvement.
 
-For any architectural decisions (ADRs) required during the improve phase, use the ADR format described in the ard.md:
+For any architectural decisions (ADRs) required during the improve phase, use the ADR format described in adr.md:
    - Context: Briefly describe the situation or problem that led to the decision
    - Decision: State the architectural choice made
    - Rationale: Explain why this decision was made, including trade-offs
@@ -79,10 +108,26 @@ Ensure ADRs are clearly separated from refactoring tasks and only created for im
 ## 7. Save Improvement Plan
 Inform the user: "I will save the generated improvement plan as improve.md in the project root."
 
-**Action:** Write the improvement plan as `improve.md` in the project root directory. Ensure the file is created and contains only the assessment and the improvement plan sections, minimizing noise.
+**Action:** Write the improvement plan as `improve.md` in the project root directory. The file must contain the following sections:
+- **Assessment:** Evaluation against Constitution/Design goals
+- **Lessons:** Learnings from the implementation
+- **ADR Candidates:** Surfaced candidates for review (explicit, ready to inform next increments)
+- **Improvements:** Actionable refinements with lens mapping
 
 ### Summary of Findings
 Provide a brief summary confirming the plan was saved, listing the included sections and lenses covered.
 
 ## 8. Final Validation
-Inform the user: "Before saving, I will validate that all requirements are met: actionable refactorings, at least 3 lenses covered, each refactoring labeled, lens coverage summary, and technical decisions section. If anything is missing, I will STOP and ask for clarification or fixes."
+Inform the user: "Before saving, I will validate that all requirements are met."
+
+**Verification Checklist:**
+- Assessment section evaluates implementation against Constitution and Design goals
+- Lessons section documents learnings, challenges, and emerging patterns
+- ADR Candidates section explicitly surfaces candidates for review with clear recommendations
+- Improvements section contains actionable, prioritized refinements with lens mapping
+- At least 3 lenses are covered in the analysis
+- Each refactoring suggestion is labeled with its lens context
+- ADR candidates are ready to inform next increments
+- Improvements are explicit and actionable
+
+If anything is missing, STOP and ask for clarification or fixes.
