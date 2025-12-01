@@ -9,6 +9,6 @@ import (
 
 func main() {
 	http.HandleFunc("/api/catalog", catalog.CatalogHandler)
-	http.HandleFunc("/", static.StaticFileHandler)
+	http.Handle("/", static.StaticFileHandler())
 	http.ListenAndServe(":8080", nil)
 }
