@@ -35,7 +35,7 @@ bundle:
 	@[ -f assets/AppIcon.icns ] || $(MAKE) icon
 	@mkdir -p "$(APP)/Contents/MacOS" "$(APP)/Contents/Resources"
 	@echo "Building $(EXECUTABLE) -> $(APP)/Contents/MacOS/$(EXECUTABLE)"
-	@$(GO) build -o "$(APP)/Contents/MacOS/$(EXECUTABLE)" ./app
+	@$(GO) build -o "$(APP)/Contents/MacOS/$(EXECUTABLE)" ./cmd/pomodoro
 	@echo "Writing Info.plist (version $(VERSION))"
 	@sed -e 's/__BUNDLE_NAME__/$(APP_NAME)/g' -e 's/__BUNDLE_ID__/$(BUNDLE_ID)/g' -e 's/__BUNDLE_VERSION__/$(VERSION)/g' packaging/macos/Info.plist.tmpl > "$(APP)/Contents/Info.plist"
 	@echo "Copying AppIcon.icns"
