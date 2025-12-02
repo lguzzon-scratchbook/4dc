@@ -1,6 +1,6 @@
 ---
 name: design
-description: Sketch an initial design approach for an increment
+description: Generate a lightweight technical design with boundaries, file plan, and drift guardrails for an increment
 argument-hint: increment name or brief description
 ---
 
@@ -22,136 +22,123 @@ Produce a clear, pragmatic technical design (HOW) for a single increment that re
 - Constraints: Human-first interaction; any structured outputs (JSON) are internal-only for tooling/CI.
 - Success: A design that is implementable in small steps, testable, and traceably aligned to the increment and constitution.
 
-# Prompt Process for Design Generation
-## 1. Receive Initial Prompt
-Inform the user: "You have requested a technical design for a feature increment."
-## 2. Verify Inputs
-Confirm `CONSTITUTION.md` and the increment’s `increment.md` are present.
-## 3. Analyze Project Context
-Review the constitution, increment, and any existing Architecture Decision Records (ADRs) to understand technical constraints, user goals, and acceptance criteria. Summarize findings: project purpose, tech stack, architectural patterns, constraints, and relevant prior decisions from ADRs.
-## 4. Clarify (STOP)
-Ask 2–3 essentials:
+## Prompt Process for Design Generation
+1. Receive Initial Prompt: Acknowledge the request for an increment design.
+2. Verify Inputs: Ensure `CONSTITUTION.md` + increment `increment.md` exist (STOP if missing).
+3. Analyze Context: Summarize constitution principles, increment acceptance criteria, prior ADRs.
+4. Clarify (STOP): Ask 2–3 targeted questions (flows, constraints, integration). Do not proceed until answered or waived.
+5. Draft Design Proposal: Produce initial modules, boundaries, interfaces, data flow, and risks.
+6. Guardrails & Drift Setup: Declare component/module scope, Planned Files Summary (initial), branch name suggestion, and DRIFT ALERT policy (STOP on unplanned files later).
+7. Refine Technical Decisions: 2–5 decisions with rationale, trade-offs, alternatives.
+8. Final Validation: Confirm alignment (acceptance criteria, constitution), conciseness, traceability, guardrails present.
+9. Save Artifact: Write `design.md` to `docs/increments/<increment-folder>/`.
+10. Emit Summary: (Internal tooling) JSON summary if requested; otherwise present final design.
 
-STOP: Do not proceed until answered or explicitly waived.
-Note: Derive module names and boundaries from these answers during the design proposal. Do not expect the user to provide internal naming; infer and propose pragmatic structure.
-## 5. Generate Technical Design
-Based on the answers and context, propose a lightweight, focused technical design for the increment. Document key technical decisions, trade-offs, and alternatives. Use terms like "initial technical design", "design outline", "design draft", or "design proposal" for clarity and robustness.
-## 6. Save Design
-Save under the increment folder, e.g., `docs/increments/<increment-folder>/design.md`.
-## 7. Final Validation
-Before saving, validate that the technical design:
-- Addresses the increment's acceptance criteria
-- Respects constitutional principles and constraints
-- Documents 2-5 key technical considerations
-- States trade-offs and alternatives
-- Is concise and focused (one screen max)
-
-# Interaction Style (Design)
-Ask guiding questions that elicit context for the design and inform the implementation plan that follows. Avoid assuming the user knows internal module names.
-Number questions; offer lettered options when helpful. Include `X` to skip and `_` for custom text.
-
-Answer format:
-- Reply per question using letters (e.g., `A,B`).
-- Use `X` to skip a question.
-- Use `_:` to add custom text (e.g., `_: prefer native menus`).
+## Interaction Style (Design)
+- Ask numbered guiding questions (flows, constraints, integration, testability).
+- Provide lettered options + `X` to skip + `_:` for custom text.
+- STOP after questions until answered or waived.
 
 Guiding questions:
-1. What user flows or actions must this increment support?
-   A. Single click action from tray
-   B. Short form input
-   C. Background processing
-   X. Skip
-   _. Custom
-2. What constraints or preferences apply?
-   A. Keep UI minimal
-   B. Prefer adapter around external libs
-   C. Strict resource limits
-   X. Skip
-   _. Custom
-3. What external integrations are involved (if any)?
-   A. None
-   B. OS tray API via adapter
-   C. Third-party service
-   X. Skip
-   _. Custom
-4. What makes this “done” and testable?
-   A. Observable behavior from a user action
-   B. Specific metric or success signal
-   C. Clear Given/When/Then scenarios
-   X. Skip
-   _. Custom
+1. User flows supported?
+	A. Single-click tray action
+	B. Short form input
+	C. Background/background processing
+	X. Skip
+	_. Custom
+2. Constraints/preferences?
+	A. Minimal UI
+	B. Adapter around external libs
+	C. Strict resource limits
+	X. Skip
+	_. Custom
+3. External integrations?
+	A. None
+	B. OS tray API via adapter
+	C. Third-party service
+	X. Skip
+	_. Custom
+4. Testability focus?
+	A. Observable user behavior
+	B. Specific metric or signal
+	C. Gherkin criteria
+	X. Skip
+	_. Custom
 
-# Design Output Format
-The generated design document should include the following sections:
-## 1. Design Summary
-2-3 sentences describing what is being built and the initial technical approach.
-Include short references to relevant principles from the constitution and any existing ADRs if applicable.
-## 2. Initial Approach
-Document 2-5 key technical considerations, each with:
-- Approach
-- Rationale
-- Trade-offs
-- Alternatives to consider
-Reference constitution principles or ADRs for rationale or constraints where relevant.
-## 3. Architecture Overview
-- Components and their responsibilities
-- Data flow (brief description or diagram)
-- Integration points (external services/APIs)
-- State management (where state lives and why)
-Include references to constitution or ADRs for architectural patterns or decisions if applicable.
-## 4. Implementation Constraints
-List any technical constraints or limitations from these decisions.
-Reference constitution or ADRs for constraints if relevant.
-## 5. Open Questions
-Technical unknowns or deferred decisions to resolve during implementation.
-Reference constitution or ADRs for open questions or areas needing future decisions if applicable.
+## Design Output Format
+Sections:
+1. Design Summary (2–3 sentences; reference principles/ADRs)
+2. Technical Decisions (2–5: approach, rationale, trade-offs, alternatives)
+3. Architecture Overview (components, data flow, integration points, state)
+4. Implementation Constraints (limitations + rationale)
+5. Guardrails & Scope
+    - In-Scope Components / Out-of-Scope items
+    - Planned Files Summary (initial; subject to confirmation in implement phase)
+    - Drift Policy (STOP & propose update if new files emerge)
+    - Suggested Branch: `feature/<increment-slug>`
+6. Open Questions (unknowns, deferred decisions)
+7. Save Location (`docs/increments/<increment-folder>/design.md`)
 
-## 6. Save Location
-Specify the per-increment folder path where the design will be saved, e.g., `docs/increments/<increment-folder>/design.md`.
----
-**Example Structure:**
+Example:
 ```markdown
-# Design: [Increment Name]
-**Date:** [YYYY-MM-DD]  
+# Design: Tray Menu
+**Date:** 2025-12-02
 **Status:** Initial Technical Design
+
 ## Design Summary
-[2-3 sentences: What we're building and the initial technical approach to try]
-[Reference: Constitution Principle X, ADR-001]
+Add a minimal tray menu adapter exposing start/stop actions with isolated OS calls.
+[Refs: Principle #2 (Simplicity), ADR-001]
+
 ## Technical Decisions
-- **Framework:** [e.g., React]
-	- **Rationale:** [Why this framework fits the increment and constitution]
-	- **Trade-offs:** [Pros/cons for this increment]
-	- **Alternatives Considered:** [Other frameworks and why not chosen]
-- **Language:** [e.g., Go]
-	- **Rationale:** [Why this language fits]
-	- **Trade-offs:** [Pros/cons]
-	- **Alternatives Considered:** [Other languages]
-[Repeat for other major technology choices]
-## Initial Approach
-### [Design Consideration]
-**Approach:** [What we'll try first]  
-**Rationale:** [Why this seems reasonable - technical reasoning]  
-**Trade-offs:** [What we're accepting vs. what we're gaining]  
-**Alternatives to Consider:** [Other approaches we might pivot to]
-[Reference: Constitution Principle Y, ADR-002]
-[Repeat for 2-5 key considerations only]
+- **Adapter Pattern for Tray Integration**
+   - Rationale: Isolate platform APIs
+   - Trade-offs: Thin wrapper maintenance
+   - Alternatives: Direct API calls
+- **Menu Item Struct**
+   - Rationale: Explicit data contract
+   - Trade-offs: Slight verbosity
+   - Alternatives: Map[string]any
+
 ## Architecture Overview
 **Components:**
-- [Component name]: [Responsibility for this increment]
-- [Component name]: [Responsibility]
-**Data Flow:**
-[Brief description or simple diagram of how data moves]
-[Reference: ADR-003]
-**Integration Points:**
-- [External service/API]: [How we integrate]
-**State Management:**
-[Where state lives and why for this increment]
+- `trayAdapter`: owns OS tray interactions
+- `appController`: invokes adapter callbacks
+**Data Flow:** appController -> trayAdapter -> OS
+**Integration Points:** macOS tray API via adapter
+**State Management:** ephemeral in adapter; session state external
+
 ## Implementation Constraints
-- [Technical constraint or limitation from these decisions]
-- [Another constraint developers need to know]
-[Reference: Constitution Principle Z]
+- macOS-only initially (no cross-platform abstraction)
+- No persistent state
+
+## Guardrails & Scope
+**In Scope:** adapter, item struct, click dispatch
+**Out of Scope:** preferences UI, notifications
+**Planned Files Summary (initial):**
+- `pkg/tray/menu.go` — new — adapter + item struct
+- `pkg/tray/menu_test.go` — new — unit tests
+**Drift Policy:** STOP & confirm before adding files beyond this list.
+**Suggested Branch:** `feature/tray-menu`
+
 ## Open Questions
-- [Technical unknown to resolve during implementation]
-- [Deferred decision with reason]
-[Reference: ADR-004]
+- Need cross-platform abstraction later?
+- Notification hook required in next increment?
+
+## Save Location
+`docs/increments/tray-menu/design.md`
 ```
+# Glossary
+# Acceptance
+# JSON Schema Hints (Internal Only)
+# Validation
+# Examples
+# Style Guidelines
+# Glossary
+# Writing Style Guidelines (Design)
+# Glossary (Design)
+# Writing Style Guidelines (Design)
+# JSON Schema Hints (Design)
+# Writing Style Guidelines (Design)
+# JSON Schema Hints (Design)
+# Writing Style Guidelines (Design)
+# JSON Schema Hints (Design)
