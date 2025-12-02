@@ -40,7 +40,7 @@ STOP: Confirm or edit the list before coding.
 
 - [ ] **Manual Verification (macOS)**
   - [ ] Run `make bundle` (verify bundle at `examples/pomodoro/dist/Pomodoro.app`)
-  - [ ] Run `open examples/pomodoro/dist/Pomodoro.app` (verify menu bar icon-only appears, menu shows Start/Pause/Quit)
+  - [ ] Run `make open` (verify menu bar icon-only appears, menu shows Start/Pause/Quit)
   - [ ] Inspect `Info.plist` for `CFBundleIdentifier`, `CFBundleVersion`, `LSUIElement=1` (verify values)
 
 - [ ] **Cross-platform guard**
