@@ -1,168 +1,148 @@
-# Pomodoro — CONSTITUTION
+# Engineering Constitution for Pomodoro (Tray App)
 
-This CONSTITUTION captures the engineering principles, constraints and decision guides for the `examples/pomodoro` project (a compact macOS menu‑bar Pomodoro timer written in Go). It is a living document: use it to guide increments, designs, and implementation choices.
+## Purpose
 
-Purpose
-- Deliver a tiny, dependable Pomodoro timer that lives in the macOS menu bar with minimal friction for users.
-- Prioritize simplicity, privacy (local‑only behavior), and reliability over feature breadth.
+This CONSTITUTION captures the engineering guardrails for the Pomodoro tray app: a tiny, focused macOS menu-bar timer implemented in Go. It exists to guide everyday choices across the 4dc loop (increment → design → implement → improve), keeping decisions aligned with our priorities: simplicity, reliability, and minimal user friction.
 
-Audience
-- Single users on macOS looking for a no‑fuss timer.
+## Context
 
-Scope & Non‑Negotiables
-- Local‑only behavior by default: no telemetry, no remote storage, and no background network dependencies unless explicitly permitted.
-- Small distribution size and minimal native dependencies: prefer the Go stdlib and a tiny set of well‑maintained libraries.
-- Responsiveness and accuracy: timers must not drift noticeably and UI must remain responsive.
+- Product / domain:
+  - A lightweight macOS menu-bar Pomodoro timer implemented in Go. Single-purpose UX: start/stop timers, simple notifications, and minimal configuration.
+- Team:
+  - Small project scope; intended for a small maintainer or small community contributors. Emphasis on pragmatic engineering over heavyweight process.
+- Non-negotiables:
+  - The app must be small, responsive, and unobtrusive.
+  - The product ships to individual users on macOS. Distribution and signing expectations should be decided up-front (see Open Questions).
+  - User privacy: no telemetry unless explicitly stated and opt-in.
 
-Team Values and Constraints
-- Simplicity First: prefer the minimal solution that satisfies the user need.
-- Fast iteration: small increments with quick local verification over long design-heavy upfront work.
-- Safety & privacy: avoid data collection; if telemetry is added, make it opt‑in and documented.
+## Our Principles and Trade-offs
 
-The 6 Pillars (how they apply here)
+We prioritize delivering a small, reliable product quickly while avoiding long-term complexity that undermines maintainability. Decisions bias toward pragmatic minimalism: prefer readable, idiomatic Go and the standard library unless a dependency clearly reduces complexity and maintenance cost.
 
-1) Delivery Velocity
-- What it means: small, testable increments that can be built and validated locally in minutes to hours.
-- Signal you're succeeding: short commits, clear changelogs in `examples/pomodoro/`, and quick manual verification steps documented in an `implement.md` task.
-- Violation: large PRs that bundle unrelated changes or require heavy CI for trivial updates.
+- Speed vs safety: Favor small, frequent, low-risk releases. Safety (platform compatibility, privacy, and not breaking users) is enforced for public releases; prototypes or internal builds may be faster and lighter on checks.
+- Short-term delivery vs long-term maintainability: Prefer small, well-documented shortcuts over opaque hacks. If we take a shortcut, we record it and set a timebox for cleanup.
+- Experimentation vs stability: Experimentation is allowed in forks/feature branches or behind flags; the main branch must remain stable for users.
 
-2) Test Strategy
-- What it means: unit tests for core timer logic and integration smoke checks for UI build/start. Prefer deterministic tests for timing logic (inject a clock when possible).
-- Signal: tests run locally (fast), and a simple `make test` or `go test ./...` succeeds.
-- Violation: relying solely on manual testing for timer math or introducing flaky timing tests.
+### Default Trade-off Rules
 
-3) Design Integrity
-- What it means: keep the architecture minimal but separated: timer logic (core) vs UI (tray integration). Favor small, well‑documented interfaces.
-- Signal: clear package boundaries, small surface area for the timekeeping API, and short design.md when non‑trivial decisions arise.
-- Violation: mixing UI concerns and timer logic in one file making correctness and tests hard to reason about.
-
-4) Simplicity First
-- What it means: default to the least‑complex implementation that meets acceptance criteria. Defer optimizations until justified by measurement or user need.
-- Signal: feature implementations that are readable and obvious; alternatives documented when complexity increases.
-- Violation: premature optimization, heavy frameworks, or adding cross‑platform abstractions before proving demand.
-
-5) Technical Debt Boundaries
-- What it means: explicitly document intentional shortcuts in `implement.md` and schedule a remediation in a future `improve.md` if they affect maintainability.
-- Signal: every non-trivial TODO has an associated ticket or `improve` entry with a timeline.
-- Violation: leaving hacks without trace or indefinitely deferring cleanup.
-
-6) Dependency Discipline
-- What it means: prefer standard library and small, maintained Go libraries. Evaluate third‑party native bindings for macOS tray integration carefully; prefer well‑supported, small libraries.
-- Signal: PRs include short notes explaining why each new dependency is needed and its maintenance status.
-- Violation: adding heavy, poorly maintained dependencies for marginal convenience.
-
-Trade‑off Rules
-- Velocity vs Design: favor velocity for trivial UI/bug fixes; require a short `design.md` when change affects core timer semantics or introduces native bindings.
-- Simplicity vs Performance: favor simplicity unless a clear, measurable performance issue affects correctness (e.g., timer accuracy or UI jank).
-- Local privacy vs telemetry: local privacy wins by default. Telemetry must be opt‑in, documented, and reversible.
-
-Operational Guidance for the 4DC Loop
-
-- Increment (WHAT): keep increments small — one user‑visible change or one correctness fix per increment. Use job stories and clear acceptance criteria. Example: "Add menu item to pause/resume timer — acceptance: click pauses, resume restores remaining time."
-
-- Design (HOW): mandatory when the increment touches core timer semantics or introduces native integrations. Keep designs short (1–2 pages), focusing on boundaries, chosen libraries, and rollback plan.
-
-- Implement (DO): prefer test‑first for timer logic. Break tasks into small commits; each commit should be verifiable locally (build + smoke run). Record any shortcuts in `implement.md`.
-
-- Improve (LEARN): after an increment, run a quick retrospective: what worked, what didn't, and whether any ADRs are needed. Consolidate recurring patterns into the repo-level CONSTITUTION.
-
-Documentation & Releases
-- Keep a short `README.md` with build and install steps for macOS (codesign / notarization notes if applicable). Tag releases for user distribution and keep release notes minimal and focused.
-
-Amendments
-- This CONSTITUTION is editable. If the team repeatedly encounters friction, open an `adr-constitution-update.md` under `examples/pomodoro/docs/` with proposed changes and rationale.
-
-Open Questions (for future refinement)
-- Do we plan to publish signed installers/releases for macOS users, or distribute as a local binary only?
-- Do we want optional telemetry or update checks (opt‑in)? If yes, define allowed providers and data scope.
-
-Use this document when authoring `increment.md`, `design.md`, `implement.md`, and `improve.md` for the `examples/pomodoro` example.
+- When in doubt between **shipping faster** and **polishing the design**, we usually: ship a small, well-tested increment that is easily revertible. Polishing is scheduled as a follow-up increment if not critical for user experience.
+- When in doubt between **adding a dependency** and **building it ourselves**, we usually: prefer the standard library or a small, well-maintained dependency with clear licensing. Add a dependency only if it meaningfully reduces code complexity or solves a non-trivial platform gap.
+- When in doubt between **adding tests now** and **moving on**, we usually: add at least a minimal, automated smoke test for critical user flows (build, launch, basic timer flow). Deeper unit tests follow as increments when logic complexity grows.
 
 ---
-Last updated: 2025-12-02
-# Pomodoro Project Constitution
 
-## Vision
-Provide a lightweight, unobtrusive Pomodoro timer that helps people focus through simple cycles of work and break, living quietly in the system tray.
+## The 6 Pillars of Our Engineering
 
-## Mission
-Deliver a reliable desktop timer with accurate intervals, minimal UI, and smooth tray interactions, favoring simplicity and small, safe iterations.
+### 1. Delivery Velocity
 
-## Core Values
-- Focus: Prioritize core timing accuracy over feature breadth.
-- Simplicity: Keep interactions minimal and predictable.
-- Reliability: Favor stability and low resource usage.
-- Adaptability: Wrap platform specifics to remain replaceable.
+- Desired iteration speed: small increments (single feature or fix per increment), frequent releases for users when changes are user-visible.
+- Typical increment size: a single feature, a bugfix, or a small UX improvement that can be implemented, tested, and released in a few hours to a couple of days.
+- Release cadence and acceptable risk per release: aim for frequent, small releases with low blast radius. Public releases require basic verification (build, smoke tests, signed binary if applicable).
 
-## Architectural Principles
+**We optimize for:** rapid, low-risk shipping and quick rollback capability.
+**We accept the following risks:** small regressions that can be quickly fixed in subsequent increments.
+**We avoid:** large, multi-feature releases that increase risk and complicate rollbacks.
 
-### 1. Small, Safe Iterations _(Pillar: Delivery Velocity)_
-**Statement:** Prefer small, incremental changes that keep the app usable and enable fast feedback.
-**Rationale:** Balanced speed with stability suits a timer app; quick feedback reduces risk.
-**In Practice:**
-- Aim for PRs < 300 LOC diff with at least one test touching changed code.
-- Use conservative defaults and feature flags for risky behavior.
+### 2. Test Strategy
 
-### 2. Protect the Timer’s Core _(Pillar: Test Strategy)_
-**Statement:** Ensure critical timing, state transitions (work/break), and tray actions have tests; non-critical UI paths get smoke tests.
-**Rationale:** Timer accuracy and state logic are the product’s core value.
-**In Practice:**
-- Unit tests around duration tracking, pause/resume, and completion events.
-- Integration test for tray menu actions where feasible.
+- What must be tested: build and packaging, basic runtime startup, core timer flow (start/pause/reset/notification), and any platform integration (menu-bar behavior, notifications).
+- Coverage / confidence: focus on critical-path coverage rather than a high percentage target. Automated smoke tests + selective unit tests where logic is non-trivial.
+- Preferred shape: lean testing pyramid — smoke/integration tests for platform-level flows, unit tests for core time and state logic, minimal UI tests if reliable tooling exists.
 
-### 3. Pragmatic Boundaries _(Pillar: Design Integrity)_
-**Statement:** Keep timer logic in a core module; isolate OS/tray integrations behind adapters; allow pragmatic coupling where added layering would increase complexity.
-**Rationale:** Tray/OS specifics shouldn’t leak into core timing logic; avoid premature architecture.
-**In Practice:**
-- No direct OS calls from core; use adapter interfaces.
-- Accept light coupling in small apps; review boundaries during refactors.
+**Minimum expectations:**
+- A reproducible build and packaging pipeline (local or CI).
+- One or more automated smoke checks that verify the app launches and the timer state transitions.
 
-### 4. Refactor When It Hurts _(Pillar: Simplicity First)_
-**Statement:** Start simple; refactor reactively when duplication or friction affects development speed or correctness.
-**Rationale:** A small utility benefits from low ceremony and targeted refactors.
-**In Practice:**
-- Duplicate once; abstract after patterns stabilize or the third repetition.
-- Trigger refactor when changes touch 3+ places or cause frequent mistakes.
+**When moving fast, we are allowed to:** temporarily skip non-critical unit tests if a compensating smoke test exists and the change is small.
+**We never skip tests for:** releases that change distribution, signing, or anything that affects user privacy or data handling.
 
-### 5. Time‑boxed Shortcuts _(Pillar: Technical Debt Boundaries)_
-**Statement:** Allow tactical shortcuts with a visible TODO and a scheduled cleanup within 4 weeks.
-**Rationale:** Maintain momentum while preventing lingering debt.
-**In Practice:**
-- Tag TODOs with owner + due date.
-- Include cleanup tasks in weekly triage.
+### 3. Design Integrity
 
-### 6. Wrap External Integrations _(Pillar: Dependency Discipline)_
-**Statement:** Wrap third‑party/tray libraries behind adapters; confine experiments to a pilot module before broader adoption.
-**Rationale:** Maintains replaceability and controls vendor coupling.
-**In Practice:**
-- One adapter per external lib; no scattered direct calls.
-- Evaluate updates/library swaps behind the adapter boundary.
+- Structure: keep domain logic (timer, state machine, persistence) separated from platform glue (menu-bar UI, macOS notifications). This makes logic testable without macOS-specific tooling.
+- Good boundaries: a small core package with no macOS dependencies, and a thin platform adapter layer.
 
-## Update Process
-1. Propose changes via a PR updating this constitution and referencing impacted modules.
-2. Link rationale to Core Values and mapped Pillars; include examples or benchmarks if relevant.
-3. Review by maintainers; ensure acceptance checklist passes.
-4. Merge and tag a release note entry; schedule any resulting refactors or cleanups.
+**We strive for:** clear separation between core timer behavior and UI/OS integration so core logic can be tested and reused.
+**We are okay with:** modest platform-specific code in the adapter layer to keep user experience native.
+**Red flags that trigger redesign or refactoring:** platform code leaking into core logic, duplicated state handling, or increasing complexity that prevents confident small changes.
 
-## Pillar Coverage
-- ✓ Delivery Velocity (Principle 1)
-- ✓ Test Strategy (Principle 2)
-- ✓ Design Integrity (Principle 3)
-- ✓ Simplicity First (Principle 4)
-- ✓ Technical Debt Boundaries (Principle 5)
-- ✓ Dependency Discipline (Principle 6)
+### 4. Simplicity First
 
-## Technical Decisions
-### Languages
-- Go for the backend/desktop logic due to concurrency primitives and deployment simplicity.
-### Frameworks / Libraries
-- System tray integration via a dedicated adapter around the chosen library.
-### Deployment
-- Single binary distribution; minimal dependencies; versioned releases.
+- Principle: implement the simplest thing that works, then iterate. Avoid premature abstractions.
+- Introduce patterns only when repetition or inconsistency shows a clear benefit.
 
-## Increments Location
-- Base directory: `docs/increments/`
-- Per-increment folders: `docs/increments/<increment-folder>/increment.md`
+**We prefer:** readable, idiomatic code and explicitness over clever abstractions.
+**We add abstraction only when:** two or more concrete duplicates exist or when a pattern prevents classes of bugs.
+**We treat complexity as acceptable when:** it measurably improves user experience or reduces long-term maintenance cost.
+
+### 5. Technical Debt Boundaries
+
+- Acceptable shortcuts: small, documented compromises confined to a single increment with a clear owner and expiration.
+- Recording debt: all shortcuts must be recorded as issues tagged `technical-debt` and referenced in the increment that introduced them.
+- Paying debt: prioritize debt paydown during regular maintenance increments or when the debt blocks meaningful progress.
+
+**Allowed short-term shortcuts:** small UX omissions, temporarily limited platforms, developer-only flags.
+**Debt must be recorded when:** code is added that reduces long-term maintainability, or tests are skipped for release reasons.
+**We commit to paying down debt when:** it causes repeated manual work, leads to bugs, or slows iteration.
+
+### 6. Dependency Discipline
+
+- How we choose dependencies: prefer stdlib, then small, well-maintained libraries with permissive licenses and minimal transitive dependencies.
+- Isolation: encapsulate third-party usage behind small adapter interfaces so the rest of the codebase can remain dependency-agnostic.
+
+**We add a new dependency only when:** it significantly reduces implementation or maintenance cost and has active maintenance and a permissive license.
+**We isolate dependencies by:** wrapping them in small adapters and limiting their surface area in the repo.
+**We avoid:** heavy frameworks or libraries that pull large transitive trees or force architectural decisions.
 
 ---
-**Last Updated:** 2025-12-01
+
+## How 4dc Uses This Constitution
+
+### increment (WHAT)
+- Size: single purposeful changes that deliver user-visible value or remove a blocker.
+- Acceptance: increments must include a short acceptance checklist (build, smoke test, basic UX verification).
+- Pillars in scope: Delivery Velocity and Simplicity First dominate scope decisions.
+
+### design (HOW)
+- Early focus: separate core timer logic from platform adapters; sketch minimal UX flows.
+- ADRs: create an ADR for distribution strategy (Homebrew vs App Store vs GitHub Releases) and for any non-trivial dependency.
+
+### implement (DO)
+- Step size: small, isolated commits; each commit should build and ideally pass local smoke checks.
+- Tests: add smoke tests for every public release; add unit tests for non-trivial logic as part of the same or follow-up increment.
+- Shortcuts: allowed only with an explicit issue and timebox.
+
+### improve (GOOD / FAST)
+- When to refactor: when maintenance cost increases, tests become brittle, or user-facing bugs recur.
+- Debt paydown: schedule during quiet iterations or bundle into small maintenance increments.
+
+---
+
+## Amendments and Evolution
+
+- Updates: this CONSTITUTION is living. Propose changes via a small ADR or PR with a short rationale and a documented owner.
+- Revisit triggers: major platform change (new macOS requirements), sustained friction in workflows, or team growth beyond a small maintainer model.
+- Documentation: changes should be recorded in a dated section in this file or an accompanying ADR and referenced in release notes.
+
+---
+
+## References and Inspirations
+
+- Kent Beck — "Make it work, make it right, make it fast"
+- Unix philosophy – small, composable tools
+- Clean Architecture patterns for separation of core logic and adapters
+- Go best practices: prefer stdlib, idiomatic error handling, small binaries
+
+---
+
+## Open Questions
+
+1. Distribution channel: do we target `Homebrew`, `GitHub Releases` (signed binaries), or the Mac App Store?
+2. Code signing / notarization: is Apple notarization required for public releases?
+3. Minimum automated testing required for public releases: smoke only, or smoke + unit tests for core logic?
+4. Dependency policy: strict (stdlib-only unless justified) or pragmatic (allow vetted libraries)?
+5. Supported macOS versions and compatibility policy.
+6. Telemetry policy: allowed (opt-in) or disallowed by default?
+
+---
+
+This CONSTITUTION should be used actively during each 4dc loop. When decisions feel misaligned with these rules, open an amendment PR or file an ADR so we can refine the guardrails.
