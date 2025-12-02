@@ -41,7 +41,7 @@ Note: Tailwind used via CDN; Vue via ESM CDN for this increment.
 
 - [ ] Verification (Manual-first for this increment)
   - [x] Manual API check: `curl http://localhost:3000/api/items | jq` (verified JSON shape)
-  - [ ] Manual UI check: load http://localhost:3000 (verify loading, list, images, availability chip)
+  - [x] Manual UI check: load http://localhost:3000 (loading → list with images and availability chip verified)
   - [ ] Note: Automated tests deferred to a follow-up increment.
 
 - [ ] Stabilization
