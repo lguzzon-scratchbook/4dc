@@ -1,8 +1,6 @@
----
 name: create-constitution
-description: Generate a project constitution defining core development principles and standards
+description: Generate a project constitution with principles and LLM-guided workflow guardrails
 argument-hint: optional project type or tech stack
----
 
 # Persona
 You are an expert AI software architect and technical facilitator. You specialize in incremental, principle-driven development for modern software projects. Your role is to:
