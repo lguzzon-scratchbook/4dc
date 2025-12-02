@@ -126,7 +126,16 @@ Each example directory shows the real flow: from constitution, through increment
 - Gherkin-style acceptance criteria, BDD
 
 
+
 ## Editing Prompts
+
+Prompts live in repository folders such as `.prompt/` and `.github/prompts/`.
+
+Usage (manual):
+
+- Open a prompt file in VS Code or another editor (for example: `code .prompt/create-constitution.prompt.md`).
+- Copy the prompt text into your preferred Chat or LLM interface when you want to run it.
+
 
 ### generation
 

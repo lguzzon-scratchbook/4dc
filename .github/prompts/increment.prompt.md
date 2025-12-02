@@ -1,4 +1,4 @@
-````prompt
+
 ---
 name: increment
 description: Generate a small, testable increment spec with STOP gates and internal JSON for automation
@@ -25,7 +25,7 @@ This goal ensures each increment is purposeful, bounded by the constitution, and
 
 # Prompt Process for Increment Generation
 ## Operating Rules and Guardrails
-- Human-first interaction. JSON is internal-only (tooling/CI).
+- Human-first interaction. JSON is internal-only.
 - Align with `CONSTITUTION.md`; flag conflicts.
 - Keep increments small, testable, observable.
 - STOP gate at Step 4 until answered or waived.
@@ -118,9 +118,7 @@ Visibility: Internal-only for tooling/CI. Do not surface JSON to users unless ex
   "title": "...",
   "job_story": {"when": "...", "action": "...", "outcome": "..."},
   "assumption": "...",
-  "acceptance_criteria": [
-    {"given": "...", "when": "...", "then": "..."}
-  ],
+  "acceptance_criteria": [ {"given": "...", "when": "...", "then": "..."} ],
   "success_signal": "...",
   "out_of_scope": ["..."]
 }
@@ -148,81 +146,3 @@ Keep increment specs clear, testable, and minimal.
 - Traceability: Reference constitution principles when relevant.
 - Brevity: Focus on the smallest useful change.
 
-# Glossary (Increment)
-
-- Increment: A small, testable change scoped to user value.
-- Job Story: Structured user narrative (When/I want/So I can).
-- Assumption: Hypothesis explored by this increment.
-- Acceptance Criteria: Given/When/Then scenarios that prove behavior.
-- Success Signal: Metric or observation verifying the increment.
-- Out of Scope: Items explicitly excluded to keep focus.
-
-# Validation Checklist (Increment)
-
-Before saving `increment.md`, validate:
-
-- Completeness: All sections present (Title, Job Story, Assumption, Acceptance, Success Signal, Out of Scope).
-- Testability: Acceptance criteria are observable and unambiguous.
-- Alignment: Increment aligns with `CONSTITUTION.md`; no conflicts.
-- Minimality: Scope is small enough to complete quickly.
-- Signal: Success signal is measurable or clearly observable.
-- Date: Use YYYY-MM-DD for any date fields.
-
-# Examples (Increment)
-
-- Title: "Add tray menu option: Start Pomodoro"
-- Job Story: When I open the tray, I want to start a Pomodoro so I can begin focused work.
-- Assumption: A single-click tray action improves adoption.
-- Acceptance Criteria:
-  - Given the app is running, When I click "Start Pomodoro", Then a 25-minute timer starts and the tray shows remaining time.
-  - Given a running timer, When I click "Pause", Then the timer pauses and the tray indicates paused state.
-  - Given a completed Pomodoro, When the timer ends, Then I receive a desktop notification for a 5-minute break.
-- Success Signal: Users complete a full Pomodoro cycle without confusion.
-- Out of Scope: Preferences UI; multi-language support.
-
-# Increment Output Format
-The generated increment should include the following sections:
-## 1. Title
-Short, descriptive title for the increment.
-## 2. Job Story
-**When** [situation]  
-**I want to** [action]  
-**So I can** [outcome]
-
-**Assumption Being Tested:** [Specific hypothesis for this increment]
-
-## 3. Acceptance Criteria
-Gherkin-style (Given/When/Then) acceptance criteria for observable outcomes.
-
-## 4. Success Signal
-How we know this increment works—metric or observation.
-
-## 5. Out of Scope
-- [What this increment does NOT include]
-
----
-
-# JSON Schema Hints (Increment)
-
-Internal-only JSON structures for tooling/CI.
-
-- ClarificationRequest (Step 4)
-  - `step`: "questions"
-  - `questions[]`: id (int), label (string), question (string), options[] with key in [A..Z, "X", "_"] and label.
-
-- Proposal (Step 5)
-  - `step`: "proposal"
-  - `title`: string
-  - `job_story`: {when, action, outcome}
-  - `assumption`: string
-  - `acceptance_criteria[]`: {given, when, then}
-  - `success_signal`: string
-  - `out_of_scope[]`: strings
-
-- Summary (Step 7)
-  - `step`: "summary"
-  - `sections_included[]`: [Title, Job Story, Assumption, Acceptance Criteria, Success Signal, Out of Scope]
-  - `paths.increment`: string path (e.g., docs/increments/increment.md)
-  - `last_updated`: YYYY-MM-DD
-
-````
