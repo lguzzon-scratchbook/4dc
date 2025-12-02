@@ -1,4 +1,4 @@
-````prompt
+
 ---
 name: design
 description: Generate a lightweight technical design with boundaries, file plan, and drift guardrails for an increment
@@ -143,7 +143,3 @@ Add a minimal tray menu adapter exposing start/stop actions with isolated OS cal
 # JSON Schema Hints (Design)
 # Writing Style Guidelines (Design)
 # JSON Schema Hints (Design)
-# Writing Style Guidelines (Design)
-# JSON Schema Hints (Design)
-
-````

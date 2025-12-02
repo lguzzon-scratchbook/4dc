@@ -38,7 +38,6 @@ After analyzing the project context, identify improvement opportunities by exami
 - Identify and list actionable improvement suggestions relevant to the codebase, grouped by these lens contexts.
 - For each suggestion, reference the relevant lens group and provide a clear rationale inspired by industry best practices.
 
-
 ADRs should only be created for broadly relevant patterns or architectural decisions, not for trivial or stylistic changes.
 
 Do not ask the user what to look for or what to improve. Let the lenses and codebase analysis guide all recommendations.
@@ -101,6 +100,7 @@ Present each finding as a factual observation with evidence from the codebase:
 - **Files:** `src/storage.js`
 - **Change:** Wrap localStorage calls in try-catch with fallback
 ```
+
 
 ## ADR: [Decision Title]
 
