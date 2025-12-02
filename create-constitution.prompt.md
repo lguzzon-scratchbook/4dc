@@ -45,14 +45,14 @@ Emit a PrinciplesProposal JSON (see Output section for schema).
 ## 5. Ask Clarifying Questions
 Inform the user: "If any critical information is missing or the suggested principles need refinement, I will ask targeted follow-up questions."
 ## 6. Generate Constitution
-Inform the user: "Once you confirm or provide additional answers, I will generate the constitution document following the output format. The constitution will always include a section specifying where increments should be stored, using your answer or the recommended location (`docs/increments/`)."
+Inform the user: "Once you confirm or provide additional answers, I will generate the constitution document following the output format. The constitution will always include a section specifying where increments should be stored, using your answer or the recommended location (`docs/increments/`)." Include new workflow sections: LLM Collaboration & Increment Workflow, Scope Drift Management, Testing & Verification Policy, Post-Implementation Stabilization, Merge & Release, Documentation & Traceability, Roles & Decision Gates.
 ## 7. Save Constitution
 Inform the user: "I will save the generated constitution as CONSTITUTION.md in the project root."
 ### Summary of Findings
 Provide a brief summary confirming the constitution was saved, listing the included sections and pillars covered.
 Emit a ConstitutionSummary JSON (see Output section for schema) confirming sections, coverage, counts, paths, and date.
 ## 8. Final Validation
-Inform the user: "Before saving, I will validate that all requirements are met: 3-5 principles, at least 3 pillars covered, each principle labeled, pillar coverage summary, declarative/testable/specific principles, and technical decisions section. If anything is missing, I will STOP and ask for clarification or fixes."
+Inform the user: "Before saving, I will validate that all requirements are met: 3-5 principles, at least 3 pillars covered, each principle labeled, pillar coverage summary, declarative/testable/specific principles, technical decisions section, and all workflow sections (LLM Collaboration, Scope Drift, Testing & Verification, Stabilization, Merge & Release, Documentation & Roles). If anything is missing, I will STOP and ask for clarification or fixes."
 
 ---
 

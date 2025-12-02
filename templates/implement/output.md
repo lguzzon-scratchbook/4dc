@@ -71,25 +71,83 @@ Tasks can be high-level. Subtasks must be concise and human-first, yet unambiguo
 	- [ ] Render static list from sample data in `src/component.svelte` (verify output in app)
 	- [ ] Add image rendering to `src/component.svelte` (verify images display)
 	- [ ] Add unit test in `src/component.test.js` (run, verify pass)
-- [ ] **Integration & Verification**
-	- [ ] Integrate the component in `src/app.svelte` (verify renders and events work)
-	- [ ] Manually test in browser: exercise all features (verify expected behavior)
-- [ ] **Quick Review & Deploy**
-	- [ ] Review code for style/standards (verify guidelines met)
-	- [ ] Remove dead code and debug artifacts (verify cleanup)
-	- [ ] Commit changes to the increment branch (verify commit)
+````markdown
+# Implementation Output Format
 
-## Code Implementation
-```js
-// [Code for each subtask/module]
+The implementation output must:
+* Present high-level tasks mapped to acceptance criteria.
+* Provide a Planned Files Summary and obtain confirmation before coding.
+* Maintain Markdown checkboxes for tasks/subtasks (living plan) updated after each high-level task commit.
+* Include verification method per high-level task (test or manual check).
+* Keep code diffs minimal and scoped to the increment.
+* Record final decisions in a lightweight Decision Log section (architectural changes → ADR instead).
+* STOP and raise DRIFT ALERT for out-of-scope additions.
+
+## 0. Drift & Living Plan Declaration
+- Scope: list increment name + acceptance criteria reference.
+- Planned Files Summary: confirmed file set.
+- Drift Policy: announce DRIFT ALERT before touching unplanned files.
+- Plan Update Rule: update checkboxes + Decision Log immediately after each high-level task commit.
+
+## 1. Planned Files Summary (Confirm Before Coding)
+- `path/to/file.ext` — new|modify|delete — purpose
+
+## 2. Implementation Tasks & Subtasks
+- Use `- [ ]` / `- [x]` checkboxes.
+- 2–5 concise subtasks per high-level task.
+- Each subtask: imperative, one line, includes identifiers in backticks.
+- Inline verification hint where useful (e.g., “verify test fails”, “verify file exists”).
+
+## 3. Verification Methods
+- For each high-level task: specify test command or manual steps + expected outcome.
+
+## 4. Code Implementation
+- Show only essential new/changed snippets.
+- Prefer minimal diffs; avoid full-file dumps unless necessary.
+
+## 5. Validation
+- Map tasks → acceptance criteria; confirm all satisfied.
+
+## 6. Decision Log (Final Decisions Only)
+Entry format:
+`YYYY-MM-DD | Decision | Rationale | Scope Impact (none|minimal|requires ADR)`
+
+## 7. Open Questions
+- Items requiring follow-up or ADR drafting.
+
+## 8. Stabilization & Merge Checklist
+- Docs updated (`README`, increment docs)
+- Hygiene done (.gitignore + untrack artifacts)
+- Repro build verified
+- Packaging/bundle verified (if applicable)
+- Ready to merge feature branch
+
+---
+**Example (Abbreviated):**
+```markdown
+# Implementation: Tray Menu
+
+## Planned Files Summary
+- `pkg/tray/menu.go` — new — tray adapter
+- `pkg/tray/menu_test.go` — new — unit tests
+
+## Tasks & Subtasks
+- [ ] **Setup**
+  - [ ] Create branch `feature/tray-menu` (verify branch exists)
+  - [ ] Add skeleton `pkg/tray/menu.go` (verify compile)
+- [ ] **Menu Logic**
+  - [ ] Define `Item` struct in `pkg/tray/menu.go` (verify compile)
+  - [ ] Implement click handler dispatch (verify manual test)
+  - [ ] Add unit test `menu_test.go` (run, verify fail)
+  - [ ] Implement logic to pass test (run, verify pass)
+- [ ] **Integration**
+  - [ ] Wire adapter in `cmd/app/main.go` (verify tray appears)
+  - [ ] Manual test start/stop actions (observe stdout)
+- [ ] **Stabilization**
+  - [ ] Update README usage section (verify updated)
+  - [ ] Commit & Decision Log entry
+
+## Decision Log
+2025-12-02 | Use adapter pattern | Enforces isolation from lib API | minimal
 ```
-
-## Validation
-- Reference each subtask and describe how its completion meets acceptance criteria and design constraints.
-
-## Key Decisions & Trade-offs
-- [Important choices, trade-offs, alternatives]
-
-## Open Questions
-- [Technical unknowns or deferred decisions]
-```
+````

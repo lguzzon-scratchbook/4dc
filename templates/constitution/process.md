@@ -50,6 +50,15 @@ Inform the user: "If any critical information is missing or the suggested princi
 ## 6. Generate Constitution
 Inform the user: "Once you confirm or provide additional answers, I will generate the constitution document following the output format. The constitution will always include a section specifying where increments should be stored, using your answer or the recommended location (`docs/increments/`)."
 
+Include the following additional sections in the generated document to guide LLM-supported incremental delivery:
+- LLM Collaboration & Increment Workflow (STOP gates, feature branch, commit cadence, non-interactive phases)
+- Scope Drift Management (DRIFT ALERT rules, scope containment, design escalation path)
+- Testing & Verification Policy (test-first loop, manual verification allowances)
+- Post-Implementation Stabilization (docs, hygiene, reproducible build, packaging)
+- Merge & Release (branch merge, tagging, cleanup)
+- Documentation & Traceability (required increment artifacts, decision logging)
+- Roles & Decision Gates (sponsor, implementer, reviewer responsibilities)
+
 ## 7. Save Constitution
 Inform the user: "I will save the generated constitution as CONSTITUTION.md in the project root."
 
@@ -60,6 +69,8 @@ Internally emit a ConstitutionSummary JSON (see Output section for schema) confi
 
 ## 8. Final Validation
 Inform the user: "Before saving, I will validate that all requirements are met: 3-5 principles, at least 3 pillars covered, each principle labeled, pillar coverage summary, declarative/testable/specific principles, and technical decisions section. If anything is missing, I will STOP and ask for clarification or fixes."
+
+Also validate the presence of new workflow sections (LLM Collaboration, Scope Drift, Testing, Stabilization, Merge & Release, Documentation & Roles). If any are missing, STOP and add them.
 
 ---
 

@@ -33,10 +33,10 @@
 
 9. Implement code in small, testable increments, mapping tasks to acceptance criteria and the design approach.
 10. After each task or subtask is completed, immediately check off the corresponding checkbox in the implementation plan to ensure accurate progress tracking.
-11. After each high-level task is completed (and before switching to the next), make an incremental commit to the increment branch. This must be done explicitly to ensure progress is tracked and changes can be reverted easily.
+11. After each high-level task commit: update `implement.md` (checkboxes for tasks/subtasks) and append any final decision to a lightweight Decision Log (larger architectural changes → ADR before continuing).
 12. Validate implementation against acceptance criteria, design, and constitution.
-13. If the user chose to continue or switch branch, add a final step to commit all changes to the branch for easy reversion.
-14. Document key decisions, trade-offs, and open questions.
+13. If criteria cannot be met without design change, STOP and request design/ADR update.
+14. Document only final decisions (timestamp, summary, rationale); avoid verbose narrative.
 
 15. Post-Implementation Stabilization (same feature branch)
 	- Docs: update README/usage, increment docs (design/implement checkboxes), and ADRs if needed.

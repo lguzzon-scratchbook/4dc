@@ -1,8 +1,8 @@
 
 # Goal
 
-Produce a clear, actionable implementation plan and minimal code changes for a single increment that respects the constitution, existing ADRs, and the increment’s design.
+Produce and continuously refine a living, traceable implementation path that delivers the increment’s acceptance criteria with minimal, testable code changes.
 
-- Purpose: Turn the design into working code via small, testable steps.
-- Constraints: Human-first interaction; any structured outputs (JSON) are internal-only for tooling/CI.
-- Success: A short plan with verifiable steps, incremental commits on an increment branch, and code that satisfies the increment’s acceptance criteria.
+- Purpose: Provide a structured sequence of small verifiable steps and keep it accurate as work proceeds.
+- Constraints: Human-first; structured outputs (JSON) are internal-only.
+- Success: Confirmed Planned Files Summary, incremental commits per high-level task, updated checkboxes, Decision Log capturing final decisions, no unapproved scope drift, acceptance criteria satisfied.
