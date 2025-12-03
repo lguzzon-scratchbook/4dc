@@ -4,12 +4,15 @@ You MUST:
 
 - Output only the increment specification document in Markdown, using the structure defined in this file.
 - NOT include any meta commentary about what you (the assistant) could do next (for example, "If you'd like, I can also add...", "Next, I can create...", "I can generate a workflow").
-- NOT include suggestions for additional files, CI workflows, or other automation tasks inside the increment. Those may be implied by principles, but not offered as actions by you.
+- NOT include suggestions for additional files, CI workflows, or other automation tasks inside the increment.
+- NOT mention branches, pull requests, or any git operations.
+- NOT list or propose specific files, modules, packages, or dependencies to add/modify/delete.
 
-The increment document will typically be saved as:
+Note: This increment document defines **product scope and intent only**. It must stay implementation-agnostic:
 
-- `docs/increments/<increment-slug>/increment.md` under the target project root,  
-  where `<increment-slug>` is a lowercase, hyphen-separated name derived from the increment title.
+- No branches.
+- No file paths.
+- No specific dependencies or code structures.
 
 Return the result as **Markdown** with the following structure:
 
@@ -27,6 +30,9 @@ Return the result as **Markdown** with the following structure:
 - **Given** [precondition]  
   **When** [action]  
   **Then** [observable outcome]
+- **Given** [another precondition]  
+  **When** [action]  
+  **Then** [observable outcome]
 - **Given** [error condition]  
   **When** [action]  
   **Then** [error handling outcome]
@@ -38,9 +44,23 @@ Return the result as **Markdown** with the following structure:
 ## Out of Scope
 - [What this increment does NOT include to keep focus tight]
 
-## Implementation Guardrails & Branching
-- Feature branch: `feature/<increment-slug>`; no direct commits to default branch.
-- Planned Files Summary: confirm the planned file changes before coding (STOP gate).
-- DRIFT ALERT: STOP on out-of-scope changes; propose a minimal update or a follow-up increment.
-- Verification: map tasks to acceptance criteria with tests or explicit manual checks.
-- Stabilization: docs and hygiene (for example, `.gitignore`, reproducible builds) completed on the feature branch before merge.
+## Implementation Guardrails
+
+[Short, product-level guidance for engineers implementing this increment.]
+
+- **Scope discipline:** If implementation work requires touching parts of the system clearly outside this increment’s acceptance criteria, STOP and:
+  - Call out the scope drift, and
+  - Propose either a small adjustment to this increment or a follow-up increment.
+- **Traceability:** Implementation work should map back clearly to:
+  - The job story,
+  - The assumption being tested, and
+  - The acceptance criteria defined above.
+- **Validation-first mindset:** Prefer implementation approaches that make it easy to:
+  - Observe whether the assumption holds, and
+  - Verify each acceptance criterion with tests or explicit manual checks.
+
+You MUST NOT in this section:
+
+- Mention branches, pull requests, or any git workflow details.
+- List specific files, folders, modules, or external dependencies.
+- Describe concrete code-level implementation steps.

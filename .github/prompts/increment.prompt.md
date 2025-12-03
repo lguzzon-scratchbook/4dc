@@ -16,6 +16,8 @@ Your responsibilities for this prompt:
 - Align the increment with the project’s existing principles, constraints, and non‑negotiables (for example from `CONSTITUTION.md` or other guidance docs).
 - Respect the **target project root** and its docs as the only subject of this increment; treat any surrounding framework or tooling repository as background only.
 
+This prompt is strictly about defining **what** to build and **why**, not **how** to implement it.
+
 You MUST:
 
 - Treat the prompt argument as required input:
@@ -26,6 +28,18 @@ You MUST:
   - The assumption
   - Acceptance criteria
   - Implementation guardrails
+
+You MUST NOT:
+
+- Mention or prescribe:
+  - Specific git branches (for example `feature/...`, `main`, `develop`),
+  - Git operations (for example “open a PR”, “rebase”, “merge”), or
+  - Concrete file-level changes (for example “create `cmd/tray/main.go`”, “add dependency X to `go.mod`”).
+- List or propose specific files, modules, packages, or dependencies to add/modify/delete.
+- Describe concrete implementation steps, code structures, or diffs.
+
+You SHOULD:
+
 - Ask concise clarifying questions when needed, especially about:
   - Capability / desired outcome
   - Assumption being tested
@@ -83,7 +97,7 @@ You MUST actively look for **existing work that might shape this increment**, es
   - Files under `docs/increments/` (for example `docs/increments/*/increment.md`).
   - Other increment-like documents under `docs/` that match the project’s conventions (for example `docs/*increment*.md`, `docs/prd-*.md`).
 - **UI / UX design docs** such as:
-  - `docs/ui/`, `docs/ux/`, or `docs/design/` folders.
+  - `docs/ui/`, `docs/ux/`, `docs/design/` folders.
   - Files with names like `*-ui.md`, `*-ux.md`, `*-design.md`, or `ui-spec*.md`.
 
 You MUST:
@@ -110,9 +124,12 @@ From subdirectories under the project root (for example `src/`, `lib/`, `app/`, 
 - Use them to:
   - Understand which modules or boundaries an increment might touch.
   - See how similar capabilities are implemented and tested.
-- Do **not**:
-  - Replace the product description with text from code comments.
-  - Infer entirely new product directions from internal implementation details.
+
+You MUST NOT:
+
+- Replace the product description with text from code comments.
+- Infer entirely new product directions from internal implementation details.
+- Extract or list specific file paths or modules as “planned changes” in this increment document.
 
 ## 5. Files outside the project root
 
@@ -133,30 +150,26 @@ If important context is missing or conflicting (for example, no increments exist
 
 # Goal (Increment Prompt)
 
-This prompt exists to turn a **short description or user story** for the next change into a **single, well-formed increment specification** (a small PRD-like document).
-
-A good increment produced by this prompt:
+Your goal is to help the team refine the **provided description or user story** into **one small, high-leverage increment** that:
 
 - Is clearly tied to user or stakeholder value.
 - Tests a specific assumption (product, UX, technical, or business).
 - Has concrete, Gherkin-style acceptance criteria.
 - Has a clear success signal (metric or observable behavior).
 - Explicitly states what is **out of scope** for this increment.
-- Declares implementation guardrails that keep implementation focused and safe.
-- Fits coherently alongside existing increments, PRDs, and UI/UX design docs in the project.
+- Declares **product-level** implementation guardrails that keep implementation focused and safe, without prescribing branches or files.
 
 The increment spec you generate will be used to:
 
 - Align product, design, and engineering on **what** we are doing and **why**.
-- Drive downstream design and implementation work (design, implement, improve).
+- Drive downstream design and implementation work.
 - Serve as a traceable record of decisions and assumptions for this change.
 
 You SHOULD:
 
 - Use the prompt argument as the starting point for the increment’s intent.
 - Use any available project-level guidance (such as `CONSTITUTION.md`, architecture docs, or conventions in the codebase) as **input**, when present.
-- Look at existing increments and UI/UX/PRD docs under `docs/` to avoid duplication and respect established patterns.
-- Fall back to the project’s root `README.md` and the user’s answers if guidance files are missing.
+- Fall back to the project’s root `README.md` and the user’s answers if such guidance files are missing.
 - Keep the increment as small as reasonably possible while still meaningful.
 - Prefer increments that can be implemented and validated within a short time window (for example, a day or a few days).
 - Make trade-offs explicit (especially what is deliberately *out of scope* right now).
@@ -167,8 +180,21 @@ You MUST NOT:
 - Assume that a `CONSTITUTION.md` file exists.
 - Block or fail the prompt solely because a guidance document is missing (only the increment description/user story is mandatory).
 - Depend on any other specific prompt or document having been run before this one.
+- Prescribe or even mention concrete implementation mechanics such as:
+  - Branch names or git workflows,
+  - Specific file paths, modules, or dependencies,
+  - Detailed code-level steps.
 
 # Task (Increment)
+
+Your task is to help the team turn the **provided description or user story** into **one small, high-leverage increment** that:
+
+- Is clearly tied to user or stakeholder value.
+- Tests a specific assumption (product, UX, technical, or business).
+- Has concrete, Gherkin-style acceptance criteria.
+- Has a clear success signal (metric or observable behavior).
+- Explicitly states what is **out of scope** for this increment.
+- Declares **product-level** implementation guardrails that keep implementation focused and safe, without specifying branches or files.
 
 You MUST follow this high-level cycle **exactly**:
 
@@ -179,7 +205,7 @@ You MUST follow this high-level cycle **exactly**:
      - If it is missing, empty, or not about a change:
        - STOP and ask the user for a short description or user story for the increment.
        - Do not continue until you have one.
-   - Under the target project root, look for:
+   - Look for the following, in this order, under the target project root:
      - A project-level guidance document such as `CONSTITUTION.md` (if present).
      - Architecture or principles docs (for example `ARCHITECTURE.md`, `PRINCIPLES.md`, or similar).
      - The project’s root `README.md`.
@@ -246,8 +272,6 @@ You MUST follow this high-level cycle **exactly**:
        - “What assumption or hypothesis are we testing with this change?”
      - Success definition:
        - “What does success look like for this increment (behavior or metric)?”
-   - Optionally, if relevant:
-     - “Should this increment follow the existing UI pattern from [name of UI doc]?”
 
    **STOP here** until:
 
@@ -265,15 +289,18 @@ You MUST follow this high-level cycle **exactly**:
      - 3–5 Gherkin-style acceptance criteria.
      - Success signal (metric or observable behavior).
      - Out-of-scope list (what is explicitly NOT included).
+     - Product-level Implementation Guardrails (behavioral guardrails, not branches/files).
+
    - Ensure the structure:
      - Respects project-level principles and constraints.
      - Fits coherently alongside existing increments and PRDs.
      - Does not silently contradict existing UI design docs without calling it out.
+
    - Present this as a short, human-readable summary that a PO and engineers can easily review.
 
    Then ask the user explicitly:
 
-   > I plan to generate an `increment.md` document for this increment, stored under a new folder in `docs/increments/` named after this increment.  
+   > I plan to generate and save an `increment.md` document for this increment, under `docs/increments/<increment-slug>/` in the target project root.  
    > Would you like me to generate and save this increment now? (yes/no)
 
    **STOP here**:
@@ -281,36 +308,36 @@ You MUST follow this high-level cycle **exactly**:
    - If the user answers **no**:
      - Revise the structure based on their feedback and re-present it.
    - If the user answers **yes**:
-     - Proceed to generate the increment document.
+     - Proceed to generate and save the increment document.
 
 7. **Generate increment**
 
-   - After a **yes**, generate `increment.md` following the **Increment Output Structure**.
-   - Ensure all required sections are present and consistent with the available project context and existing docs.
-   - Do NOT include meta commentary or extra suggestions in the increment document (no “I can also…”; no offers to create other files or workflows).
+   - After a **yes**, generate the final increment document following the **Increment Output Structure**.
+   - This document MUST remain product-only:
+     - No branches, git operations, or PR instructions.
+     - No lists of specific files, modules, or dependencies to add/modify/delete.
+     - No concrete code-level implementation steps.
 
-8. **Save increment**
+8. **Save increment (as repository files)**
 
-   You MUST save the increment under a **new folder** within `docs/increments/` in the target project root:
+   When running in an environment that supports file edits (for example, Copilot in VS Code workspace or GitHub.com with editing capabilities), you MUST:
 
-   - Derive a **folder name** from the increment title:
+   - Derive an **increment slug** from the increment title:
      - Use a lowercase, hyphen-separated “slug” based on the title.
      - Example: `"Export reports to CSV"` → `export-reports-to-csv`.
-   - Create a folder:
-     - `docs/increments/<increment-slug>/`
-   - Inside that folder, write the increment specification as:
-     - `docs/increments/<increment-slug>/increment.md`
+   - Create (if needed) and write the increment document under the target project root:
 
-   Saving rules:
+     - Folder: `docs/increments/<increment-slug>/`
+     - File:   `docs/increments/<increment-slug>/increment.md`
 
    - If `docs/` or `docs/increments/` do not exist, treat them as directories that can be created under the target project root.
    - Do **not** reuse the same folder for unrelated increments; each increment gets its own folder.
    - If the user explicitly provides a different folder name or path for the increment, prefer that path but keep the rule “a dedicated folder per increment”.
 
-   After saving:
+   After saving (when file edits are supported):
 
    - Tell the user the exact path where `increment.md` was written (for example `docs/increments/export-reports-to-csv/increment.md`).
-   - Confirm that all sections from the output structure are included.
+   - If writing the file failed, ensure the chat response still contains the full increment document content as Markdown (so it can be reviewed or copied if needed).
 
 9. **Final validation**
 
@@ -320,69 +347,50 @@ You MUST follow this high-level cycle **exactly**:
      - Has 3–5 Gherkin-style acceptance criteria.
      - States a concrete success signal.
      - Includes an Out-of-Scope section.
-     - Includes Implementation Guardrails & Branching.
+     - Includes **product-level** Implementation Guardrails (no branches/files).
    - If anything is missing or inconsistent:
      - Ask the user whether to fix now or defer.
      - If fixing now, adjust the increment and re-validate.
-
-You MUST NOT:
-
-- Skip STOP gates or proceed without explicit confirmation where required.
-- Ignore or override the original description/user story without user confirmation.
-- Ignore obviously relevant existing increments, PRDs, or UI design docs under `docs/` when they exist.
-- Propose or describe what **you**, the assistant, could do next (for example, “I can also create CI workflows for you”).
-- Include offers to create additional files, tickets, or workflows inside the increment document.
 
 # Process (Increment)
 
 ## Operating Rules and Guardrails
 
 - Human-first interaction.
+- Align with `CONSTITUTION.md`; if a proposed increment violates the constitution, flag the conflict and propose alternatives.
 - Keep increments small, testable, and observable. Prefer one clear increment per run.
-- Treat the **prompt argument** (next increment description or user story) as mandatory input:
-  - If it is missing or unusable, STOP and ask the user for a short description or story before proceeding.
-- Treat the **target project root** as the subject of this increment:
-  - Use only context inside that scope for the project description and constraints.
-  - Treat content outside that scope as tooling/background only.
-- Use project-level guidance documents (for example `CONSTITUTION.md`, `ARCHITECTURE.md`, `PRINCIPLES.md`, root `README.md`) when they exist, but do NOT require them. Their absence is not an error.
-- Actively look for and respect:
-  - Existing increments or PRDs (for example under `docs/increments/` or other `docs/*increment*.md`, `docs/prd-*.md`).
-  - UI / UX design docs (for example under `docs/ui/`, `docs/ux/`, `docs/design/`).
-- Avoid duplication and silent conflicts:
-  - If a similar increment already exists, call out the overlap.
-  - If this increment intentionally revises an existing one, make that explicit.
-
-## Required Execution Cycle
-
-You MUST follow the cycle defined in the **Task (Increment)** section:
-
-1. Verify argument and available context.
-2. Review existing increments, PRDs, and UI design docs.
-3. Receive initial prompt (confirm and restate).
-4. Analyze context.
-5. Ask clarifying questions (**STOP**).
-6. Suggest increment structure (**STOP**).
-7. Generate increment.
-8. Save increment in a dedicated folder under `docs/increments/<increment-slug>/increment.md`.
-9. Final validation.
-
-You MUST:
-
+- Follow the Task section’s cycle **exactly**.
 - Respect STOP gates:
   - At the clarifying-questions step, do NOT proceed until questions are answered or the user explicitly waives them.
   - At the “Suggest Increment Structure” step, present a concise plan and obtain an explicit **yes/no** before generating and saving the increment document.
-- Keep internal reasoning and these steps **out of the final `increment.md` document**. The increment spec itself must read as a standalone artifact, not as a log of your process.
-
-## Output Discipline
-
-- Final increments MUST follow the **Increment Output Structure** exactly; no extra top-level sections unless explicitly added to the template.
+- Do NOT offer additional actions in the increment document itself (no “If you’d like, I can also…”, no proposals to create workflows or other files inside the increment text).
+- Final increments MUST follow the Increment Output Structure exactly; no extra top-level sections unless explicitly added to the template.
 - Date format: `YYYY-MM-DD` for any dates.
-- You MUST NOT:
-  - Offer additional actions in the increment document itself (no “If you’d like, I can also…”, no proposals to create workflows or other files).
-  - Include implementation tasks, checklists of what you (the assistant) could do next, or CI/CD proposals inside `increment.md`.
-- The only outputs of this prompt are:
-  - Human-facing summaries and questions during the interaction, and
-  - The final `increment.md` file content, correctly structured and saved under `docs/increments/<increment-slug>/increment.md`.
+- Treat the **target project root/scope** as the subject of the increment:
+  - Use only context inside that scope for the project description and constraints.
+  - Treat content outside that scope as tooling/background only.
+
+You MUST NOT:
+
+- Mention or prescribe within the **increment document content**:
+  - Specific git branches (for example `feature/...`, `main`, `develop`),
+  - Git operations (for example “open a PR”, “rebase”, “merge”), or
+  - Concrete file-level changes (for example “create `cmd/tray/main.go`”, “add dependency X to `go.mod`”).
+- List or propose within the **increment document content** specific files, modules, packages, or dependencies to add/modify/delete.
+- Describe concrete implementation steps, code structures, or diffs in the **increment document content**.
+
+The detailed steps to follow are:
+
+1. Verify Prerequisites
+2. Receive Initial Prompt
+3. Analyze Constitution & Context
+4. Ask Clarifying Questions (STOP)
+5. Suggest Increment Structure (STOP)
+6. Generate Increment
+7. Save Increment (when file edits are supported)
+8. Final Validation
+
+For each step, follow the detailed instructions from the Task section, ensuring you do not skip or reorder steps, and that STOP gates are respected.
 
 # Output Structure (Increment)
 
@@ -390,12 +398,15 @@ You MUST:
 
 - Output only the increment specification document in Markdown, using the structure defined in this file.
 - NOT include any meta commentary about what you (the assistant) could do next (for example, "If you'd like, I can also add...", "Next, I can create...", "I can generate a workflow").
-- NOT include suggestions for additional files, CI workflows, or other automation tasks inside the increment. Those may be implied by principles, but not offered as actions by you.
+- NOT include suggestions for additional files, CI workflows, or other automation tasks inside the increment.
+- NOT mention branches, pull requests, or any git operations.
+- NOT list or propose specific files, modules, packages, or dependencies to add/modify/delete.
 
-The increment document will typically be saved as:
+Note: This increment document defines **product scope and intent only**. It must stay implementation-agnostic:
 
-- `docs/increments/<increment-slug>/increment.md` under the target project root,  
-  where `<increment-slug>` is a lowercase, hyphen-separated name derived from the increment title.
+- No branches.
+- No file paths.
+- No specific dependencies or code structures.
 
 Return the result as **Markdown** with the following structure:
 
@@ -413,6 +424,9 @@ Return the result as **Markdown** with the following structure:
 - **Given** [precondition]  
   **When** [action]  
   **Then** [observable outcome]
+- **Given** [another precondition]  
+  **When** [action]  
+  **Then** [observable outcome]
 - **Given** [error condition]  
   **When** [action]  
   **Then** [error handling outcome]
@@ -424,10 +438,24 @@ Return the result as **Markdown** with the following structure:
 ## Out of Scope
 - [What this increment does NOT include to keep focus tight]
 
-## Implementation Guardrails & Branching
-- Feature branch: `feature/<increment-slug>`; no direct commits to default branch.
-- Planned Files Summary: confirm the planned file changes before coding (STOP gate).
-- DRIFT ALERT: STOP on out-of-scope changes; propose a minimal update or a follow-up increment.
-- Verification: map tasks to acceptance criteria with tests or explicit manual checks.
-- Stabilization: docs and hygiene (for example, `.gitignore`, reproducible builds) completed on the feature branch before merge.
+## Implementation Guardrails
+
+[Short, product-level guidance for engineers implementing this increment.]
+
+- **Scope discipline:** If implementation work requires touching parts of the system clearly outside this increment’s acceptance criteria, STOP and:
+  - Call out the scope drift, and
+  - Propose either a small adjustment to this increment or a follow-up increment.
+- **Traceability:** Implementation work should map back clearly to:
+  - The job story,
+  - The assumption being tested, and
+  - The acceptance criteria defined above.
+- **Validation-first mindset:** Prefer implementation approaches that make it easy to:
+  - Observe whether the assumption holds, and
+  - Verify each acceptance criterion with tests or explicit manual checks.
+
+You MUST NOT in this section:
+
+- Mention branches, pull requests, or any git workflow details.
+- List specific files, folders, modules, or external dependencies.
+- Describe concrete code-level implementation steps.
 

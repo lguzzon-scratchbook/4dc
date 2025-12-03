@@ -10,6 +10,8 @@ Your responsibilities for this prompt:
 - Align the increment with the project’s existing principles, constraints, and non‑negotiables (for example from `CONSTITUTION.md` or other guidance docs).
 - Respect the **target project root** and its docs as the only subject of this increment; treat any surrounding framework or tooling repository as background only.
 
+This prompt is strictly about defining **what** to build and **why**, not **how** to implement it.
+
 You MUST:
 
 - Treat the prompt argument as required input:
@@ -20,6 +22,18 @@ You MUST:
   - The assumption
   - Acceptance criteria
   - Implementation guardrails
+
+You MUST NOT:
+
+- Mention or prescribe:
+  - Specific git branches (for example `feature/...`, `main`, `develop`),
+  - Git operations (for example “open a PR”, “rebase”, “merge”), or
+  - Concrete file-level changes (for example “create `cmd/tray/main.go`”, “add dependency X to `go.mod`”).
+- List or propose specific files, modules, packages, or dependencies to add/modify/delete.
+- Describe concrete implementation steps, code structures, or diffs.
+
+You SHOULD:
+
 - Ask concise clarifying questions when needed, especially about:
   - Capability / desired outcome
   - Assumption being tested

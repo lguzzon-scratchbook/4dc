@@ -47,7 +47,7 @@ You MUST actively look for **existing work that might shape this increment**, es
   - Files under `docs/increments/` (for example `docs/increments/*/increment.md`).
   - Other increment-like documents under `docs/` that match the project’s conventions (for example `docs/*increment*.md`, `docs/prd-*.md`).
 - **UI / UX design docs** such as:
-  - `docs/ui/`, `docs/ux/`, or `docs/design/` folders.
+  - `docs/ui/`, `docs/ux/`, `docs/design/` folders.
   - Files with names like `*-ui.md`, `*-ux.md`, `*-design.md`, or `ui-spec*.md`.
 
 You MUST:
@@ -74,9 +74,12 @@ From subdirectories under the project root (for example `src/`, `lib/`, `app/`, 
 - Use them to:
   - Understand which modules or boundaries an increment might touch.
   - See how similar capabilities are implemented and tested.
-- Do **not**:
-  - Replace the product description with text from code comments.
-  - Infer entirely new product directions from internal implementation details.
+
+You MUST NOT:
+
+- Replace the product description with text from code comments.
+- Infer entirely new product directions from internal implementation details.
+- Extract or list specific file paths or modules as “planned changes” in this increment document.
 
 ## 5. Files outside the project root
 
