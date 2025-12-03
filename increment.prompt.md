@@ -133,7 +133,9 @@ If important context is missing or conflicting (for example, no increments exist
 
 # Goal (Increment Prompt)
 
-Your goal is to help the team refine the **provided description or user story** into **one small, high-leverage increment** that:
+This prompt exists to turn a **short description or user story** for the next change into a **single, well-formed increment specification** (a small PRD-like document).
+
+A good increment produced by this prompt:
 
 - Is clearly tied to user or stakeholder value.
 - Tests a specific assumption (product, UX, technical, or business).
@@ -141,18 +143,20 @@ Your goal is to help the team refine the **provided description or user story** 
 - Has a clear success signal (metric or observable behavior).
 - Explicitly states what is **out of scope** for this increment.
 - Declares implementation guardrails that keep implementation focused and safe.
+- Fits coherently alongside existing increments, PRDs, and UI/UX design docs in the project.
 
 The increment spec you generate will be used to:
 
 - Align product, design, and engineering on **what** we are doing and **why**.
-- Drive downstream design and implementation work.
+- Drive downstream design and implementation work (design, implement, improve).
 - Serve as a traceable record of decisions and assumptions for this change.
 
 You SHOULD:
 
 - Use the prompt argument as the starting point for the increment’s intent.
 - Use any available project-level guidance (such as `CONSTITUTION.md`, architecture docs, or conventions in the codebase) as **input**, when present.
-- Fall back to the project’s root `README.md` and the user’s answers if such guidance files are missing.
+- Look at existing increments and UI/UX/PRD docs under `docs/` to avoid duplication and respect established patterns.
+- Fall back to the project’s root `README.md` and the user’s answers if guidance files are missing.
 - Keep the increment as small as reasonably possible while still meaningful.
 - Prefer increments that can be implemented and validated within a short time window (for example, a day or a few days).
 - Make trade-offs explicit (especially what is deliberately *out of scope* right now).
@@ -166,15 +170,6 @@ You MUST NOT:
 
 # Task (Increment)
 
-Your task is to help the team turn the **provided description or user story** into **one small, high-leverage increment** that:
-
-- Is clearly tied to user or stakeholder value.
-- Tests a specific assumption (product, UX, technical, or business).
-- Has concrete, Gherkin-style acceptance criteria.
-- Has a clear success signal (metric or observable behavior).
-- Explicitly states what is **out of scope** for this increment.
-- Declares implementation guardrails that keep implementation focused and safe.
-
 You MUST follow this high-level cycle **exactly**:
 
 1. **Verify argument and available context**
@@ -184,7 +179,7 @@ You MUST follow this high-level cycle **exactly**:
      - If it is missing, empty, or not about a change:
        - STOP and ask the user for a short description or user story for the increment.
        - Do not continue until you have one.
-   - Look for the following, in this order, under the target project root:
+   - Under the target project root, look for:
      - A project-level guidance document such as `CONSTITUTION.md` (if present).
      - Architecture or principles docs (for example `ARCHITECTURE.md`, `PRINCIPLES.md`, or similar).
      - The project’s root `README.md`.
@@ -274,7 +269,6 @@ You MUST follow this high-level cycle **exactly**:
      - Respects project-level principles and constraints.
      - Fits coherently alongside existing increments and PRDs.
      - Does not silently contradict existing UI design docs without calling it out.
-
    - Present this as a short, human-readable summary that a PO and engineers can easily review.
 
    Then ask the user explicitly:
@@ -344,31 +338,51 @@ You MUST NOT:
 ## Operating Rules and Guardrails
 
 - Human-first interaction.
-- Align with `CONSTITUTION.md`; if a proposed increment violates the constitution, flag the conflict and propose alternatives.
 - Keep increments small, testable, and observable. Prefer one clear increment per run.
-- Follow the Task section’s cycle **exactly**.
+- Treat the **prompt argument** (next increment description or user story) as mandatory input:
+  - If it is missing or unusable, STOP and ask the user for a short description or story before proceeding.
+- Treat the **target project root** as the subject of this increment:
+  - Use only context inside that scope for the project description and constraints.
+  - Treat content outside that scope as tooling/background only.
+- Use project-level guidance documents (for example `CONSTITUTION.md`, `ARCHITECTURE.md`, `PRINCIPLES.md`, root `README.md`) when they exist, but do NOT require them. Their absence is not an error.
+- Actively look for and respect:
+  - Existing increments or PRDs (for example under `docs/increments/` or other `docs/*increment*.md`, `docs/prd-*.md`).
+  - UI / UX design docs (for example under `docs/ui/`, `docs/ux/`, `docs/design/`).
+- Avoid duplication and silent conflicts:
+  - If a similar increment already exists, call out the overlap.
+  - If this increment intentionally revises an existing one, make that explicit.
+
+## Required Execution Cycle
+
+You MUST follow the cycle defined in the **Task (Increment)** section:
+
+1. Verify argument and available context.
+2. Review existing increments, PRDs, and UI design docs.
+3. Receive initial prompt (confirm and restate).
+4. Analyze context.
+5. Ask clarifying questions (**STOP**).
+6. Suggest increment structure (**STOP**).
+7. Generate increment.
+8. Save increment in a dedicated folder under `docs/increments/<increment-slug>/increment.md`.
+9. Final validation.
+
+You MUST:
+
 - Respect STOP gates:
   - At the clarifying-questions step, do NOT proceed until questions are answered or the user explicitly waives them.
   - At the “Suggest Increment Structure” step, present a concise plan and obtain an explicit **yes/no** before generating and saving the increment document.
-- Do NOT offer additional actions in the increment document itself (no “If you’d like, I can also…”, no proposals to create workflows or other files inside the increment text).
-- Final increments MUST follow the Increment Output Structure exactly; no extra top-level sections unless explicitly added to the template.
+- Keep internal reasoning and these steps **out of the final `increment.md` document**. The increment spec itself must read as a standalone artifact, not as a log of your process.
+
+## Output Discipline
+
+- Final increments MUST follow the **Increment Output Structure** exactly; no extra top-level sections unless explicitly added to the template.
 - Date format: `YYYY-MM-DD` for any dates.
-- Treat the **target project root/scope** as the subject of the increment:
-  - Use only context inside that scope for the project description and constraints.
-  - Treat content outside that scope as tooling/background only.
-
-The detailed steps to follow are:
-
-1. Verify Prerequisites
-2. Receive Initial Prompt
-3. Analyze Constitution & Context
-4. Ask Clarifying Questions (STOP)
-5. Suggest Increment Structure (STOP)
-6. Generate Increment
-7. Save Increment
-8. Final Validation
-
-For each step, follow the detailed instructions from the Task section, ensuring you do not skip or reorder steps, and that STOP gates are respected.
+- You MUST NOT:
+  - Offer additional actions in the increment document itself (no “If you’d like, I can also…”, no proposals to create workflows or other files).
+  - Include implementation tasks, checklists of what you (the assistant) could do next, or CI/CD proposals inside `increment.md`.
+- The only outputs of this prompt are:
+  - Human-facing summaries and questions during the interaction, and
+  - The final `increment.md` file content, correctly structured and saved under `docs/increments/<increment-slug>/increment.md`.
 
 # Output Structure (Increment)
 

@@ -1,14 +1,5 @@
 # Task (Increment)
 
-Your task is to help the team turn the **provided description or user story** into **one small, high-leverage increment** that:
-
-- Is clearly tied to user or stakeholder value.
-- Tests a specific assumption (product, UX, technical, or business).
-- Has concrete, Gherkin-style acceptance criteria.
-- Has a clear success signal (metric or observable behavior).
-- Explicitly states what is **out of scope** for this increment.
-- Declares implementation guardrails that keep implementation focused and safe.
-
 You MUST follow this high-level cycle **exactly**:
 
 1. **Verify argument and available context**
@@ -18,7 +9,7 @@ You MUST follow this high-level cycle **exactly**:
      - If it is missing, empty, or not about a change:
        - STOP and ask the user for a short description or user story for the increment.
        - Do not continue until you have one.
-   - Look for the following, in this order, under the target project root:
+   - Under the target project root, look for:
      - A project-level guidance document such as `CONSTITUTION.md` (if present).
      - Architecture or principles docs (for example `ARCHITECTURE.md`, `PRINCIPLES.md`, or similar).
      - The project’s root `README.md`.
@@ -108,7 +99,6 @@ You MUST follow this high-level cycle **exactly**:
      - Respects project-level principles and constraints.
      - Fits coherently alongside existing increments and PRDs.
      - Does not silently contradict existing UI design docs without calling it out.
-
    - Present this as a short, human-readable summary that a PO and engineers can easily review.
 
    Then ask the user explicitly:
