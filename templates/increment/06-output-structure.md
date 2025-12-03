@@ -6,6 +6,11 @@ You MUST:
 - NOT include any meta commentary about what you (the assistant) could do next (for example, "If you'd like, I can also add...", "Next, I can create...", "I can generate a workflow").
 - NOT include suggestions for additional files, CI workflows, or other automation tasks inside the increment. Those may be implied by principles, but not offered as actions by you.
 
+The increment document will typically be saved as:
+
+- `docs/increments/<increment-slug>/increment.md` under the target project root,  
+  where `<increment-slug>` is a lowercase, hyphen-separated name derived from the increment title.
+
 Return the result as **Markdown** with the following structure:
 
 ```markdown
@@ -38,4 +43,4 @@ Return the result as **Markdown** with the following structure:
 - Planned Files Summary: confirm the planned file changes before coding (STOP gate).
 - DRIFT ALERT: STOP on out-of-scope changes; propose a minimal update or a follow-up increment.
 - Verification: map tasks to acceptance criteria with tests or explicit manual checks.
-- Stabilization: docs and hygiene (e.g., `.gitignore`, reproducible builds) completed on the feature branch before merge.
+- Stabilization: docs and hygiene (for example, `.gitignore`, reproducible builds) completed on the feature branch before merge.

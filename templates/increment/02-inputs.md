@@ -1,51 +1,96 @@
 # Inputs and Scope (Increment)
 
-You have access to:
+You will be given:
 
+- A **prompt argument** that MUST contain a short description or user story for the next increment.  
+  Examples:
+  - “As a user, I want to export my reports to CSV so I can analyze them offline.”
+  - “Add a breaks reminder after 4 completed Pomodoros.”
 - The repository contents as exposed by the tools that call you.
-- The project’s `CONSTITUTION.md` and other root-level docs in the **target project root**.
+- A **project root path argument** that identifies the TARGET project within this repository (for example `"."` or `"examples/pomodoro"`).
+- Any project-level guidance documents that exist in that target root (for example: `CONSTITUTION.md`, `ARCHITECTURE.md`, `PRINCIPLES.md`).
+- The project’s root `README.md`, if present.
 - Any answers the user provides during this interaction.
-- A **project root path argument** provided by the calling tool (for example `"."` or `"examples/pomodoro"`).
 
-You MUST apply the same scoping rules as the constitution prompt:
+## 1. Handling the prompt argument (mandatory)
 
-1. **Target project root**
+- You MUST treat the prompt argument as required:
+  - If it clearly describes a desired change or user story, treat it as the **initial increment idea**.
+  - If it is missing, empty, or clearly not describing a change or story:
+    - STOP and ask the user for a one- or two-sentence description or user story for the desired increment.
+    - Do not proceed with the increment process until you have such a description.
 
-   - Treat the project root path argument as the **project root directory for the TARGET project**.
-   - Files that live **directly** in this directory (such as `README.md`, `CONSTITUTION.md`, `LICENSE`, and other top-level markdown or configuration files) define the project context.
-   - Use these root-level files for:
-     - Product / domain understanding.
-     - High-level goals and constraints.
-     - Engineering principles and non-negotiables.
+- You SHOULD:
+  - Rephrase the argument into your own clear summary early in the interaction.
+  - Use clarifying questions later to refine details, not to invent a completely new direction.
 
-2. **Subdirectories under the target root**
+## 2. Project root and high-level context
 
-   - Subdirectories (e.g., `src/`, `docs/`, `.github/`, `examples/`, `templates/`, `tests/`, etc. under the project root) MUST NOT override the primary product description.
-   - Use them only to understand:
-     - Existing capabilities and code structure relevant to the increment.
-     - Engineering practices (tests, CI, workflows).
-     - Implementation details that may constrain or inform the increment.
+Use the project root path argument as the anchor for *this* project:
 
-3. **Files outside the target root**
+- Look in the **project root directory** (the directory referenced by the project root path argument) for:
+  - `README.md` — high-level product and user context.
+  - `CONSTITUTION.md` — principles, constraints, trade-offs (when present).
+  - Architecture / principles docs (for example `ARCHITECTURE.md`, `PRINCIPLES.md`).
+- Use these documents to understand:
+  - What the project is for.
+  - Who it serves.
+  - Any stated principles, constraints, or non‑negotiables that should shape this increment.
 
-   - Treat files outside the project root path as:
-     - Tooling, frameworks, or background material.
-   - You MUST NOT:
-     - Treat them as the subject of the increment.
-     - Copy product descriptions from them into this project’s increment.
-     - Mention the host/framework repo (e.g., `4dc`) in the increment, unless it is an explicit runtime dependency or architectural element of the project.
+If these documents are missing or incomplete, ask the user a small number of targeted questions to clarify only what you need to define a good increment.
 
-When inferring context, you MUST:
+## 3. Existing increments, PRDs, and design docs
 
-- Use the target project’s `CONSTITUTION.md` as the primary source of:
-  - Principles and trade-offs.
-  - Pillar interpretations.
-  - Non-negotiables and constraints.
-- Use the target project’s root `README.md` (if present) for:
-  - Product and user context.
-  - High-level goals the increment should support.
-- Use code, tests, and docs under subdirectories only to:
-  - Understand where and how the increment might land.
-  - Avoid proposing increments that obviously conflict with existing structure.
+You MUST actively look for **existing work that might shape this increment**, especially:
 
-If critical context is missing or ambiguous (e.g., no constitution, unclear user), you MUST ask targeted clarifying questions before finalizing an increment proposal.
+- **Increment specs / PRDs** such as:
+  - Files under `docs/increments/` (for example `docs/increments/*/increment.md`).
+  - Other increment-like documents under `docs/` that match the project’s conventions (for example `docs/*increment*.md`, `docs/prd-*.md`).
+- **UI / UX design docs** such as:
+  - `docs/ui/`, `docs/ux/`, or `docs/design/` folders.
+  - Files with names like `*-ui.md`, `*-ux.md`, `*-design.md`, or `ui-spec*.md`.
+
+You MUST:
+
+- Scan these locations relative to the project root:
+  - `docs/increments/` (all subfolders and `increment.md` files).
+  - Other `docs/` subdirectories that appear to hold PRDs or design artifacts.
+- Use these documents to answer questions such as:
+  - Has a similar increment already been defined?
+  - Are there conventions for how increments are named and structured?
+  - Are there existing UI flows or patterns this increment should follow?
+
+You MUST NOT:
+
+- Duplicate an existing increment without calling out the overlap.
+- Redefine a feature that is already fully specified without highlighting the conflict.
+- Ignore obvious dependencies or sequencing implied by existing increments or design docs.
+
+## 4. Code and implementation structure
+
+From subdirectories under the project root (for example `src/`, `lib/`, `app/`, `services/`, `tests/`):
+
+- Treat code, tests, and internal docs as **implementation context**, not as product copy.
+- Use them to:
+  - Understand which modules or boundaries an increment might touch.
+  - See how similar capabilities are implemented and tested.
+- Do **not**:
+  - Replace the product description with text from code comments.
+  - Infer entirely new product directions from internal implementation details.
+
+## 5. Files outside the project root
+
+- Files **outside** the project root path belong to other projects, tooling, or frameworks.
+- You may look at them to understand general engineering style and conventions, but you MUST NOT:
+  - Treat them as the subject of this increment.
+  - Copy their product descriptions into this project’s increment.
+  - Mention the host/framework repo name (for example `4dc`) in the increment, unless it is an explicit runtime dependency of this project.
+
+## 6. When context is missing or conflicting
+
+If important context is missing or conflicting (for example, no increments exist yet, UI docs are outdated, or multiple PRDs disagree):
+
+- Ask the user a **small number of targeted questions** to clarify:
+  - Whether similar work is already in progress.
+  - Whether there is an existing PRD or design they want this increment to follow.
+- Make your assumptions explicit in the increment when they materially affect scope or acceptance criteria.
