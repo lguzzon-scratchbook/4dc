@@ -6,53 +6,128 @@
 	</picture>
 </p>
 
-<p align="center"><em>4dc – Small, Safe Steps for Modern Software Teams</em></p>
+<p align="center"><em>4dc – Incremental, Evolutionary, Learning Loops for Modern Software Teams</em></p>
 
-# 
-
-4dc is a set of **LLM-friendly prompts and templates** that help teams work in **small, safe steps**:
+4dc is a set of **LLM-friendly prompt files** that help you work in **small, safe, evolutionary steps**:
 
 - Define **increments** (what to change and why) without leaking into implementation details.
 - Turn increments into **technical designs** that respect your project’s constitution.
 - Break designs into **XP-style implementation plans** (small, testable tasks).
 - Periodically run **improve passes** across the codebase to capture lessons, refactors, and ADRs.
+- Create and evolve a **project constitution** that encodes your values, layout, and expectations.
 
-The prompts in this repo are **assembled** at the top level for easy distribution and consumption by tools like GitHub Copilot Chat. You don’t need to pull in the whole repo structure—just the prompts.
+Together, these prompts form a **closed learning loop**: real changes inform Improve docs, which feed new increments, which update your design and implementation patterns over time.
+---
+
+## TL;DR – The four core artifacts
+
+4dc keeps four main artifacts separate so you (and your tools) don’t blur concerns:
+
+- **Increment → WHAT & WHY**  
+  - File: `docs/increments/<slug>/increment.md`  
+  - Answers:  
+    - What outcome do we want?  
+    - Why does it matter now?  
+    - What’s in/out of scope?  
+  - Contains context, goal, scope/non-goals, acceptance criteria, risks.  
+  - No solution, no task list.
+
+- **Design → HOW (at a technical level)**  
+  - File: `docs/increments/<slug>/design.md`  
+  - Answers:  
+    - How will the system change to achieve the increment?  
+    - Which components, data flows, and contracts are involved?  
+  - Contains architecture, interfaces, data flow, key decisions and trade-offs.  
+  - No implementation tasks.
+
+- **Implement → STEPS (XP-style tasks)**  
+  - File: `docs/increments/<slug>/implement.md`  
+  - Answers:  
+    - What small, testable steps will we take?  
+    - Which files/tests will we touch in each step?  
+  - Contains workstreams, concrete actions, tests to add/update, suggested PR groupings.  
+  - Derived from Increment + Design.
+
+- **Improve → LEARN & REFINE (codebase-wide)**  
+  - File: `docs/improve/YYYY-MM-DD-improve.md`  
+  - Answers:  
+    - How healthy is the codebase vs our constitution?  
+    - What worked well? What keeps hurting?  
+    - What refactors and ADRs should we consider next?  
+  - Contains assessment, lessons, and improvement proposals that can become future increments.
+
+Everything is guided by your **Constitution** (`CONSTITUTION.md`), which encodes your values, expectations, and layout.
 
 ---
 
 ## Why this repo is useful
 
-4dc is for teams who want the benefits of:
+4dc is for teams who want:
 
 - **XP / small-batch delivery, with AI in the loop**
+
   - Increments stay as clean WHAT-only descriptions.
-  - Design and Implement prompts keep “plan” and “tasks” separate.
-  - Improve prompts look across the whole codebase, not just one story.
+  - Design and Implement prompts keep “plan” (design) and “tasks” (implementation steps) separate.
+  - Improve prompts look across the whole codebase, not just a single change set.
 
 - **A living project constitution**
-  - You describe your values, test expectations, and layout once in `CONSTITUTION.md`.
-  - All other prompts (increment, design, implement, improve) read and respect it automatically.
-  - Mode/rigor is configurable: a small example app can run “lighter” practices; a production system can choose deeper analysis and more guardrails.
+
+  - You define your values, testing and observability expectations, dependency strategy, and doc layout in `CONSTITUTION.md`.
+  - All other prompts (increment, design, implement, improve) read and respect that constitution.
+  - Different projects (or subprojects) can adopt lighter or deeper practices while sharing the same core model.
 
 - **Safer AI-assisted changes**
+
   - LLMs don’t jump straight to “edit all the things.”
   - Instead, they produce artifacts you can review, diff, and evolve:
     - `docs/increments/.../increment.md`
     - `design.md`
     - `implement.md`
     - `docs/improve/YYYY-MM-DD-improve.md`
-  - The workflow nudges you toward small, testable steps and code review, rather than giant, opaque edits.
+  - You keep humans firmly in control of what actually changes in the codebase.
 
 - **Codebase-wide learning**
-  - Improve docs capture lessons, refactoring opportunities, and ADR candidates.
-  - Each “Improvement” can become a future increment.
+
+  - Improve docs capture assessments, lessons, refactoring opportunities, and ADR candidates.
+  - Each Improvement can become a future increment.
   - Over time, your constitution and patterns converge instead of drifting.
 
-You can use 4dc:
+You can treat 4dc as:
 
-- As a **prompt pack** for GitHub Copilot Chat or other LLMs.
-- As a **playbook** for how your team wants to design, implement, and improve changes.
+- A **prompt pack** to wire into Copilot Chat or any LLM.
+- A **playbook** for how your team wants to design, implement, and improve changes.
+
+---
+
+## Prompt files
+
+The assembled prompt entrypoints (all in the repo root) are:
+
+- `create-constitution.prompt.md`  
+  - Helps you create or refine a `CONSTITUTION.md` for a repo or subproject.  
+  - Encodes values, principles, test/observability expectations, dependency rules, and doc layout.
+
+- `increment.prompt.md`  
+  - Defines a **small, outcome-focused change** (an increment): context, goal, scope, acceptance criteria, risks.  
+  - Stays strictly at the WHAT/WHY level; no solution or task list.
+
+- `design.prompt.md`  
+  - Takes a specific increment folder (with `increment.md`) and generates `design.md`.  
+  - Describes the technical HOW, data flow, interfaces, and trade-offs.  
+  - Does not produce tasks.
+
+- `implement.prompt.md`  
+  - Takes an increment folder (with `increment.md` and `design.md`) and generates `implement.md`.  
+  - Produces XP-style steps: small, testable tasks grouped by workstreams, suitable for PRs and pairing.
+
+- `improve.prompt.md`  
+  - Runs a **codebase-wide improve pass** for a project rooted at `path`.  
+  - Produces `docs/improve/YYYY-MM-DD-improve.md` with:
+    - Assessment vs constitution (star ratings per principle).
+    - Lessons (worked well / to improve / emerging patterns).
+    - Concrete Improvements (refactoring proposals) plus ADR candidates.
+
+Use these as explicit entrypoints in tooling (for example, as Copilot Chat “Custom Instructions” or equivalent).
 
 ---
 
@@ -61,7 +136,7 @@ You can use 4dc:
 This assumes:
 
 - You already have a Git repo for your project.
-- You want the 4dc prompt files (e.g. `increment.prompt.md`, `design.prompt.md`, `implement.prompt.md`, `improve.prompt.md`) under `.github/prompts/4dc` in your project.
+- You want the 4dc prompt files under `.github/prompts/4dc` in your project.
 
 From the root of **your** project, run:
 
@@ -73,107 +148,105 @@ What this does:
 
 - Downloads the installer script from this repo.
 - Runs it in your current project directory.
-- Copies the assembled 4dc prompt files into `.github/prompts/4dc/` in your project.
+- Copies the assembled `*.prompt.md` files into `.github/prompts/4dc/`.
 
 After running it, you’ll have something like:
 
+- `.github/prompts/4dc/create-constitution.prompt.md`
 - `.github/prompts/4dc/increment.prompt.md`
 - `.github/prompts/4dc/design.prompt.md`
 - `.github/prompts/4dc/implement.prompt.md`
 - `.github/prompts/4dc/improve.prompt.md`
 
-You can then point your LLM / Copilot Chat at those prompt files.
-
-This assumes:
-
-- You already have a Git repo for your project.
-- You want 4dc prompts under `.github/prompts/4dc`.
-- You’re okay running a small installer script from this repo.
-
-From the root of **your** project, run:
-
-```bash
-bash -c 'set -euo pipefail
-TMP_DIR="$(mktemp -d)"
-REPO="https://github.com/co0p/4dc"
-BRANCH="main"
-
-echo ">> Downloading 4dc installer from $REPO@$BRANCH ..."
-curl -fsSL "$REPO/raw/$BRANCH/scripts/install-4dc-prompts.sh" -o "$TMP_DIR/install-4dc-prompts.sh"
-chmod +x "$TMP_DIR/install-4dc-prompts.sh"
-
-echo ">> Running 4dc prompts installer into .github/prompts/4dc ..."
-"$TMP_DIR/install-4dc-prompts.sh" .github/prompts/4dc
-
-echo ">> Done. 4dc prompts are now in .github/prompts/4dc"
-'
-```
-
-What this does:
-
-- Downloads the `scripts/install-4dc-prompts.sh` helper from this repo.
-- Runs it against your local project.
-- The script copies the **assembled prompt files from the top of the 4dc repo** into `.github/prompts/4dc/` in your project.
-
-After running it, you’ll have something like:
-
-- `.github/prompts/4dc/increment/...`
-- `.github/prompts/4dc/design/...`
-- `.github/prompts/4dc/implement/...`
-- `.github/prompts/4dc/improve/...`
-
-(Exactly which files appear depends on how you structure the assembled prompts; adjust the script accordingly.)
+You can then configure your LLM / Copilot Chat to load these files as prompt sources.
 
 ---
 
-## Next steps
+## Typical workflow
 
-### 1. Add a project constitution
+### 1. Create or refine your project constitution
 
-Create a `CONSTITUTION.md` at the root of your project (or adapt from `examples/*/CONSTITUTION.md` here). In it, describe:
+Use `create-constitution.prompt.md` (via your LLM) to create or update `CONSTITUTION.md` in your repo. It should cover:
 
-- **Values and principles**  
-  - Example: small, safe steps; pragmatic DRY; refactoring as everyday work; testing & observability expectations.
-- **Implementation & doc layout**  
-  - Where increments, designs, implementations, and improve docs live (for example, `docs/increments/...`, `docs/improve/...`).
-- **Modes / rigor (optional)**  
-  - For example: lighter rules for demos/examples, deeper rules for production services.
+- **Values and principles**
 
-All the 4dc prompts read and respect this constitution when they generate artifacts.
+  - Examples: small, safe steps; refactoring as everyday work; pragmatic DRY; testing and observability expectations.
 
-### 2. Run your first increment
+- **Implementation & doc layout**
 
-Pick a small change you want to make.
+  - Where increments, designs, implementation plans, and improve docs live.  
+    For example:
+    - `docs/increments/<slug>/increment.md`
+    - `docs/increments/<slug>/design.md`
+    - `docs/increments/<slug>/implement.md`
+    - `docs/improve/YYYY-MM-DD-improve.md`
 
-Using your LLM / Copilot Chat, run the increment prompt from `.github/prompts/4dc/increment` with `path` pointing at where you want the increment folder to live. You should get:
+- **Modes / levels of rigor (optional)**
 
-- `docs/increments/<slug>/increment.md` – a **WHAT-only** document describing:
-  - Context & goal.
-  - Scope and non-goals.
-  - Acceptance criteria & observability.
+  - For example: lighter rules for demos/examples, deeper rules for production or critical systems.
 
-### 3. Design and implement
+All other prompts will read and follow this constitution when generating artifacts.
 
-From inside the new increment folder:
+### 2. Define an increment
 
-- Run `/design` (or similar) with `path` pointing to that folder:
-  - Produces `design.md` – a technical HOW, aligned with the constitution, but **not** a task list.
-- Then run `/implement`:
-  - Produces `implement.md` – an XP-style task list (small, testable steps) that implements the design.
+Using `increment.prompt.md`:
 
-You can then follow `implement.md` as a backlog of small tasks (commits/PRs), using TDD and your usual tooling.
+- Pick a small change you want to make.
+- Run the prompt with a `path` where you want the increment folder to live.
+- It generates:
 
-### 4. Improve (periodic, codebase-wide)
+  - `docs/increments/<slug>/increment.md` – a WHAT/WHY-only document describing:
+    - Context & goal.
+    - Scope and non-goals.
+    - Acceptance criteria & observability.
+    - Risks and open questions.
 
-Periodically (for example, after a few increments), run the Improve prompt with `path` pointing at your project root:
+This is your **XP-style story/card**, cleanly separated from the implementation.
 
-- Produces `docs/improve/YYYY-MM-DD-improve.md` with:
-  - **Assessment** vs your constitution (star ratings per principle).
-  - **Lessons** (worked well / to improve / emerging patterns).
-  - **Improvements** (specific refactoring proposals; each can become a new increment).
-  - ADR candidates for big architectural decisions (written separately via the ADR template).
+### 3. Design
 
-This gives you a feedback loop from real code back into your constitution and future increments.
+From inside the increment folder, use `design.prompt.md`:
+
+- Point it at the increment folder (`path`).
+- It generates `design.md` next to `increment.md`:
+
+  - Explains **how** the system will change:
+    - Interfaces, data flow, components, error handling.
+    - Trade-offs and constraints, referencing the constitution.
+  - Explicitly avoids becoming a task list.
+
+This is your **design note**, still independent of concrete steps.
+
+### 4. Implement
+
+From the same folder, use `implement.prompt.md`:
+
+- It reads `increment.md` and `design.md`.
+- It generates `implement.md`:
+
+  - XP-style steps:
+    - Workstreams (e.g., backend, UI, tests, observability).
+    - Small, testable tasks with file lists and concrete actions.
+    - Suggested grouping into phases or PRs.
+  - Optionally with checkboxes for progress tracking.
+
+You then execute these steps as real code changes (commits/PRs), using your usual tools.
+
+### 5. Improve (codebase-wide)
+
+Periodically, use `improve.prompt.md` with `path` pointing at the project root (or a subproject root):
+
+- It generates `docs/improve/YYYY-MM-DD-improve.md`:
+
+  - **Assessment** vs constitution (with 1–5 star ratings and rationales).
+  - **Lessons** (Worked Well / To Improve / Emerging Patterns).
+  - **Improvements**:
+    - Each is a concrete refactoring or improvement proposal.
+    - Includes lens, priority, effort, files, and change description.
+    - Can be turned into a future increment.
+  - ADR candidates for bigger, cross-cutting decisions (output via the ADR template, separately).
+
+This closes the loop: real code informs future increments and refinements to your constitution.
 
 ---
 
@@ -182,26 +255,29 @@ This gives you a feedback loop from real code back into your constitution and fu
 4dc borrows heavily from:
 
 - **Extreme Programming (XP)** – Kent Beck  
-  - Small, safe steps; TDD; continuous refactoring; simple design.
+  Small, safe steps; TDD; continuous refactoring; simple design.
+
 - **Refactoring & design** – Martin Fowler, Michael Feathers, Sandi Metz, Robert C. Martin  
-  - Clear names, small functions, separation of concerns, “make the change easy, then make the easy change.”
+  Clear names, small functions, separation of concerns, “make the change easy, then make the easy change.”
+
 - **Domain-Driven Design (DDD)** – Eric Evans  
-  - Ubiquitous language; aligning code structure with domain concepts.
+  Ubiquitous language; aligning code structure with domain concepts.
+
 - **DevOps & Delivery** – Jez Humble & David Farley, Michael Nygard, The Pragmatic Programmers  
-  - Continuous delivery, fast feedback, operability, resilience, “wrap and pin” for dependencies.
+  Continuous delivery, fast feedback, operability, resilience, conscious dependency choices.
 
 These ideas show up explicitly in the **lenses** used by the Improve phase:
 
-- **Naming & Clarity**
-- **Modularity & Separation**
-- **Architecture & Patterns**
-- **Testing & Reliability**
-- **Duplication & Simplicity**
-- **Documentation & Communication**
-- **Delivery & Flow**
-- **Dependencies & Operability**
+- Naming & Clarity  
+- Modularity & Separation  
+- Architecture & Patterns  
+- Testing & Reliability  
+- Duplication & Simplicity  
+- Documentation & Communication  
+- Delivery & Flow  
+- Dependencies & Operability  
 
-And they’re encoded into the **values and principles** you write in your `CONSTITUTION.md`:
+And they’re encoded into the **values and principles** you put into your `CONSTITUTION.md`:
 
 - Small, safe steps over large, risky changes.
 - Refactoring as everyday work, not a special event.
