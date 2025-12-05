@@ -20,6 +20,7 @@ type App interface {
 	Shutdown(ctx context.Context) error
 	OnStateChange(fn func(State))
 	State() State
+	Remaining() time.Duration
 }
 
 type timerApp struct {
@@ -29,6 +30,7 @@ type timerApp struct {
 	onStateChange    func(State)
 	pomodoroDuration time.Duration
 	breakDuration    time.Duration
+	end              time.Time
 }
 
 // New creates a new App instance. Optionally pass two durations: pomodoro, break.
@@ -50,16 +52,6 @@ func New(durations ...time.Duration) App {
 	}
 }
 
-func (a *timerApp) setState(s State) {
-	a.mu.Lock()
-	a.state = s
-	cb := a.onStateChange
-	a.mu.Unlock()
-	if cb != nil {
-		cb(s)
-	}
-}
-
 func (a *timerApp) State() State {
 	a.mu.Lock()
 	defer a.mu.Unlock()
@@ -76,7 +68,24 @@ func (a *timerApp) cancelExistingTimer() {
 	if a.cancelTimer != nil {
 		a.cancelTimer()
 		a.cancelTimer = nil
+		a.end = time.Time{}
 	}
+}
+
+func (a *timerApp) Remaining() time.Duration {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	if a.state != StatePomodoroRunning && a.state != StateBreakRunning {
+		return 0
+	}
+	if a.end.IsZero() {
+		return 0
+	}
+	d := time.Until(a.end)
+	if d <= 0 {
+		return 0
+	}
+	return d
 }
 
 func (a *timerApp) StartPomodoro() {
@@ -88,6 +97,7 @@ func (a *timerApp) StartPomodoro() {
 	a.cancelExistingTimer()
 	ctx, cancel := context.WithCancel(context.Background())
 	a.cancelTimer = cancel
+	a.end = time.Now().Add(a.pomodoroDuration)
 	a.state = StatePomodoroRunning
 	cb := a.onStateChange
 	a.mu.Unlock()
@@ -122,6 +132,7 @@ func (a *timerApp) StartBreak() {
 	a.cancelExistingTimer()
 	ctx, cancel := context.WithCancel(context.Background())
 	a.cancelTimer = cancel
+	a.end = time.Now().Add(a.breakDuration)
 	a.state = StateBreakRunning
 	cb := a.onStateChange
 	a.mu.Unlock()

@@ -38,6 +38,7 @@ Acceptance (manual):
 - Clicking `Pomodoro` or `Break` triggers the app state change (check logs).
 - Clicking `Quit` performs a graceful shutdown and exits the app.
 - A minimal red-circle icon is shown in the tray.
+ - While a Pomodoro or Break is running, the tray shows a concise remaining-time label in minutes (for example `25m` for a just-started Pomodoro). The label updates at a coarse cadence (approximately every 10s) and returns to the default tray state when the session finishes or is cancelled.
 
 Replacing the icon
 

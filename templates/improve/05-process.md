@@ -38,7 +38,7 @@ Review key project context under `path`:
 
 ### Assessment Tasks
 
-- **Evaluate vs. Constitution:** Assess how well the implementation adheres to the project's core principles and constraints.
+- **Evaluate vs. Constitution:** Assess how well the implementation adheres to the project's core principles and constraints. Prepare to summarize this as per-principle **1–5 star ratings** with brief rationales in the Assessment section.
 - **Evaluate vs. Design Goals:** Assess whether the implementation meets the intended design approach, component boundaries, and data flow.
 - **Quality Evaluation:** Assess code quality, readability, maintainability, and testability.
 - **Identify Risks:** List technical debt, potential bugs, performance concerns, or security issues.
@@ -110,7 +110,7 @@ Based on findings and lessons:
 1. Draft an outline for the dated improve artifact following the Improve Output Format:
 
    - **Assessment:** Key bullet points:
-     - Constitution and design alignment.
+     - Constitution and design alignment, including which constitution principles are most relevant to rate.
      - Quality.
      - Risks.
    - **Lessons:**
@@ -152,7 +152,9 @@ Once the user explicitly approves the outline:
 
 1. Generate the full content for a new dated improve file strictly following the Improve Output Format:
 
-   - **Assessment:** Brief narrative plus bullet points for constitution alignment, design alignment, quality, and risks.
+   - **Assessment:**
+     - Per-constitution **1–5 star ratings** with a short rationale for each relevant principle.
+     - A brief narrative plus bullet points for design alignment, quality, and risks.
    - **Lessons:** Three lists:
      - Worked Well.
      - To Improve.
@@ -182,6 +184,7 @@ Before presenting the final improve document content:
 
 - Assessment section includes:
   - Constitution and design alignment where applicable.
+  - Per-constitution star ratings with concise rationales.
   - Quality and risk summary.
 - Lessons section documents:
   - What worked well.

@@ -20,7 +20,9 @@ The content of each improve file must follow this structure:
 # Improve: [Short Title For This Improvement Cycle]
 
 ## 1. Assessment
-- **Constitution Alignment:** [Brief evaluation]
+- **Constitution Alignment:** For each relevant principle from `CONSTITUTION.md` under `path`, give a 1–5 star rating and a brief rationale, for example:
+  - “Principle: Browser-native UX” – ★★★☆☆ (mostly followed, but some direct DOM manipulation bypasses shared helper)
+  - “Principle: Observable workflows” – ★★☆☆☆ (limited logging, no tracing on critical paths)
 - **Design Alignment:** [Brief evaluation]
 - **Quality:** [Brief evaluation]
 - **Risks:** [List]
@@ -57,6 +59,21 @@ Notes:
 - “Increment Hint” is optional and provides a convenient starting point for future increments.
 - ADRs are created as separate, independent artifacts using the ADR Output Template. They are **not** part of the improve file content.
 
+### Rating Scale (for Constitution Alignment)
+
+When assigning stars to constitution principles:
+
+- ★☆☆☆☆ – Poor alignment; the principle is frequently violated or effectively absent.
+- ★★☆☆☆ – Weak alignment; some places follow the principle, many do not.
+- ★★★☆☆ – Mixed alignment; the principle is visible but inconsistently applied.
+- ★★★★☆ – Good alignment; the principle is followed in most relevant areas.
+- ★★★★★ – Strong alignment; the principle is consistently and clearly followed.
+
+For each rated principle:
+
+- Include **one short rationale** (1–2 sentences).
+- Reference concrete evidence under `path` where helpful (e.g. key modules, patterns, or omissions).
+
 ### Acceptance (for the improve artifact)
 
 The improve document is “good enough” when:
@@ -67,6 +84,7 @@ The improve document is “good enough” when:
 
 - **Alignment**
   - Assessment clearly references project Constitutions/Designs where they exist under `path`.
+  - Constitution Alignment includes per-principle star ratings with concise rationales.
   - Lessons and improvements are grounded in concrete evidence from the codebase.
 
 - **Clarity**

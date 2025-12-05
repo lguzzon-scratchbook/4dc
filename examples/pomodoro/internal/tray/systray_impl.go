@@ -20,6 +20,7 @@ func newSystrayImpl(a app.App, icon []byte) Tray {
 
 func (s *systrayImpl) Run(ctx context.Context) error {
 	done := make(chan struct{})
+	var updaterCancel context.CancelFunc
 
 	// If the provided context is canceled, request systray to quit.
 	go func() {
@@ -62,7 +63,22 @@ func (s *systrayImpl) Run(ctx context.Context) error {
 				systray.Quit()
 			}
 		}()
+
+		// Start title updater helper. It subscribes to app state changes and
+		// periodically queries Remaining() to update the tray title.
+		updaterCtx, cancel := context.WithCancel(context.Background())
+		updaterCancel = cancel
+		setTitle := func(t string) { systray.SetTitle(t) }
+		clearTitle := func() { systray.SetTitle("") }
+		newTicker := func(d time.Duration) (<-chan time.Time, func()) {
+			t := time.NewTicker(d)
+			return t.C, func() { t.Stop() }
+		}
+		go ManageTitleUpdates(updaterCtx, s.app, setTitle, clearTitle, newTicker)
 	}, func() {
+		if updaterCancel != nil {
+			updaterCancel()
+		}
 		close(done)
 	})
 
