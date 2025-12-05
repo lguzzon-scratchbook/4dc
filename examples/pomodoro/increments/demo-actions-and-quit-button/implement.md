@@ -79,6 +79,8 @@ Workstreams are ordered to minimize risk: Setup → App → Tray → CLI/Wiring 
 - Rollout: additive example-only change — merge to `main`. No feature flags required.
 - Rollback: revert the PR to remove the example if issues appear.
 
+Note: CI step intentionally skipped for now per request. The repository changes include a `--smoke` startup check and unit tests; CI can be added later to run `go test ./...`, build the binary, and run `./bin/pomodoro --smoke` if desired.
+
 ## Observability and Post-Deployment Checks
 
 - Logging: log `action=<name>` for user actions and lifecycle events (`status=shutdown-started`, `status=shutdown-complete`). Keep logs human-friendly.

@@ -1,10 +1,40 @@
 package assets
 
-import "encoding/base64"
+import (
+	"bytes"
+	"image"
+	"image/color"
+	"image/png"
+)
 
-// Icon returns a tiny 1x1 PNG used as a minimal tray icon.
+// Icon generates a 32x32 PNG of a red circle and returns its bytes.
+// This keeps the demo self-contained and allows easy color/size adjustments.
 func Icon() []byte {
-	const b64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAn0B9oQe3/AAAAAASUVORK5CYII="
-	data, _ := base64.StdEncoding.DecodeString(b64)
-	return data
+	const size = 32
+	const radius = 12
+
+	img := image.NewNRGBA(image.Rect(0, 0, size, size))
+	// Transparent background
+	for y := 0; y < size; y++ {
+		for x := 0; x < size; x++ {
+			img.SetNRGBA(x, y, color.NRGBA{0, 0, 0, 0})
+		}
+	}
+
+	cx, cy := size/2, size/2
+	rr := radius * radius
+	// Draw filled red circle
+	for y := 0; y < size; y++ {
+		for x := 0; x < size; x++ {
+			dx := x - cx
+			dy := y - cy
+			if dx*dx+dy*dy <= rr {
+				img.SetNRGBA(x, y, color.NRGBA{R: 0xE0, G: 0x22, B: 0x2D, A: 0xFF})
+			}
+		}
+	}
+
+	var buf bytes.Buffer
+	_ = png.Encode(&buf, img)
+	return buf.Bytes()
 }

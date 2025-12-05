@@ -1,6 +1,6 @@
 module github.com/co0p/4dc/examples/pomodoro
 
-go 1.23.4
+go 1.20
 
 require github.com/getlantern/systray v1.2.2
 

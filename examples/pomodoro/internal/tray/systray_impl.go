@@ -21,53 +21,53 @@ func newSystrayImpl(a app.App, icon []byte) Tray {
 func (s *systrayImpl) Run(ctx context.Context) error {
 	done := make(chan struct{})
 
-	// start systray in a goroutine because Run blocks
+	// If the provided context is canceled, request systray to quit.
 	go func() {
-		systray.Run(func() {
-			if len(s.icon) > 0 {
-				systray.SetIcon(s.icon)
-			}
-			mPom := systray.AddMenuItem("Pomodoro", "Start Pomodoro")
-			mBreak := systray.AddMenuItem("Break", "Start Break")
-			systray.AddSeparator()
-			mQuit := systray.AddMenuItem("Quit", "Quit the app")
-
-			// listen for menu clicks
-			go func() {
-				for range mPom.ClickedCh {
-					log.Println("action=StartPomodoro")
-					s.app.StartPomodoro()
-				}
-			}()
-			go func() {
-				for range mBreak.ClickedCh {
-					log.Println("action=StartBreak")
-					s.app.StartBreak()
-				}
-			}()
-			go func() {
-				for range mQuit.ClickedCh {
-					log.Println("action=Quit")
-					// call shutdown synchronously with a timeout
-					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-					_ = s.app.Shutdown(ctx)
-					cancel()
-					systray.Quit()
-				}
-			}()
-		}, func() {
-			close(done)
-		})
+		<-ctx.Done()
+		systray.Quit()
 	}()
 
-	select {
-	case <-ctx.Done():
-		systray.Quit()
-		<-done
-		return ctx.Err()
-	case <-done:
-		return nil
-	}
+	// systray.Run must be called on the main OS thread on macOS. Call it
+	// directly in this goroutine so callers that invoke Run from main()
+	// satisfy that requirement.
+	systray.Run(func() {
+		if len(s.icon) > 0 {
+			systray.SetIcon(s.icon)
+		}
+		mPom := systray.AddMenuItem("Pomodoro", "Start Pomodoro")
+		mBreak := systray.AddMenuItem("Break", "Start Break")
+		systray.AddSeparator()
+		mQuit := systray.AddMenuItem("Quit", "Quit the app")
+
+		// listen for menu clicks
+		go func() {
+			for range mPom.ClickedCh {
+				log.Println("action=StartPomodoro")
+				s.app.StartPomodoro()
+			}
+		}()
+		go func() {
+			for range mBreak.ClickedCh {
+				log.Println("action=StartBreak")
+				s.app.StartBreak()
+			}
+		}()
+		go func() {
+			for range mQuit.ClickedCh {
+				log.Println("action=Quit")
+				// call shutdown synchronously with a timeout
+				c, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				_ = s.app.Shutdown(c)
+				cancel()
+				systray.Quit()
+			}
+		}()
+	}, func() {
+		close(done)
+	})
+
+	<-done
+	return ctx.Err()
 }
 
 func (s *systrayImpl) Close() error {

@@ -1,3 +1,61 @@
-# Pomodoro (Tray App)
+# Pomodoro demo
 
-A lightweight Pomodoro timer that lives in the macOS menu bar using golang. No fuzz, simple and effective.
+This is a tiny demo showing a minimal app + tray wiring for the `4dc` examples. It demonstrates:
+
+- A small domain `internal/app` with a simple timer state machine and tests.
+- A platform `internal/tray` package using a systray implementation and a mock for tests.
+- A CLI `cmd/pomodoro` with `--smoke` and graceful shutdown on `Quit`.
+
+Quick build & run
+
+```
+cd examples/pomodoro
+go build -o bin/pomodoro ./cmd/pomodoro
+./bin/pomodoro
+```
+
+Smoke test (CI / local quick check):
+
+```
+./bin/pomodoro --smoke
+```
+
+Acceptance (manual):
+
+- The tray/menu shows `Pomodoro`, `Break`, and `Quit`.
+- Clicking `Pomodoro` or `Break` triggers the app state change (check logs).
+- Clicking `Quit` performs a graceful shutdown and exits the app.
+- A minimal red-circle icon is shown in the tray.
+
+Replacing the icon
+
+Currently the demo generates a simple 32×32 red-circle PNG at runtime (no external asset required). To use a custom icon instead, you have two options:
+
+1. Provide a PNG file and update `assets/icon.go` to `//go:embed` it (recommended for a real icon):
+
+	- Place your PNG at `examples/pomodoro/assets/icon.png`.
+	- Update `assets/icon.go` to embed and return that file (replace the runtime generator).
+
+2. Or provide a base64-encoded PNG in `examples/pomodoro/assets/icon.txt` and adjust `assets/icon.go` to decode it on startup.
+
+Notes for macOS
+
+- `systray` must be run on the main OS thread on macOS. This demo calls `systray.Run` from `main()` to satisfy that requirement.
+- The demo was exercised on macOS; behavior on other platforms may vary.
+
+Testing & smoke
+
+- Unit tests: `go test ./...` (the example includes tests for `internal/app` and `internal/tray` mock).
+- Smoke run: `./bin/pomodoro --smoke` initializes subsystems and exits immediately (used for CI/local checks).
+
+PR / branch
+
+If you want me to open a focused PR with these example changes I will create branch `examples/pomodoro-demo` and push the `examples/pomodoro` changes.
+
+Troubleshooting
+
+- If the tray doesn't appear on macOS, ensure the binary is running and check logs printed to the terminal.
+
+More
+
+See `internal/app`, `internal/tray`, and `cmd/pomodoro` for the implementation.

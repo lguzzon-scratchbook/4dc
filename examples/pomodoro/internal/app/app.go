@@ -31,11 +31,21 @@ type timerApp struct {
 	breakDuration    time.Duration
 }
 
-// New creates a new App instance with configurable durations (useful for tests).
-func New(pomodoro, brk time.Duration) App {
+// New creates a new App instance. Optionally pass two durations: pomodoro, break.
+// Examples:
+//
+//	New() // uses defaults
+//	New(10*time.Millisecond, 5*time.Millisecond) // test-friendly durations
+func New(durations ...time.Duration) App {
+	pom := 25 * time.Minute
+	brk := 5 * time.Minute
+	if len(durations) >= 2 {
+		pom = durations[0]
+		brk = durations[1]
+	}
 	return &timerApp{
 		state:            StateIdle,
-		pomodoroDuration: pomodoro,
+		pomodoroDuration: pom,
 		breakDuration:    brk,
 	}
 }
