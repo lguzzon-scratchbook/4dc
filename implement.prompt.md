@@ -288,10 +288,10 @@ The `path` argument for this prompt points at an **increment folder** (for examp
      - Do **not** restate the full design; refer to it in a focused way (per-step references).
      - Do **not** mention prompts, LLMs, or this process.
      - Keep steps **small, testable, and traceable** to `design.md`.
-      - Do **not** invent or extend contracts, interfaces, or data flows beyond what is in `design.md`.
-      - If you find gaps or mismatches between the design and code:
-        - Note them as risks or clarifications needed.
-        - Do not silently create new contracts to work around them.
+     - Do **not** invent or extend contracts, interfaces, or data flows beyond what is in `design.md`.
+     - If you find gaps or mismatches between the design and code:
+       - Note them as risks or clarifications needed.
+       - Do not silently create new contracts to work around them.
 
 ### Phase 4 – Final Check
 
