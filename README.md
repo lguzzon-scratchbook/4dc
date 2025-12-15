@@ -21,7 +21,7 @@ All of this is guided by a **project constitution** (`CONSTITUTION.md`) that enc
 This assumes:
 
 - You already have a Git repo for your project.
-- You want the 4dc prompt files under `.github/prompts/4dc` in **your** project.
+- You want the 4dc prompt files under `.github/prompts` in **your** project.
 
 From the root of your project, run:
 
@@ -33,15 +33,15 @@ This script:
 
 - Downloads the installer from this repo.
 - Runs it in your current project directory.
-- Copies the assembled `*.prompt.md` files into `.github/prompts/4dc/`.
+- Copies the assembled `*.prompt.md` files into `.github/prompts/` with a `4dc-` prefix.
 
 Afterwards, you’ll have:
 
-- `.github/prompts/4dc/create-constitution.prompt.md`
-- `.github/prompts/4dc/increment.prompt.md`
-- `.github/prompts/4dc/design.prompt.md`
-- `.github/prompts/4dc/implement.prompt.md`
-- `.github/prompts/4dc/improve.prompt.md`
+- `.github/prompts/4dc-create-constitution.prompt.md`
+- `.github/prompts/4dc-increment.prompt.md`
+- `.github/prompts/4dc-design.prompt.md`
+- `.github/prompts/4dc-implement.prompt.md`
+- `.github/prompts/4dc-improve.prompt.md`
 
 Point Copilot Chat or your LLM at these prompt files as sources, and you’re ready to start using 4dc.
 
@@ -167,7 +167,7 @@ Because these lenses are written down in your constitution, your LLM can apply t
 
 ### The prompts
 
-All assembled prompt entrypoints live at the repo root (and get copied into `.github/prompts/4dc/` in your project):
+All assembled prompt entrypoints live at the repo root (and get copied into `.github/prompts/` with a `4dc-` prefix in your project):
 
 - `create-constitution.prompt.md`  
   Helps you create or refine `CONSTITUTION.md` for a repo or subproject. Encodes values, principles, test/observability expectations, dependency rules, and doc layout.
