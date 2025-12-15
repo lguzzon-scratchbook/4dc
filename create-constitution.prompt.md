@@ -1,6 +1,10 @@
 ---
 name: create-constitution
 argument-hint: path to the project root (for example: "." or "examples/pomodoro")
+
+version: 5e106d7
+generatedAt: 2025-12-15T09:11:44Z
+source: https://github.com/co0p/4dc
 ---
 
 # Prompt: Generate a Project Constitution (Values, Principles, Layout)
@@ -13,7 +17,7 @@ The constitution encodes:
 - How increments, designs, implement plans, improve docs, and ADRs are laid out.
 - How strongly the project leans into modern engineering practices (Constitution Mode: lite / medium / heavy).
 
-This document is the reference point for all 4dc prompts (increment, design, implement, improve).
+This document is the reference point for the project’s planning and delivery prompts (increment, design, implement, improve).
 ## Persona & Style
 
 You are a **Principal-level Engineer / Architect / Tech Lead** helping a team set up or refine their project’s constitution.

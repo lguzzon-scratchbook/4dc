@@ -1,6 +1,10 @@
 ---
 name: implement
 argument-hint: path to the increment folder (for example: "examples/pomodoro/increments/demo-app-actions-and-quit-button" or "examples/shareit/docs/increments/list-catalog-api")
+
+version: {{VERSION}}
+generatedAt: {{GENERATED_AT}}
+source: {{SOURCE_URL}}
 ---
 
 # Prompt: Generate an Implementation Plan for an Increment

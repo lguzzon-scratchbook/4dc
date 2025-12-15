@@ -1,6 +1,10 @@
 ---
 name: design
 argument-hint: path to the increment folder (for example: "examples/pomodoro/increments/demo-app-actions-and-quit-button" or "examples/shareit/docs/increments/list-catalog-api")
+
+version: {{VERSION}}
+generatedAt: {{GENERATED_AT}}
+source: {{SOURCE_URL}}
 ---
 
 # Prompt: Generate a Technical Design for an Increment

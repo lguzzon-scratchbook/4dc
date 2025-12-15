@@ -14,21 +14,30 @@ TEMPLATES_DIR="${ROOT_DIR}/templates/design"
 OUT_FILE="${ROOT_DIR}/design.prompt.md"
 
 WRITE_TO_STDOUT="${WRITE_TO_STDOUT:-0}"
+COMMIT_HASH="$(git -C "${ROOT_DIR}" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+SOURCE_URL="https://github.com/co0p/4dc"
+
+render() {
+  sed -e "s/{{VERSION}}/${COMMIT_HASH}/g" \
+      -e "s/{{GENERATED_AT}}/${GENERATED_AT}/g" \
+      -e "s#{{SOURCE_URL}}#${SOURCE_URL}#g"
+}
 
 generate() {
-  cat "${TEMPLATES_DIR}/00-header.md"
+  render < "${TEMPLATES_DIR}/00-header.md"
   echo
-  cat "${TEMPLATES_DIR}/00a-subject-scope.md"
+  render < "${TEMPLATES_DIR}/01-subject-scope.md"
   echo
-  cat "${TEMPLATES_DIR}/01-persona.md"
+  render < "${TEMPLATES_DIR}/02-persona.md"
   echo
-  cat "${TEMPLATES_DIR}/02-goal.md"
+  render < "${TEMPLATES_DIR}/03-goal.md"
   echo
-  cat "${TEMPLATES_DIR}/03-process.md"
+  render < "${TEMPLATES_DIR}/04-process.md"
   echo
-  cat "${TEMPLATES_DIR}/04-acceptance.md"
+  render < "${TEMPLATES_DIR}/05-acceptance.md"
   echo
-  cat "${TEMPLATES_DIR}/05-output-and-examples.md"
+  render < "${TEMPLATES_DIR}/06-output-and-examples.md"
 }
 
 if [ "$WRITE_TO_STDOUT" = "1" ]; then

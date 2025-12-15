@@ -1,6 +1,10 @@
 ---
 name: create-constitution
 argument-hint: path to the project root (for example: "." or "examples/pomodoro")
+
+version: {{VERSION}}
+generatedAt: {{GENERATED_AT}}
+source: {{SOURCE_URL}}
 ---
 
 # Prompt: Generate a Project Constitution (Values, Principles, Layout)

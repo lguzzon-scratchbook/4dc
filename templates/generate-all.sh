@@ -21,6 +21,9 @@ run_script() {
   fi
 }
 
+# Constitution: generates create-constitution prompt template (if present)
+run_script "constitution/generate.sh" "$ROOT_DIR/constitution/generate.sh"
+
 # Increment: generates increment prompt template (if present)
 run_script "increment/generate.sh" "$ROOT_DIR/increment/generate.sh"
 

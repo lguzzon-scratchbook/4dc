@@ -1,4 +1,5 @@
 jwt.csv
+.github/prompts/
 
 # Pomodoro example build artifacts
 examples/pomodoro/dist/

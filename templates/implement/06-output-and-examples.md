@@ -60,7 +60,7 @@ For each step, provide details as nested content:
     - [Concrete code-level action 2]  
   - `Tests:`  
     - [Tests to add/update]  
-    - [CI commands to run, e.g. \`npm test\`, \`go test ./...\`]  
+    - [CI commands to run, e.g. `npm test`, `go test ./...`]  
 
 - `### Step 2: [Short actionable task title]`  
   - `Workstream:` […]  
